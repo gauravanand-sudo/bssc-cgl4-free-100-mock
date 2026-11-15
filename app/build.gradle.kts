@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.gms.google-services")
 }
 
 fun p(key: String): String = providers.gradleProperty(key).orElse("").get()
@@ -40,8 +41,8 @@ android {
         applicationId = "com.bssc.cgl4.free100mock" // Finalize before first Play Store upload.
         minSdk = 24
         targetSdk = 36
-        versionCode = 6
-        versionName = "0.6.0"
+        versionCode = 7
+        versionName = "0.7.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["ADMOB_APP_ID"] = p("ADMOB_APP_ID").ifBlank { testApp }
         buildConfigField("String", "ADMOB_REWARDED_ID", quoted(p("ADMOB_REWARDED_ID").ifBlank { testRewarded }))
