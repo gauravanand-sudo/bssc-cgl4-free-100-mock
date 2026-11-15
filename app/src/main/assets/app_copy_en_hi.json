@@ -1,0 +1,283 @@
+{
+  "app": {
+    "internal_name": "BSSC CGL 4 Free 100 Mock",
+    "store_title_before_100_papers": "BSSC CGL 4 Mock Tests",
+    "tagline": {
+      "en": "Future ASO Starts Here",
+      "hi": "भविष्य के ASO की शुरुआत यहीं से"
+    },
+    "footer": {
+      "en": "Made with ❤️ for Bihar",
+      "hi": "बिहार के लिए ❤️ से बनाया गया"
+    }
+  },
+  "screen": {
+    "home": {
+      "en": {
+        "greeting": "Hello, future officer!",
+        "hero_title": "Future ASO Starts Here",
+        "hero_subtitle": "Practice today. Serve Bihar tomorrow.",
+        "primary_button": "Start a Mock Test",
+        "secondary_button": "Explore Mock Tests",
+        "countdown_label": "BSSC CGL 4 Countdown",
+        "date_unknown": "Official exam date awaited",
+        "today_motivation": "Every mock is one step closer to your goal.",
+        "banner_section": "Latest for Aspirants"
+      },
+      "hi": {
+        "greeting": "नमस्ते, भावी अधिकारी!",
+        "hero_title": "भविष्य के ASO की शुरुआत यहीं से",
+        "hero_subtitle": "आज तैयारी, कल बिहार की सेवा।",
+        "primary_button": "मॉक टेस्ट शुरू करें",
+        "secondary_button": "सभी मॉक टेस्ट देखें",
+        "countdown_label": "BSSC CGL 4 काउंटडाउन",
+        "date_unknown": "आधिकारिक परीक्षा तिथि की प्रतीक्षा है",
+        "today_motivation": "हर मॉक टेस्ट आपको अपने लक्ष्य के करीब ले जाता है।",
+        "banner_section": "अभ्यर्थियों के लिए नई जानकारी"
+      }
+    },
+    "tests": {
+      "en": {
+        "title": "Your Officer Journey",
+        "subtitle": "Choose a mock. Build your confidence.",
+        "available": "Available",
+        "locked": "Unlock to practice",
+        "watch_ad": "Watch Ad to Unlock",
+        "free_test": "Start Free Mock",
+        "paper_unavailable": "This paper is not published yet"
+      },
+      "hi": {
+        "title": "अधिकारी बनने की आपकी यात्रा",
+        "subtitle": "मॉक चुनें, आत्मविश्वास बढ़ाएँ।",
+        "available": "उपलब्ध",
+        "locked": "अभ्यास के लिए अनलॉक करें",
+        "watch_ad": "विज्ञापन देखकर अनलॉक करें",
+        "free_test": "फ्री मॉक शुरू करें",
+        "paper_unavailable": "यह प्रश्नपत्र अभी प्रकाशित नहीं हुआ है"
+      }
+    },
+    "exam": {
+      "en": {
+        "title": "Focus Mode",
+        "subtitle": "One question at a time. You can do this.",
+        "mark_review": "Mark for Review",
+        "previous": "Previous",
+        "next": "Next",
+        "submit": "Submit Test",
+        "time_left": "Time Left",
+        "confirm_submit": "Submit your answers now?"
+      },
+      "hi": {
+        "title": "एकाग्रता मोड",
+        "subtitle": "एक बार में एक सवाल। आप कर सकते हैं।",
+        "mark_review": "समीक्षा के लिए चिन्हित करें",
+        "previous": "पिछला",
+        "next": "अगला",
+        "submit": "टेस्ट जमा करें",
+        "time_left": "शेष समय",
+        "confirm_submit": "क्या आप अपने उत्तर जमा करना चाहते हैं?"
+      }
+    },
+    "results": {
+      "en": {
+        "title": "Your Progress Matters",
+        "subtitle": "A test score is feedback, not your limit.",
+        "score": "Your Score",
+        "accuracy": "Accuracy",
+        "rank": "Rank",
+        "rank_pending": "Ranking will appear when available",
+        "weak_areas": "Areas to Improve",
+        "solutions": "Review Solutions",
+        "retry": "Practice Again"
+      },
+      "hi": {
+        "title": "आपकी प्रगति मायने रखती है",
+        "subtitle": "टेस्ट का स्कोर सीखने का अवसर है, आपकी सीमा नहीं।",
+        "score": "आपका स्कोर",
+        "accuracy": "सटीकता",
+        "rank": "रैंक",
+        "rank_pending": "उपलब्ध होने पर रैंक दिखाई जाएगी",
+        "weak_areas": "सुधार के विषय",
+        "solutions": "हल देखें",
+        "retry": "दोबारा अभ्यास करें"
+      }
+    },
+    "insights": {
+      "en": {
+        "title": "Grow Stronger Every Day",
+        "subtitle": "Find the topics that need a little extra practice.",
+        "strengths": "Your Strengths",
+        "focus_next": "Focus Next",
+        "improvement": "Improvement Trend"
+      },
+      "hi": {
+        "title": "हर दिन और बेहतर बनें",
+        "subtitle": "उन विषयों को पहचानें जिनमें और अभ्यास की जरूरत है।",
+        "strengths": "आपकी मजबूतियाँ",
+        "focus_next": "अगला फोकस",
+        "improvement": "सुधार का रुझान"
+      }
+    },
+    "ranking": {
+      "en": {
+        "title": "Learn. Improve. Rise.",
+        "subtitle": "Compare fairly after completing the same mock.",
+        "empty": "No verified ranks yet"
+      },
+      "hi": {
+        "title": "सीखें, सुधारें, आगे बढ़ें।",
+        "subtitle": "एक ही मॉक पूरा करने वाले अभ्यर्थियों से निष्पक्ष तुलना करें।",
+        "empty": "अभी कोई सत्यापित रैंक नहीं है"
+      }
+    },
+    "profile": {
+      "en": {
+        "title": "My Preparation",
+        "notifications": "Exam & Mock Alerts",
+        "language": "Language",
+        "disclaimer_short": "Independent exam preparation app"
+      },
+      "hi": {
+        "title": "मेरी तैयारी",
+        "notifications": "परीक्षा और मॉक अलर्ट",
+        "language": "भाषा",
+        "disclaimer_short": "स्वतंत्र परीक्षा तैयारी ऐप"
+      }
+    }
+  },
+  "motivational_lines": [
+    {
+      "en": "From aspirant to officer — one day at a time.",
+      "hi": "अभ्यर्थी से अधिकारी — हर दिन एक कदम आगे।"
+    },
+    {
+      "en": "Practice today. Serve Bihar tomorrow.",
+      "hi": "आज तैयारी, कल बिहार की सेवा।"
+    },
+    {
+      "en": "Your future is built by the practice you do today.",
+      "hi": "आपका भविष्य आज की मेहनत से बनता है।"
+    },
+    {
+      "en": "Small improvements create big results.",
+      "hi": "छोटे-छोटे सुधार बड़े परिणाम लाते हैं।"
+    },
+    {
+      "en": "Discipline turns dreams into progress.",
+      "hi": "अनुशासन सपनों को प्रगति में बदलता है।"
+    },
+    {
+      "en": "Focus on progress, not perfection.",
+      "hi": "पूर्णता नहीं, प्रगति पर ध्यान दें।"
+    },
+    {
+      "en": "The next question is another opportunity.",
+      "hi": "अगला सवाल एक नया अवसर है।"
+    },
+    {
+      "en": "Bihar’s future begins with prepared minds.",
+      "hi": "बिहार का भविष्य अच्छी तैयारी से बनता है।"
+    }
+  ],
+  "loading_lines": [
+    {
+      "en": "Preparing your next step toward your goal…",
+      "hi": "आपके लक्ष्य की ओर अगला कदम तैयार हो रहा है…"
+    },
+    {
+      "en": "Great preparation starts with a single question.",
+      "hi": "अच्छी तैयारी की शुरुआत एक सवाल से होती है।"
+    },
+    {
+      "en": "Loading your practice space. Stay focused!",
+      "hi": "आपका अभ्यास तैयार हो रहा है। ध्यान बनाए रखें!"
+    }
+  ],
+  "banner_examples": [
+    {
+      "id": "new_mock",
+      "title": {
+        "en": "New Mock Test Available",
+        "hi": "नया मॉक टेस्ट उपलब्ध"
+      },
+      "subtitle": {
+        "en": "Practice, review and improve.",
+        "hi": "अभ्यास करें, विश्लेषण देखें और सुधार करें।"
+      },
+      "cta": {
+        "en": "Start Practice",
+        "hi": "अभ्यास शुरू करें"
+      },
+      "action_type": "internal",
+      "action_value": "mock_list"
+    },
+    {
+      "id": "weak_topics",
+      "title": {
+        "en": "Turn Weak Topics into Strengths",
+        "hi": "कमजोर विषयों को अपनी ताकत बनाएँ"
+      },
+      "subtitle": {
+        "en": "See exactly where to focus next.",
+        "hi": "देखें, आगे किस विषय पर ध्यान देना है।"
+      },
+      "cta": {
+        "en": "View Analysis",
+        "hi": "विश्लेषण देखें"
+      },
+      "action_type": "internal",
+      "action_value": "insights"
+    },
+    {
+      "id": "aspirant",
+      "title": {
+        "en": "Future ASO Starts Here",
+        "hi": "भविष्य के ASO की शुरुआत यहीं से"
+      },
+      "subtitle": {
+        "en": "One mock. One improvement. Every day.",
+        "hi": "हर दिन एक मॉक, एक नया सुधार।"
+      },
+      "cta": {
+        "en": "Explore Tests",
+        "hi": "मॉक देखें"
+      },
+      "action_type": "internal",
+      "action_value": "mock_list"
+    }
+  ],
+  "notification_templates": [
+    {
+      "key": "new_mock",
+      "en_title": "New Mock Available!",
+      "en_body": "A new BSSC CGL 4 practice paper is ready. Start when you’re free.",
+      "hi_title": "नया मॉक उपलब्ध है!",
+      "hi_body": "BSSC CGL 4 का नया अभ्यास प्रश्नपत्र उपलब्ध है। समय मिलने पर शुरू करें।"
+    },
+    {
+      "key": "official_notice",
+      "en_title": "Exam Notice Update",
+      "en_body": "A new notice has been published. Verify details on the official BSSC website.",
+      "hi_title": "परीक्षा सूचना अपडेट",
+      "hi_body": "नई सूचना प्रकाशित हुई है। विवरण आधिकारिक BSSC वेबसाइट पर जाँचें।"
+    },
+    {
+      "key": "practice_reminder",
+      "en_title": "A Little Practice Today?",
+      "en_body": "Ready for a focused mock or a quick weak-topic revision?",
+      "hi_title": "आज थोड़ा अभ्यास करें?",
+      "hi_body": "मॉक टेस्ट या कमजोर विषय का छोटा रिविज़न करने के लिए तैयार हैं?"
+    }
+  ],
+  "disclaimer": {
+    "en": "This is an independent exam-preparation app for BSSC CGL aspirants. It is not affiliated with, endorsed by, or operated by the Bihar Staff Selection Commission or the Government of Bihar. For official notices, exam dates and recruitment information, consult the BSSC official website.",
+    "hi": "यह BSSC CGL अभ्यर्थियों के लिए एक स्वतंत्र परीक्षा-तैयारी ऐप है। इसका बिहार कर्मचारी चयन आयोग या बिहार सरकार से कोई आधिकारिक संबंध, समर्थन या संचालन नहीं है। आधिकारिक सूचनाओं, परीक्षा तिथियों और भर्ती संबंधी जानकारी के लिए BSSC की आधिकारिक वेबसाइट देखें।"
+  },
+  "play_store": {
+    "recommended_title": "BSSC CGL 4 Mock Tests",
+    "short_description_en": "BSSC CGL 4 practice mocks, exam timer, solutions and progress insights.",
+    "short_description_hi": "BSSC CGL 4 मॉक टेस्ट, टाइमर, हल और प्रदर्शन विश्लेषण।",
+    "full_description_en": "Future ASO Starts Here.\n\nPrepare for BSSC CGL 4 with a focused practice experience made for Bihar aspirants. Work through timed mock tests, review answers and track your progress across topics.\n\n• Timed mock tests with exam-style navigation\n• Answer review and explanations for available papers\n• Subject-wise performance and weak-area insights\n• Hindi and English navigation\n• Practice history on your device\n• Additional tests published through the online catalogue\n• Optional rewarded ads to unlock selected practice papers\n• Exam-related reminders when you opt in\n\nYou can start practicing without creating an account. Some features, including online rankings and newly published papers, require an internet connection and service availability. The number of available mocks can change as content is published.\n\nMade with love for Bihar.\n\nIMPORTANT: This is an independent exam-preparation app. It is not affiliated with or endorsed by the Bihar Staff Selection Commission (BSSC) or the Government of Bihar. Check the official BSSC website for authentic notices, eligibility, dates and recruitment details.",
+    "full_description_hi": "भविष्य के ASO की शुरुआत यहीं से।\n\nBSSC CGL 4 की तैयारी करें एक ऐसे ऐप के साथ जो बिहार के अभ्यर्थियों के अभ्यास को ध्यान में रखकर बनाया गया है। समय-सीमा वाले मॉक टेस्ट दें, अपने उत्तर देखें और विषयवार प्रगति समझें।\n\n• परीक्षा जैसा टाइमर और प्रश्न नेविगेशन\n• उपलब्ध प्रश्नपत्रों के उत्तर और व्याख्या\n• विषयवार प्रदर्शन तथा कमजोर क्षेत्रों का विश्लेषण\n• हिंदी और अंग्रेज़ी इंटरफेस\n• आपके डिवाइस पर अभ्यास का इतिहास\n• ऑनलाइन कैटलॉग से नए मॉक प्रश्नपत्र\n• चुनिंदा मॉक अनलॉक करने के लिए वैकल्पिक रिवॉर्ड विज्ञापन\n• आपकी अनुमति से परीक्षा-संबंधी सूचनाएँ\n\nशुरू करने के लिए अलग से खाता बनाने की जरूरत नहीं है। ऑनलाइन रैंकिंग और नए प्रश्नपत्र जैसी सुविधाएँ इंटरनेट तथा सेवा उपलब्धता पर निर्भर करती हैं। प्रकाशित मॉक की संख्या समय-समय पर बदल सकती है।\n\nबिहार के लिए प्यार से बनाया गया।\n\nमहत्वपूर्ण: यह एक स्वतंत्र परीक्षा-तैयारी ऐप है। इसका बिहार कर्मचारी चयन आयोग (BSSC) या बिहार सरकार से कोई आधिकारिक संबंध या समर्थन नहीं है। आधिकारिक सूचना, पात्रता, तिथियों और भर्ती विवरण के लिए BSSC की आधिकारिक वेबसाइट देखें।"
+  }
+}

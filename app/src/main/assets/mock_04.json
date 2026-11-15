@@ -1,0 +1,3302 @@
+[
+  {
+    "section": "General Studies",
+    "topic": "Indian Geography",
+    "questionEn": "Which sea lies west of India?",
+    "questionHi": "भारत के पश्चिम में कौन-सा समुद्र है?",
+    "optionsEn": [
+      "South China Sea",
+      "Arabian Sea",
+      "Red Sea",
+      "Bay of Bengal"
+    ],
+    "optionsHi": [
+      "South China Sea",
+      "Arabian Sea",
+      "Red Sea",
+      "Bay of Bengal"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Arabian Sea.",
+    "explanationHi": "सही उत्तर: Arabian Sea।",
+    "id": "M4-001"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Averages",
+    "questionEn": "Find the average of 35 and 19.",
+    "questionHi": "35 और 19 का औसत ज्ञात करें।",
+    "optionsEn": [
+      "24",
+      "33",
+      "27",
+      "30"
+    ],
+    "optionsHi": [
+      "24",
+      "33",
+      "27",
+      "30"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 27.",
+    "explanationHi": "सही उत्तर: 27।",
+    "id": "M4-002"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Alphabet",
+    "questionEn": "In an alphabet code each letter moves 2 positions forward. G becomes?",
+    "questionHi": "कूट में प्रत्येक अक्षर 2 स्थान आगे जाता है। G क्या बनेगा?",
+    "optionsEn": [
+      "H",
+      "J",
+      "I",
+      "K"
+    ],
+    "optionsHi": [
+      "H",
+      "J",
+      "I",
+      "K"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is I.",
+    "explanationHi": "सही उत्तर: I।",
+    "id": "M4-003"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the square of 18?",
+    "questionHi": "18 का वर्ग क्या है?",
+    "optionsEn": [
+      "324",
+      "342",
+      "361",
+      "289"
+    ],
+    "optionsHi": [
+      "324",
+      "342",
+      "361",
+      "289"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 324.",
+    "explanationHi": "सही उत्तर: 324।",
+    "id": "M4-004"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Economics",
+    "questionEn": "Which body replaced the Planning Commission of India?",
+    "questionHi": "भारत के योजना आयोग का स्थान किस निकाय ने लिया?",
+    "optionsEn": [
+      "NITI Aayog",
+      "Finance Commission",
+      "RBI",
+      "SEBI"
+    ],
+    "optionsHi": [
+      "NITI Aayog",
+      "Finance Commission",
+      "RBI",
+      "SEBI"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is NITI Aayog.",
+    "explanationHi": "सही उत्तर: NITI Aayog।",
+    "id": "M4-005"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Physics",
+    "questionEn": "Which law relates voltage current and resistance?",
+    "questionHi": "वोल्टेज, धारा और प्रतिरोध का संबंध कौन-सा नियम बताता है?",
+    "optionsEn": [
+      "Hooke's law",
+      "Newton's law",
+      "Boyle's law",
+      "Ohm's law"
+    ],
+    "optionsHi": [
+      "Hooke's law",
+      "Newton's law",
+      "Boyle's law",
+      "Ohm's law"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Ohm's law.",
+    "explanationHi": "सही उत्तर: Ohm's law।",
+    "id": "M4-006"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the square of 16?",
+    "questionHi": "16 का वर्ग क्या है?",
+    "optionsEn": [
+      "289",
+      "225",
+      "272",
+      "256"
+    ],
+    "optionsHi": [
+      "289",
+      "225",
+      "272",
+      "256"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 256.",
+    "explanationHi": "सही उत्तर: 256।",
+    "id": "M4-007"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "Which organ pumps blood through the human body?",
+    "questionHi": "मनुष्य के शरीर में रक्त कौन-सा अंग पंप करता है?",
+    "optionsEn": [
+      "Lung",
+      "Heart",
+      "Liver",
+      "Kidney"
+    ],
+    "optionsHi": [
+      "Lung",
+      "Heart",
+      "Liver",
+      "Kidney"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Heart.",
+    "explanationHi": "सही उत्तर: Heart।",
+    "id": "M4-008"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Geography",
+    "questionEn": "What is the standard meridian of India?",
+    "questionHi": "भारत की मानक मध्याह्न रेखा क्या है?",
+    "optionsEn": [
+      "90° E",
+      "75° E",
+      "68° E",
+      "82.5° E"
+    ],
+    "optionsHi": [
+      "90° E",
+      "75° E",
+      "68° E",
+      "82.5° E"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 82.5° E.",
+    "explanationHi": "सही उत्तर: 82.5° E।",
+    "id": "M4-009"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Physics",
+    "questionEn": "Which lens is used to correct myopia?",
+    "questionHi": "निकट दृष्टि दोष ठीक करने के लिए कौन-सा लेंस उपयोग होता है?",
+    "optionsEn": [
+      "Plane lens",
+      "Convex lens",
+      "Cylindrical mirror",
+      "Concave lens"
+    ],
+    "optionsHi": [
+      "Plane lens",
+      "Convex lens",
+      "Cylindrical mirror",
+      "Concave lens"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Concave lens.",
+    "explanationHi": "सही उत्तर: Concave lens।",
+    "id": "M4-010"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian History",
+    "questionEn": "Which emperor built the Buland Darwaza at Fatehpur Sikri?",
+    "questionHi": "फतेहपुर सीकरी का बुलंद दरवाजा किसने बनवाया?",
+    "optionsEn": [
+      "Jahangir",
+      "Akbar",
+      "Babur",
+      "Shah Jahan"
+    ],
+    "optionsHi": [
+      "Jahangir",
+      "Akbar",
+      "Babur",
+      "Shah Jahan"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Akbar.",
+    "explanationHi": "सही उत्तर: Akbar।",
+    "id": "M4-011"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Analogy",
+    "questionEn": "2 : 4 :: 16 : ?",
+    "questionHi": "2 : 4 :: 16 : ?",
+    "optionsEn": [
+      "40",
+      "32",
+      "30",
+      "34"
+    ],
+    "optionsHi": [
+      "40",
+      "32",
+      "30",
+      "34"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 32.",
+    "explanationHi": "सही उत्तर: 32।",
+    "id": "M4-012"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the sum of digits 3, 6, and 4?",
+    "questionHi": "अंकों 3, 6, 4 का योग क्या है?",
+    "optionsEn": [
+      "13",
+      "17",
+      "15",
+      "11"
+    ],
+    "optionsHi": [
+      "13",
+      "17",
+      "15",
+      "11"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 13.",
+    "explanationHi": "सही उत्तर: 13।",
+    "id": "M4-013"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "Which hormone helps regulate blood glucose?",
+    "questionHi": "रक्त ग्लूकोज के नियंत्रण में कौन-सा हार्मोन मदद करता है?",
+    "optionsEn": [
+      "Melatonin",
+      "Insulin",
+      "Thyroxine",
+      "Adrenaline"
+    ],
+    "optionsHi": [
+      "Melatonin",
+      "Insulin",
+      "Thyroxine",
+      "Adrenaline"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Insulin.",
+    "explanationHi": "सही उत्तर: Insulin।",
+    "id": "M4-014"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian History",
+    "questionEn": "Which movement began with the Dandi March in 1930?",
+    "questionHi": "1930 की दांडी यात्रा से कौन-सा आंदोलन शुरू हुआ?",
+    "optionsEn": [
+      "Non-Cooperation Movement",
+      "Quit India Movement",
+      "Swadeshi Movement",
+      "Civil Disobedience Movement"
+    ],
+    "optionsHi": [
+      "Non-Cooperation Movement",
+      "Quit India Movement",
+      "Swadeshi Movement",
+      "Civil Disobedience Movement"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Civil Disobedience Movement.",
+    "explanationHi": "सही उत्तर: Civil Disobedience Movement।",
+    "id": "M4-015"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar History",
+    "questionEn": "Who led the 1857 uprising at Jagdishpur?",
+    "questionHi": "जगदीशपुर में 1857 के विद्रोह का नेतृत्व किसने किया?",
+    "optionsEn": [
+      "Tatya Tope",
+      "Mangal Pandey",
+      "Kunwar Singh",
+      "Birsa Munda"
+    ],
+    "optionsHi": [
+      "Tatya Tope",
+      "Mangal Pandey",
+      "Kunwar Singh",
+      "Birsa Munda"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Kunwar Singh.",
+    "explanationHi": "सही उत्तर: Kunwar Singh।",
+    "id": "M4-016"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian History",
+    "questionEn": "Who founded the Mughal Empire in India?",
+    "questionHi": "भारत में मुगल साम्राज्य की स्थापना किसने की?",
+    "optionsEn": [
+      "Humayun",
+      "Aurangzeb",
+      "Akbar",
+      "Babur"
+    ],
+    "optionsHi": [
+      "Humayun",
+      "Aurangzeb",
+      "Akbar",
+      "Babur"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Babur.",
+    "explanationHi": "सही उत्तर: Babur।",
+    "id": "M4-017"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Percentages",
+    "questionEn": "What is 50% of 12?",
+    "questionHi": "12 का 50% कितना है?",
+    "optionsEn": [
+      "10",
+      "4",
+      "8",
+      "6"
+    ],
+    "optionsHi": [
+      "10",
+      "4",
+      "8",
+      "6"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 6.",
+    "explanationHi": "सही उत्तर: 6।",
+    "id": "M4-018"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar Geography",
+    "questionEn": "Valmiki National Park is located in which state?",
+    "questionHi": "वाल्मीकि राष्ट्रीय उद्यान किस राज्य में है?",
+    "optionsEn": [
+      "Punjab",
+      "Odisha",
+      "Kerala",
+      "Bihar"
+    ],
+    "optionsHi": [
+      "Punjab",
+      "Odisha",
+      "Kerala",
+      "Bihar"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Bihar.",
+    "explanationHi": "सही उत्तर: Bihar।",
+    "id": "M4-019"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Geography",
+    "questionEn": "Which is the longest river flowing entirely within India?",
+    "questionHi": "पूरी तरह भारत में बहने वाली सबसे लंबी नदी कौन-सी है?",
+    "optionsEn": [
+      "Godavari",
+      "Indus",
+      "Ganga",
+      "Brahmaputra"
+    ],
+    "optionsHi": [
+      "Godavari",
+      "Indus",
+      "Ganga",
+      "Brahmaputra"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Godavari.",
+    "explanationHi": "सही उत्तर: Godavari।",
+    "id": "M4-020"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Profit & Loss",
+    "questionEn": "An item costs ₹280 and gets 20% discount. Sale price?",
+    "questionHi": "₹280 की वस्तु पर 20% छूट है। विक्रय मूल्य?",
+    "optionsEn": [
+      "224",
+      "234",
+      "244",
+      "214"
+    ],
+    "optionsHi": [
+      "224",
+      "234",
+      "244",
+      "214"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 224.",
+    "explanationHi": "सही उत्तर: 224।",
+    "id": "M4-021"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Mensuration",
+    "questionEn": "Find perimeter of a rectangle 7 cm long and 10 cm wide.",
+    "questionHi": "7 सेमी लंबाई और 10 सेमी चौड़ाई वाले आयत का परिमाप ज्ञात करें।",
+    "optionsEn": [
+      "38",
+      "42",
+      "34",
+      "30"
+    ],
+    "optionsHi": [
+      "38",
+      "42",
+      "34",
+      "30"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 34.",
+    "explanationHi": "सही उत्तर: 34।",
+    "id": "M4-022"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar Geography",
+    "questionEn": "The Kosi is a tributary of which river?",
+    "questionHi": "कोसी किस नदी की सहायक नदी है?",
+    "optionsEn": [
+      "Yamuna",
+      "Krishna",
+      "Ganga",
+      "Mahanadi"
+    ],
+    "optionsHi": [
+      "Yamuna",
+      "Krishna",
+      "Ganga",
+      "Mahanadi"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Ganga.",
+    "explanationHi": "सही उत्तर: Ganga।",
+    "id": "M4-023"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Alphabet",
+    "questionEn": "In an alphabet code each letter moves 3 positions forward. N becomes?",
+    "questionHi": "कूट में प्रत्येक अक्षर 3 स्थान आगे जाता है। N क्या बनेगा?",
+    "optionsEn": [
+      "Q",
+      "R",
+      "S",
+      "P"
+    ],
+    "optionsHi": [
+      "Q",
+      "R",
+      "S",
+      "P"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Q.",
+    "explanationHi": "सही उत्तर: Q।",
+    "id": "M4-024"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Physics",
+    "questionEn": "Which form of energy is stored in a stretched spring?",
+    "questionHi": "तनी हुई स्प्रिंग में किस प्रकार की ऊर्जा संग्रहीत रहती है?",
+    "optionsEn": [
+      "Sound energy",
+      "Chemical energy",
+      "Elastic potential energy",
+      "Nuclear energy"
+    ],
+    "optionsHi": [
+      "Sound energy",
+      "Chemical energy",
+      "Elastic potential energy",
+      "Nuclear energy"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Elastic potential energy.",
+    "explanationHi": "सही उत्तर: Elastic potential energy।",
+    "id": "M4-025"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Alphabet",
+    "questionEn": "In an alphabet code each letter moves 4 positions forward. N becomes?",
+    "questionHi": "कूट में प्रत्येक अक्षर 4 स्थान आगे जाता है। N क्या बनेगा?",
+    "optionsEn": [
+      "R",
+      "T",
+      "Q",
+      "S"
+    ],
+    "optionsHi": [
+      "R",
+      "T",
+      "Q",
+      "S"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is R.",
+    "explanationHi": "सही उत्तर: R।",
+    "id": "M4-026"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar History",
+    "questionEn": "Which ancient university was located near present-day Bhagalpur?",
+    "questionHi": "वर्तमान भागलपुर के निकट कौन-सा प्राचीन विश्वविद्यालय था?",
+    "optionsEn": [
+      "Vikramashila",
+      "Vallabhi",
+      "Odantapuri",
+      "Takshashila"
+    ],
+    "optionsHi": [
+      "Vikramashila",
+      "Vallabhi",
+      "Odantapuri",
+      "Takshashila"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Vikramashila.",
+    "explanationHi": "सही उत्तर: Vikramashila।",
+    "id": "M4-027"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the sum of digits 7, 6, and 5?",
+    "questionHi": "अंकों 7, 6, 5 का योग क्या है?",
+    "optionsEn": [
+      "16",
+      "18",
+      "22",
+      "20"
+    ],
+    "optionsHi": [
+      "16",
+      "18",
+      "22",
+      "20"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 18.",
+    "explanationHi": "सही उत्तर: 18।",
+    "id": "M4-028"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the sum of digits 9, 6, and 4?",
+    "questionHi": "अंकों 9, 6, 4 का योग क्या है?",
+    "optionsEn": [
+      "21",
+      "19",
+      "17",
+      "23"
+    ],
+    "optionsHi": [
+      "21",
+      "19",
+      "17",
+      "23"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 19.",
+    "explanationHi": "सही उत्तर: 19।",
+    "id": "M4-029"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Profit & Loss",
+    "questionEn": "An item costs ₹180 and gets 30% discount. Sale price?",
+    "questionHi": "₹180 की वस्तु पर 30% छूट है। विक्रय मूल्य?",
+    "optionsEn": [
+      "126",
+      "136",
+      "116",
+      "146"
+    ],
+    "optionsHi": [
+      "126",
+      "136",
+      "116",
+      "146"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 126.",
+    "explanationHi": "सही उत्तर: 126।",
+    "id": "M4-030"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 5, 10, 20, 40, ?",
+    "questionHi": "अगली संख्या ज्ञात करें: 5, 10, 20, 40, ?",
+    "optionsEn": [
+      "82",
+      "40",
+      "80",
+      "84"
+    ],
+    "optionsHi": [
+      "82",
+      "40",
+      "80",
+      "84"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 80.",
+    "explanationHi": "सही उत्तर: 80।",
+    "id": "M4-031"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Averages",
+    "questionEn": "Find the average of 34 and 46.",
+    "questionHi": "34 और 46 का औसत ज्ञात करें।",
+    "optionsEn": [
+      "46",
+      "40",
+      "37",
+      "43"
+    ],
+    "optionsHi": [
+      "46",
+      "40",
+      "37",
+      "43"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 40.",
+    "explanationHi": "सही उत्तर: 40।",
+    "id": "M4-032"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "Which Constitutional Amendment lowered voting age from 21 to 18?",
+    "questionHi": "किस संशोधन ने मतदान आयु 21 से 18 वर्ष की?",
+    "optionsEn": [
+      "42nd Amendment",
+      "44th Amendment",
+      "61st Amendment",
+      "73rd Amendment"
+    ],
+    "optionsHi": [
+      "42nd Amendment",
+      "44th Amendment",
+      "61st Amendment",
+      "73rd Amendment"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 61st Amendment.",
+    "explanationHi": "सही उत्तर: 61st Amendment।",
+    "id": "M4-033"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "What is the basic structural unit of life?",
+    "questionHi": "जीवन की मूल संरचनात्मक इकाई क्या है?",
+    "optionsEn": [
+      "Cell",
+      "Organ",
+      "Molecule",
+      "Tissue"
+    ],
+    "optionsHi": [
+      "Cell",
+      "Organ",
+      "Molecule",
+      "Tissue"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Cell.",
+    "explanationHi": "सही उत्तर: Cell।",
+    "id": "M4-034"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Arithmetic",
+    "questionEn": "What is 4 multiplied by 7?",
+    "questionHi": "4 और 7 का गुणनफल क्या है?",
+    "optionsEn": [
+      "33",
+      "28",
+      "23",
+      "38"
+    ],
+    "optionsHi": [
+      "33",
+      "28",
+      "23",
+      "38"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 28.",
+    "explanationHi": "सही उत्तर: 28।",
+    "id": "M4-035"
+  },
+  {
+    "section": "General Studies",
+    "topic": "General Awareness",
+    "questionEn": "What is the chemical symbol of gold?",
+    "questionHi": "सोने का रासायनिक संकेत क्या है?",
+    "optionsEn": [
+      "Au",
+      "Ag",
+      "Cu",
+      "Fe"
+    ],
+    "optionsHi": [
+      "Au",
+      "Ag",
+      "Cu",
+      "Fe"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Au.",
+    "explanationHi": "सही उत्तर: Au।",
+    "id": "M4-036"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "Who presides over the Lok Sabha?",
+    "questionHi": "लोकसभा की अध्यक्षता कौन करता है?",
+    "optionsEn": [
+      "Vice President",
+      "Governor",
+      "Speaker",
+      "Attorney General"
+    ],
+    "optionsHi": [
+      "Vice President",
+      "Governor",
+      "Speaker",
+      "Attorney General"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Speaker.",
+    "explanationHi": "सही उत्तर: Speaker।",
+    "id": "M4-037"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Directions",
+    "questionEn": "Ravi walks 4 m east, then 4 m north. Where is he from the start?",
+    "questionHi": "रवि 4 मीटर पूर्व, फिर 4 मीटर उत्तर चलता है। आरंभ से उसकी स्थिति?",
+    "optionsEn": [
+      "4 m West and 4 m North",
+      "4 m West and 4 m South",
+      "4 m East and 4 m North",
+      "4 m East and 4 m South"
+    ],
+    "optionsHi": [
+      "4 m West and 4 m North",
+      "4 m West and 4 m South",
+      "4 m East and 4 m North",
+      "4 m East and 4 m South"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 4 m East and 4 m North.",
+    "explanationHi": "सही उत्तर: 4 m East and 4 m North।",
+    "id": "M4-038"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 5, 10, 20, 40, ?",
+    "questionHi": "अगली संख्या ज्ञात करें: 5, 10, 20, 40, ?",
+    "optionsEn": [
+      "80",
+      "40",
+      "84",
+      "82"
+    ],
+    "optionsHi": [
+      "80",
+      "40",
+      "84",
+      "82"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 80.",
+    "explanationHi": "सही उत्तर: 80।",
+    "id": "M4-039"
+  },
+  {
+    "section": "General Studies",
+    "topic": "General Awareness",
+    "questionEn": "What is the national bird of India?",
+    "questionHi": "भारत का राष्ट्रीय पक्षी कौन-सा है?",
+    "optionsEn": [
+      "Sparrow",
+      "Eagle",
+      "Indian Peacock",
+      "Parrot"
+    ],
+    "optionsHi": [
+      "Sparrow",
+      "Eagle",
+      "Indian Peacock",
+      "Parrot"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Indian Peacock.",
+    "explanationHi": "सही उत्तर: Indian Peacock।",
+    "id": "M4-040"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Comparisons",
+    "questionEn": "If A = 31, B = 37, and C = 61, which is greatest?",
+    "questionHi": "यदि A = 31, B = 37, C = 61, तो सबसे बड़ा कौन है?",
+    "optionsEn": [
+      "C",
+      "A",
+      "B",
+      "All equal"
+    ],
+    "optionsHi": [
+      "C",
+      "A",
+      "B",
+      "All equal"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is C.",
+    "explanationHi": "सही उत्तर: C।",
+    "id": "M4-041"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Arithmetic",
+    "questionEn": "Solve: 17 + 5 × 1 = ?",
+    "questionHi": "हल करें: 17 + 5 × 1 = ?",
+    "optionsEn": [
+      "22",
+      "20",
+      "26",
+      "24"
+    ],
+    "optionsHi": [
+      "22",
+      "20",
+      "26",
+      "24"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 22.",
+    "explanationHi": "सही उत्तर: 22।",
+    "id": "M4-042"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Time & Work",
+    "questionEn": "A worker completes 13 units per day. How many units in 4 days?",
+    "questionHi": "मजदूर प्रतिदिन 13 इकाई काम करता है। 4 दिनों में कितना काम करेगा?",
+    "optionsEn": [
+      "39",
+      "65",
+      "78",
+      "52"
+    ],
+    "optionsHi": [
+      "39",
+      "65",
+      "78",
+      "52"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 52.",
+    "explanationHi": "सही उत्तर: 52।",
+    "id": "M4-043"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "Who was the Chairman of the Constitution Drafting Committee?",
+    "questionHi": "संविधान प्रारूप समिति के अध्यक्ष कौन थे?",
+    "optionsEn": [
+      "B R Ambedkar",
+      "Jawaharlal Nehru",
+      "Sardar Patel",
+      "Rajendra Prasad"
+    ],
+    "optionsHi": [
+      "B R Ambedkar",
+      "Jawaharlal Nehru",
+      "Sardar Patel",
+      "Rajendra Prasad"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is B R Ambedkar.",
+    "explanationHi": "सही उत्तर: B R Ambedkar।",
+    "id": "M4-044"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Geography",
+    "questionEn": "Sundarbans are famous for which vegetation?",
+    "questionHi": "सुंदरबन किस प्रकार की वनस्पति के लिए प्रसिद्ध है?",
+    "optionsEn": [
+      "Alpine forests",
+      "Temperate conifers",
+      "Thorn scrub",
+      "Mangrove forests"
+    ],
+    "optionsHi": [
+      "Alpine forests",
+      "Temperate conifers",
+      "Thorn scrub",
+      "Mangrove forests"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Mangrove forests.",
+    "explanationHi": "सही उत्तर: Mangrove forests।",
+    "id": "M4-045"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Time & Work",
+    "questionEn": "A worker completes 11 units per day. How many units in 7 days?",
+    "questionHi": "मजदूर प्रतिदिन 11 इकाई काम करता है। 7 दिनों में कितना काम करेगा?",
+    "optionsEn": [
+      "77",
+      "66",
+      "99",
+      "88"
+    ],
+    "optionsHi": [
+      "77",
+      "66",
+      "99",
+      "88"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 77.",
+    "explanationHi": "सही उत्तर: 77।",
+    "id": "M4-046"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "Who is the ex officio Chairman of the Rajya Sabha?",
+    "questionHi": "राज्यसभा का पदेन सभापति कौन होता है?",
+    "optionsEn": [
+      "Speaker",
+      "Prime Minister",
+      "Vice President",
+      "President"
+    ],
+    "optionsHi": [
+      "Speaker",
+      "Prime Minister",
+      "Vice President",
+      "President"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Vice President.",
+    "explanationHi": "सही उत्तर: Vice President।",
+    "id": "M4-047"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Arithmetic",
+    "questionEn": "What is 14 multiplied by 8?",
+    "questionHi": "14 और 8 का गुणनफल क्या है?",
+    "optionsEn": [
+      "117",
+      "122",
+      "112",
+      "107"
+    ],
+    "optionsHi": [
+      "117",
+      "122",
+      "112",
+      "107"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 112.",
+    "explanationHi": "सही उत्तर: 112।",
+    "id": "M4-048"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Alphabet",
+    "questionEn": "In an alphabet code each letter moves 6 positions forward. E becomes?",
+    "questionHi": "कूट में प्रत्येक अक्षर 6 स्थान आगे जाता है। E क्या बनेगा?",
+    "optionsEn": [
+      "K",
+      "L",
+      "M",
+      "J"
+    ],
+    "optionsHi": [
+      "K",
+      "L",
+      "M",
+      "J"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is K.",
+    "explanationHi": "सही उत्तर: K।",
+    "id": "M4-049"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Comparisons",
+    "questionEn": "If A = 15, B = 31, and C = 54, which is greatest?",
+    "questionHi": "यदि A = 15, B = 31, C = 54, तो सबसे बड़ा कौन है?",
+    "optionsEn": [
+      "C",
+      "A",
+      "All equal",
+      "B"
+    ],
+    "optionsHi": [
+      "C",
+      "A",
+      "All equal",
+      "B"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is C.",
+    "explanationHi": "सही उत्तर: C।",
+    "id": "M4-050"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 4, 12, 36, 108, ?",
+    "questionHi": "अगली संख्या ज्ञात करें: 4, 12, 36, 108, ?",
+    "optionsEn": [
+      "324",
+      "330",
+      "108",
+      "327"
+    ],
+    "optionsHi": [
+      "324",
+      "330",
+      "108",
+      "327"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 324.",
+    "explanationHi": "सही उत्तर: 324।",
+    "id": "M4-051"
+  },
+  {
+    "section": "General Studies",
+    "topic": "General Awareness",
+    "questionEn": "Which vitamin is produced in the skin with sunlight exposure?",
+    "questionHi": "सूर्य के प्रकाश से त्वचा में कौन-सा विटामिन बनता है?",
+    "optionsEn": [
+      "Vitamin B12",
+      "Vitamin D",
+      "Vitamin K",
+      "Vitamin A"
+    ],
+    "optionsHi": [
+      "Vitamin B12",
+      "Vitamin D",
+      "Vitamin K",
+      "Vitamin A"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Vitamin D.",
+    "explanationHi": "सही उत्तर: Vitamin D।",
+    "id": "M4-052"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Calendar",
+    "questionEn": "If today is Saturday, what day will it be after 27 days?",
+    "questionHi": "यदि आज शनिवार है, तो 27 दिनों बाद कौन-सा दिन होगा?",
+    "optionsEn": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Friday"
+    ],
+    "optionsHi": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Friday"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Friday.",
+    "explanationHi": "सही उत्तर: Friday।",
+    "id": "M4-053"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "Which article abolishes untouchability?",
+    "questionHi": "कौन-सा अनुच्छेद अस्पृश्यता समाप्त करता है?",
+    "optionsEn": [
+      "Article 17",
+      "Article 21",
+      "Article 14",
+      "Article 19"
+    ],
+    "optionsHi": [
+      "Article 17",
+      "Article 21",
+      "Article 14",
+      "Article 19"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Article 17.",
+    "explanationHi": "सही उत्तर: Article 17।",
+    "id": "M4-054"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Speed & Distance",
+    "questionEn": "A vehicle moves at 50 km/h for 3 hours. Distance?",
+    "questionHi": "वाहन 50 किमी/घंटा की गति से 3 घंटे चलता है। दूरी?",
+    "optionsEn": [
+      "170",
+      "150",
+      "190",
+      "130"
+    ],
+    "optionsHi": [
+      "170",
+      "150",
+      "190",
+      "130"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 150.",
+    "explanationHi": "सही उत्तर: 150।",
+    "id": "M4-055"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Algebra",
+    "questionEn": "If 6x + 16 = 64, find x.",
+    "questionHi": "यदि 6x + 16 = 64, तो x ज्ञात करें।",
+    "optionsEn": [
+      "8",
+      "6",
+      "10",
+      "12"
+    ],
+    "optionsHi": [
+      "8",
+      "6",
+      "10",
+      "12"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 8.",
+    "explanationHi": "सही उत्तर: 8।",
+    "id": "M4-056"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Environment",
+    "questionEn": "Which gas is a major contributor to anthropogenic global warming?",
+    "questionHi": "मानवजनित वैश्विक तापन में प्रमुख योगदान देने वाली गैस कौन-सी है?",
+    "optionsEn": [
+      "Carbon dioxide",
+      "Argon",
+      "Helium",
+      "Neon"
+    ],
+    "optionsHi": [
+      "Carbon dioxide",
+      "Argon",
+      "Helium",
+      "Neon"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Carbon dioxide.",
+    "explanationHi": "सही उत्तर: Carbon dioxide।",
+    "id": "M4-057"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "Which article of the Constitution guarantees equality before law?",
+    "questionHi": "विधि के समक्ष समानता कौन-सा अनुच्छेद सुनिश्चित करता है?",
+    "optionsEn": [
+      "Article 14",
+      "Article 16",
+      "Article 32",
+      "Article 25"
+    ],
+    "optionsHi": [
+      "Article 14",
+      "Article 16",
+      "Article 32",
+      "Article 25"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Article 14.",
+    "explanationHi": "सही उत्तर: Article 14।",
+    "id": "M4-058"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the sum of digits 5, 9, and 5?",
+    "questionHi": "अंकों 5, 9, 5 का योग क्या है?",
+    "optionsEn": [
+      "23",
+      "19",
+      "17",
+      "21"
+    ],
+    "optionsHi": [
+      "23",
+      "19",
+      "17",
+      "21"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 19.",
+    "explanationHi": "सही उत्तर: 19।",
+    "id": "M4-059"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Comparisons",
+    "questionEn": "If A = 18, B = 37, and C = 59, which is greatest?",
+    "questionHi": "यदि A = 18, B = 37, C = 59, तो सबसे बड़ा कौन है?",
+    "optionsEn": [
+      "C",
+      "All equal",
+      "B",
+      "A"
+    ],
+    "optionsHi": [
+      "C",
+      "All equal",
+      "B",
+      "A"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is C.",
+    "explanationHi": "सही उत्तर: C।",
+    "id": "M4-060"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Physics",
+    "questionEn": "What is the SI unit of electrical resistance?",
+    "questionHi": "विद्युत प्रतिरोध की SI इकाई क्या है?",
+    "optionsEn": [
+      "Ampere",
+      "Volt",
+      "Watt",
+      "Ohm"
+    ],
+    "optionsHi": [
+      "Ampere",
+      "Volt",
+      "Watt",
+      "Ohm"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Ohm.",
+    "explanationHi": "सही उत्तर: Ohm।",
+    "id": "M4-061"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Chemistry",
+    "questionEn": "Which element has atomic number 1?",
+    "questionHi": "किस तत्व का परमाणु क्रमांक 1 है?",
+    "optionsEn": [
+      "Carbon",
+      "Helium",
+      "Oxygen",
+      "Hydrogen"
+    ],
+    "optionsHi": [
+      "Carbon",
+      "Helium",
+      "Oxygen",
+      "Hydrogen"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Hydrogen.",
+    "explanationHi": "सही उत्तर: Hydrogen।",
+    "id": "M4-062"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Economics",
+    "questionEn": "What does GDP stand for?",
+    "questionHi": "GDP का पूर्ण रूप क्या है?",
+    "optionsEn": [
+      "Global Domestic Production",
+      "Gross Domestic Product",
+      "Gross Development Product",
+      "General Domestic Price"
+    ],
+    "optionsHi": [
+      "Global Domestic Production",
+      "Gross Domestic Product",
+      "Gross Development Product",
+      "General Domestic Price"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Gross Domestic Product.",
+    "explanationHi": "सही उत्तर: Gross Domestic Product।",
+    "id": "M4-063"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar Geography",
+    "questionEn": "Which river flows through Patna?",
+    "questionHi": "पटना से होकर कौन-सी नदी बहती है?",
+    "optionsEn": [
+      "Godavari",
+      "Yamuna",
+      "Ganga",
+      "Narmada"
+    ],
+    "optionsHi": [
+      "Godavari",
+      "Yamuna",
+      "Ganga",
+      "Narmada"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Ganga.",
+    "explanationHi": "सही उत्तर: Ganga।",
+    "id": "M4-064"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Directions",
+    "questionEn": "Ravi walks 6 m east, then 11 m north. Where is he from the start?",
+    "questionHi": "रवि 6 मीटर पूर्व, फिर 11 मीटर उत्तर चलता है। आरंभ से उसकी स्थिति?",
+    "optionsEn": [
+      "11 m West and 6 m South",
+      "6 m West and 11 m North",
+      "6 m East and 11 m South",
+      "6 m East and 11 m North"
+    ],
+    "optionsHi": [
+      "11 m West and 6 m South",
+      "6 m West and 11 m North",
+      "6 m East and 11 m South",
+      "6 m East and 11 m North"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 6 m East and 11 m North.",
+    "explanationHi": "सही उत्तर: 6 m East and 11 m North।",
+    "id": "M4-065"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Algebra",
+    "questionEn": "If 4x + 22 = 62, find x.",
+    "questionHi": "यदि 4x + 22 = 62, तो x ज्ञात करें।",
+    "optionsEn": [
+      "8",
+      "10",
+      "12",
+      "14"
+    ],
+    "optionsHi": [
+      "8",
+      "10",
+      "12",
+      "14"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 10.",
+    "explanationHi": "सही उत्तर: 10।",
+    "id": "M4-066"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 1, 4, 16, 64, ?",
+    "questionHi": "अगली संख्या ज्ञात करें: 1, 4, 16, 64, ?",
+    "optionsEn": [
+      "260",
+      "256",
+      "64",
+      "264"
+    ],
+    "optionsHi": [
+      "260",
+      "256",
+      "64",
+      "264"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 256.",
+    "explanationHi": "सही उत्तर: 256।",
+    "id": "M4-067"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar Culture",
+    "questionEn": "Chhath Puja is dedicated principally to which deity?",
+    "questionHi": "छठ पूजा मुख्यतः किस देवता को समर्पित है?",
+    "optionsEn": [
+      "Shiva",
+      "Sun God",
+      "Agni",
+      "Indra"
+    ],
+    "optionsHi": [
+      "Shiva",
+      "Sun God",
+      "Agni",
+      "Indra"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Sun God.",
+    "explanationHi": "सही उत्तर: Sun God।",
+    "id": "M4-068"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "Which vitamin deficiency causes scurvy?",
+    "questionHi": "किस विटामिन की कमी से स्कर्वी होता है?",
+    "optionsEn": [
+      "Vitamin E",
+      "Vitamin D",
+      "Vitamin A",
+      "Vitamin C"
+    ],
+    "optionsHi": [
+      "Vitamin E",
+      "Vitamin D",
+      "Vitamin A",
+      "Vitamin C"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Vitamin C.",
+    "explanationHi": "सही उत्तर: Vitamin C।",
+    "id": "M4-069"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Directions",
+    "questionEn": "Ravi walks 9 m east, then 9 m north. Where is he from the start?",
+    "questionHi": "रवि 9 मीटर पूर्व, फिर 9 मीटर उत्तर चलता है। आरंभ से उसकी स्थिति?",
+    "optionsEn": [
+      "9 m East and 9 m North",
+      "9 m West and 9 m North",
+      "9 m West and 9 m South",
+      "9 m East and 9 m South"
+    ],
+    "optionsHi": [
+      "9 m East and 9 m North",
+      "9 m West and 9 m North",
+      "9 m West and 9 m South",
+      "9 m East and 9 m South"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 9 m East and 9 m North.",
+    "explanationHi": "सही उत्तर: 9 m East and 9 m North।",
+    "id": "M4-070"
+  },
+  {
+    "section": "General Studies",
+    "topic": "General Awareness",
+    "questionEn": "Which is the smallest prime number?",
+    "questionHi": "सबसे छोटी अभाज्य संख्या कौन-सी है?",
+    "optionsEn": [
+      "1",
+      "3",
+      "2",
+      "0"
+    ],
+    "optionsHi": [
+      "1",
+      "3",
+      "2",
+      "0"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 2.",
+    "explanationHi": "सही उत्तर: 2।",
+    "id": "M4-071"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "What is the minimum age to become President of India?",
+    "questionHi": "भारत का राष्ट्रपति बनने की न्यूनतम आयु क्या है?",
+    "optionsEn": [
+      "40 years",
+      "25 years",
+      "35 years",
+      "30 years"
+    ],
+    "optionsHi": [
+      "40 years",
+      "25 years",
+      "35 years",
+      "30 years"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 35 years.",
+    "explanationHi": "सही उत्तर: 35 years।",
+    "id": "M4-072"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "Which house of Parliament is permanent?",
+    "questionHi": "संसद का कौन-सा सदन स्थायी है?",
+    "optionsEn": [
+      "Rajya Sabha",
+      "Lok Sabha",
+      "Neither house",
+      "Both houses"
+    ],
+    "optionsHi": [
+      "Rajya Sabha",
+      "Lok Sabha",
+      "Neither house",
+      "Both houses"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Rajya Sabha.",
+    "explanationHi": "सही उत्तर: Rajya Sabha।",
+    "id": "M4-073"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the square of 9?",
+    "questionHi": "9 का वर्ग क्या है?",
+    "optionsEn": [
+      "81",
+      "100",
+      "90",
+      "64"
+    ],
+    "optionsHi": [
+      "81",
+      "100",
+      "90",
+      "64"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 81.",
+    "explanationHi": "सही उत्तर: 81।",
+    "id": "M4-074"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Geography",
+    "questionEn": "Which mountain range separates the Deccan Plateau from the western coastal plain?",
+    "questionHi": "दक्कन पठार को पश्चिमी तटीय मैदान से कौन-सी पर्वतमाला अलग करती है?",
+    "optionsEn": [
+      "Himalaya",
+      "Aravalli",
+      "Vindhya",
+      "Western Ghats"
+    ],
+    "optionsHi": [
+      "Himalaya",
+      "Aravalli",
+      "Vindhya",
+      "Western Ghats"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Western Ghats.",
+    "explanationHi": "सही उत्तर: Western Ghats।",
+    "id": "M4-075"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "How many chambers are present in the human heart?",
+    "questionHi": "मनुष्य के हृदय में कितने कक्ष होते हैं?",
+    "optionsEn": [
+      "4",
+      "2",
+      "5",
+      "3"
+    ],
+    "optionsHi": [
+      "4",
+      "2",
+      "5",
+      "3"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 4.",
+    "explanationHi": "सही उत्तर: 4।",
+    "id": "M4-076"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Economics",
+    "questionEn": "What is the name of India's central bank?",
+    "questionHi": "भारत के केंद्रीय बैंक का नाम क्या है?",
+    "optionsEn": [
+      "NABARD",
+      "Punjab National Bank",
+      "Reserve Bank of India",
+      "State Bank of India"
+    ],
+    "optionsHi": [
+      "NABARD",
+      "Punjab National Bank",
+      "Reserve Bank of India",
+      "State Bank of India"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Reserve Bank of India.",
+    "explanationHi": "सही उत्तर: Reserve Bank of India।",
+    "id": "M4-077"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Physics",
+    "questionEn": "What is the SI unit of force?",
+    "questionHi": "बल की SI इकाई क्या है?",
+    "optionsEn": [
+      "Newton",
+      "Pascal",
+      "Joule",
+      "Watt"
+    ],
+    "optionsHi": [
+      "Newton",
+      "Pascal",
+      "Joule",
+      "Watt"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Newton.",
+    "explanationHi": "सही उत्तर: Newton।",
+    "id": "M4-078"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar History",
+    "questionEn": "Who was the first President of India?",
+    "questionHi": "भारत के प्रथम राष्ट्रपति कौन थे?",
+    "optionsEn": [
+      "Dr Rajendra Prasad",
+      "Zakir Husain",
+      "Jawaharlal Nehru",
+      "S Radhakrishnan"
+    ],
+    "optionsHi": [
+      "Dr Rajendra Prasad",
+      "Zakir Husain",
+      "Jawaharlal Nehru",
+      "S Radhakrishnan"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Dr Rajendra Prasad.",
+    "explanationHi": "सही उत्तर: Dr Rajendra Prasad।",
+    "id": "M4-079"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Time & Work",
+    "questionEn": "A worker completes 13 units per day. How many units in 2 days?",
+    "questionHi": "मजदूर प्रतिदिन 13 इकाई काम करता है। 2 दिनों में कितना काम करेगा?",
+    "optionsEn": [
+      "26",
+      "13",
+      "52",
+      "39"
+    ],
+    "optionsHi": [
+      "26",
+      "13",
+      "52",
+      "39"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 26.",
+    "explanationHi": "सही उत्तर: 26।",
+    "id": "M4-080"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Chemistry",
+    "questionEn": "What is the chemical formula of water?",
+    "questionHi": "पानी का रासायनिक सूत्र क्या है?",
+    "optionsEn": [
+      "CO2",
+      "H2O2",
+      "O2",
+      "H2O"
+    ],
+    "optionsHi": [
+      "CO2",
+      "H2O2",
+      "O2",
+      "H2O"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is H2O.",
+    "explanationHi": "सही उत्तर: H2O।",
+    "id": "M4-081"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Economics",
+    "questionEn": "Which Indian institution manages monetary policy?",
+    "questionHi": "भारत में मौद्रिक नीति का संचालन कौन-सा संस्थान करता है?",
+    "optionsEn": [
+      "Election Commission",
+      "CAG",
+      "Reserve Bank of India",
+      "UPSC"
+    ],
+    "optionsHi": [
+      "Election Commission",
+      "CAG",
+      "Reserve Bank of India",
+      "UPSC"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Reserve Bank of India.",
+    "explanationHi": "सही उत्तर: Reserve Bank of India।",
+    "id": "M4-082"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Economics",
+    "questionEn": "What is the full form of GST?",
+    "questionHi": "GST का पूर्ण रूप क्या है?",
+    "optionsEn": [
+      "Goods and Services Tax",
+      "General Sales Tariff",
+      "Goods Supply Tariff",
+      "Government Service Tax"
+    ],
+    "optionsHi": [
+      "Goods and Services Tax",
+      "General Sales Tariff",
+      "Goods Supply Tariff",
+      "Government Service Tax"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Goods and Services Tax.",
+    "explanationHi": "सही उत्तर: Goods and Services Tax।",
+    "id": "M4-083"
+  },
+  {
+    "section": "General Studies",
+    "topic": "General Awareness",
+    "questionEn": "What is the national animal of India?",
+    "questionHi": "भारत का राष्ट्रीय पशु कौन-सा है?",
+    "optionsEn": [
+      "Bengal Tiger",
+      "Asian Lion",
+      "Elephant",
+      "Leopard"
+    ],
+    "optionsHi": [
+      "Bengal Tiger",
+      "Asian Lion",
+      "Elephant",
+      "Leopard"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Bengal Tiger.",
+    "explanationHi": "सही उत्तर: Bengal Tiger।",
+    "id": "M4-084"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Analogy",
+    "questionEn": "2 : 4 :: 12 : ?",
+    "questionHi": "2 : 4 :: 12 : ?",
+    "optionsEn": [
+      "24",
+      "30",
+      "22",
+      "26"
+    ],
+    "optionsHi": [
+      "24",
+      "30",
+      "22",
+      "26"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 24.",
+    "explanationHi": "सही उत्तर: 24।",
+    "id": "M4-085"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Economics",
+    "questionEn": "Which institution issues currency notes in India other than the one-rupee note?",
+    "questionHi": "भारत में एक रुपये के नोट के अलावा मुद्रा नोट कौन जारी करता है?",
+    "optionsEn": [
+      "SEBI",
+      "State Bank of India",
+      "Reserve Bank of India",
+      "NABARD"
+    ],
+    "optionsHi": [
+      "SEBI",
+      "State Bank of India",
+      "Reserve Bank of India",
+      "NABARD"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Reserve Bank of India.",
+    "explanationHi": "सही उत्तर: Reserve Bank of India।",
+    "id": "M4-086"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 20, 28, 36, 44, 52, ?",
+    "questionHi": "अगली संख्या: 20, 28, 36, 44, 52, ?",
+    "optionsEn": [
+      "60",
+      "51",
+      "78",
+      "69"
+    ],
+    "optionsHi": [
+      "60",
+      "51",
+      "78",
+      "69"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 60.",
+    "explanationHi": "सही उत्तर: 60।",
+    "id": "M4-087"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the square of 13?",
+    "questionHi": "13 का वर्ग क्या है?",
+    "optionsEn": [
+      "182",
+      "169",
+      "144",
+      "196"
+    ],
+    "optionsHi": [
+      "182",
+      "169",
+      "144",
+      "196"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 169.",
+    "explanationHi": "सही उत्तर: 169।",
+    "id": "M4-088"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Directions",
+    "questionEn": "Ravi walks 3 m east, then 5 m north. Where is he from the start?",
+    "questionHi": "रवि 3 मीटर पूर्व, फिर 5 मीटर उत्तर चलता है। आरंभ से उसकी स्थिति?",
+    "optionsEn": [
+      "3 m West and 5 m North",
+      "5 m West and 3 m South",
+      "3 m East and 5 m North",
+      "3 m East and 5 m South"
+    ],
+    "optionsHi": [
+      "3 m West and 5 m North",
+      "5 m West and 3 m South",
+      "3 m East and 5 m North",
+      "3 m East and 5 m South"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 3 m East and 5 m North.",
+    "explanationHi": "सही उत्तर: 3 m East and 5 m North।",
+    "id": "M4-089"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "The Constitution of India came into effect on which date?",
+    "questionHi": "भारत का संविधान कब लागू हुआ?",
+    "optionsEn": [
+      "26 November 1949",
+      "26 January 1950",
+      "2 October 1950",
+      "15 August 1947"
+    ],
+    "optionsHi": [
+      "26 November 1949",
+      "26 January 1950",
+      "2 October 1950",
+      "15 August 1947"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 26 January 1950.",
+    "explanationHi": "सही उत्तर: 26 January 1950।",
+    "id": "M4-090"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Speed & Distance",
+    "questionEn": "A vehicle moves at 60 km/h for 2 hours. Distance?",
+    "questionHi": "वाहन 60 किमी/घंटा की गति से 2 घंटे चलता है। दूरी?",
+    "optionsEn": [
+      "140",
+      "160",
+      "120",
+      "100"
+    ],
+    "optionsHi": [
+      "140",
+      "160",
+      "120",
+      "100"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 120.",
+    "explanationHi": "सही उत्तर: 120।",
+    "id": "M4-091"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Calendar",
+    "questionEn": "If today is Friday, what day will it be after 35 days?",
+    "questionHi": "यदि आज शुक्रवार है, तो 35 दिनों बाद कौन-सा दिन होगा?",
+    "optionsEn": [
+      "Monday",
+      "Friday",
+      "Wednesday",
+      "Tuesday"
+    ],
+    "optionsHi": [
+      "Monday",
+      "Friday",
+      "Wednesday",
+      "Tuesday"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Friday.",
+    "explanationHi": "सही उत्तर: Friday।",
+    "id": "M4-092"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 6, 12, 24, 48, ?",
+    "questionHi": "अगली संख्या ज्ञात करें: 6, 12, 24, 48, ?",
+    "optionsEn": [
+      "98",
+      "100",
+      "96",
+      "48"
+    ],
+    "optionsHi": [
+      "98",
+      "100",
+      "96",
+      "48"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 96.",
+    "explanationHi": "सही उत्तर: 96।",
+    "id": "M4-093"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Polity",
+    "questionEn": "How long is the normal term of the Lok Sabha?",
+    "questionHi": "लोकसभा का सामान्य कार्यकाल कितना होता है?",
+    "optionsEn": [
+      "7 years",
+      "5 years",
+      "6 years",
+      "4 years"
+    ],
+    "optionsHi": [
+      "7 years",
+      "5 years",
+      "6 years",
+      "4 years"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 5 years.",
+    "explanationHi": "सही उत्तर: 5 years।",
+    "id": "M4-094"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "What is the largest organ of the human body?",
+    "questionHi": "मनुष्य का सबसे बड़ा अंग कौन-सा है?",
+    "optionsEn": [
+      "Heart",
+      "Brain",
+      "Liver",
+      "Skin"
+    ],
+    "optionsHi": [
+      "Heart",
+      "Brain",
+      "Liver",
+      "Skin"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Skin.",
+    "explanationHi": "सही उत्तर: Skin।",
+    "id": "M4-095"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "Which process produces gametes with half the chromosome number?",
+    "questionHi": "किस प्रक्रिया से आधे गुणसूत्र वाले युग्मक बनते हैं?",
+    "optionsEn": [
+      "Budding",
+      "Meiosis",
+      "Binary fission",
+      "Mitosis"
+    ],
+    "optionsHi": [
+      "Budding",
+      "Meiosis",
+      "Binary fission",
+      "Mitosis"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Meiosis.",
+    "explanationHi": "सही उत्तर: Meiosis।",
+    "id": "M4-096"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Coding-Decoding",
+    "questionEn": "If A=1, B=2, ... Z=26, find the code-sum of CAT.",
+    "questionHi": "यदि A=1, B=2, ... Z=26, तो CAT के अक्षरों का योग क्या है?",
+    "optionsEn": [
+      "27",
+      "21",
+      "24",
+      "30"
+    ],
+    "optionsHi": [
+      "27",
+      "21",
+      "24",
+      "30"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 24.",
+    "explanationHi": "सही उत्तर: 24।",
+    "id": "M4-097"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar Geography",
+    "questionEn": "The Gandak River joins which major river in Bihar?",
+    "questionHi": "गंडक नदी बिहार में किस प्रमुख नदी से मिलती है?",
+    "optionsEn": [
+      "Yamuna",
+      "Ganga",
+      "Tapi",
+      "Damodar"
+    ],
+    "optionsHi": [
+      "Yamuna",
+      "Ganga",
+      "Tapi",
+      "Damodar"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Ganga.",
+    "explanationHi": "सही उत्तर: Ganga।",
+    "id": "M4-098"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Directions",
+    "questionEn": "Ravi walks 5 m east, then 9 m north. Where is he from the start?",
+    "questionHi": "रवि 5 मीटर पूर्व, फिर 9 मीटर उत्तर चलता है। आरंभ से उसकी स्थिति?",
+    "optionsEn": [
+      "9 m West and 5 m South",
+      "5 m East and 9 m South",
+      "5 m East and 9 m North",
+      "5 m West and 9 m North"
+    ],
+    "optionsHi": [
+      "9 m West and 5 m South",
+      "5 m East and 9 m South",
+      "5 m East and 9 m North",
+      "5 m West and 9 m North"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 5 m East and 9 m North.",
+    "explanationHi": "सही उत्तर: 5 m East and 9 m North।",
+    "id": "M4-099"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Averages",
+    "questionEn": "Find the average of 13 and 31.",
+    "questionHi": "13 और 31 का औसत ज्ञात करें।",
+    "optionsEn": [
+      "25",
+      "28",
+      "22",
+      "19"
+    ],
+    "optionsHi": [
+      "25",
+      "28",
+      "22",
+      "19"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 22.",
+    "explanationHi": "सही उत्तर: 22।",
+    "id": "M4-100"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Comparisons",
+    "questionEn": "If A = 11, B = 23, and C = 47, which is greatest?",
+    "questionHi": "यदि A = 11, B = 23, C = 47, तो सबसे बड़ा कौन है?",
+    "optionsEn": [
+      "A",
+      "B",
+      "All equal",
+      "C"
+    ],
+    "optionsHi": [
+      "A",
+      "B",
+      "All equal",
+      "C"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is C.",
+    "explanationHi": "सही उत्तर: C।",
+    "id": "M4-101"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 4, 12, 36, 108, ?",
+    "questionHi": "अगली संख्या ज्ञात करें: 4, 12, 36, 108, ?",
+    "optionsEn": [
+      "108",
+      "327",
+      "330",
+      "324"
+    ],
+    "optionsHi": [
+      "108",
+      "327",
+      "330",
+      "324"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 324.",
+    "explanationHi": "सही उत्तर: 324।",
+    "id": "M4-102"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Geography",
+    "questionEn": "Which plateau occupies much of southern India?",
+    "questionHi": "दक्षिण भारत के बड़े भाग में कौन-सा पठार है?",
+    "optionsEn": [
+      "Deccan Plateau",
+      "Tibetan Plateau",
+      "Chota Nagpur Plateau",
+      "Malwa Plateau"
+    ],
+    "optionsHi": [
+      "Deccan Plateau",
+      "Tibetan Plateau",
+      "Chota Nagpur Plateau",
+      "Malwa Plateau"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Deccan Plateau.",
+    "explanationHi": "सही उत्तर: Deccan Plateau।",
+    "id": "M4-103"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Environment",
+    "questionEn": "Which process converts atmospheric nitrogen into useful compounds?",
+    "questionHi": "कौन-सी प्रक्रिया वायुमंडलीय नाइट्रोजन को उपयोगी यौगिकों में बदलती है?",
+    "optionsEn": [
+      "Sublimation",
+      "Respiration",
+      "Nitrogen fixation",
+      "Transpiration"
+    ],
+    "optionsHi": [
+      "Sublimation",
+      "Respiration",
+      "Nitrogen fixation",
+      "Transpiration"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Nitrogen fixation.",
+    "explanationHi": "सही उत्तर: Nitrogen fixation।",
+    "id": "M4-104"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the sum of digits 2, 7, and 9?",
+    "questionHi": "अंकों 2, 7, 9 का योग क्या है?",
+    "optionsEn": [
+      "22",
+      "16",
+      "18",
+      "20"
+    ],
+    "optionsHi": [
+      "22",
+      "16",
+      "18",
+      "20"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 18.",
+    "explanationHi": "सही उत्तर: 18।",
+    "id": "M4-105"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "Which microorganism is responsible for malaria?",
+    "questionHi": "मलेरिया किस सूक्ष्मजीव के कारण होता है?",
+    "optionsEn": [
+      "Plasmodium",
+      "Vibrio cholerae",
+      "Salmonella",
+      "Rhizobium"
+    ],
+    "optionsHi": [
+      "Plasmodium",
+      "Vibrio cholerae",
+      "Salmonella",
+      "Rhizobium"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Plasmodium.",
+    "explanationHi": "सही उत्तर: Plasmodium।",
+    "id": "M4-106"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Calendar",
+    "questionEn": "If today is Saturday, what day will it be after 34 days?",
+    "questionHi": "यदि आज शनिवार है, तो 34 दिनों बाद कौन-सा दिन होगा?",
+    "optionsEn": [
+      "Wednesday",
+      "Friday",
+      "Monday",
+      "Tuesday"
+    ],
+    "optionsHi": [
+      "Wednesday",
+      "Friday",
+      "Monday",
+      "Tuesday"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Friday.",
+    "explanationHi": "सही उत्तर: Friday।",
+    "id": "M4-107"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar History",
+    "questionEn": "Which dynasty is associated with Emperor Ashoka?",
+    "questionHi": "सम्राट अशोक किस राजवंश से संबंधित थे?",
+    "optionsEn": [
+      "Pala",
+      "Maurya",
+      "Chola",
+      "Gupta"
+    ],
+    "optionsHi": [
+      "Pala",
+      "Maurya",
+      "Chola",
+      "Gupta"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Maurya.",
+    "explanationHi": "सही उत्तर: Maurya।",
+    "id": "M4-108"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "Which nutrient is primarily used for building and repairing body tissues?",
+    "questionHi": "शरीर के ऊतकों के निर्माण और मरम्मत के लिए मुख्य पोषक तत्व क्या है?",
+    "optionsEn": [
+      "Fat",
+      "Mineral salt",
+      "Protein",
+      "Water"
+    ],
+    "optionsHi": [
+      "Fat",
+      "Mineral salt",
+      "Protein",
+      "Water"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Protein.",
+    "explanationHi": "सही उत्तर: Protein।",
+    "id": "M4-109"
+  },
+  {
+    "section": "General Studies",
+    "topic": "General Awareness",
+    "questionEn": "Which day is celebrated as Constitution Day in India?",
+    "questionHi": "भारत में संविधान दिवस कब मनाया जाता है?",
+    "optionsEn": [
+      "26 November",
+      "2 October",
+      "26 January",
+      "15 August"
+    ],
+    "optionsHi": [
+      "26 November",
+      "2 October",
+      "26 January",
+      "15 August"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 26 November.",
+    "explanationHi": "सही उत्तर: 26 November।",
+    "id": "M4-110"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Comparisons",
+    "questionEn": "If A = 29, B = 52, and C = 72, which is greatest?",
+    "questionHi": "यदि A = 29, B = 52, C = 72, तो सबसे बड़ा कौन है?",
+    "optionsEn": [
+      "C",
+      "A",
+      "All equal",
+      "B"
+    ],
+    "optionsHi": [
+      "C",
+      "A",
+      "All equal",
+      "B"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is C.",
+    "explanationHi": "सही उत्तर: C।",
+    "id": "M4-111"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the square of 14?",
+    "questionHi": "14 का वर्ग क्या है?",
+    "optionsEn": [
+      "210",
+      "169",
+      "225",
+      "196"
+    ],
+    "optionsHi": [
+      "210",
+      "169",
+      "225",
+      "196"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 196.",
+    "explanationHi": "सही उत्तर: 196।",
+    "id": "M4-112"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Time & Work",
+    "questionEn": "A worker completes 9 units per day. How many units in 3 days?",
+    "questionHi": "मजदूर प्रतिदिन 9 इकाई काम करता है। 3 दिनों में कितना काम करेगा?",
+    "optionsEn": [
+      "45",
+      "27",
+      "36",
+      "18"
+    ],
+    "optionsHi": [
+      "45",
+      "27",
+      "36",
+      "18"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 27.",
+    "explanationHi": "सही उत्तर: 27।",
+    "id": "M4-113"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar Geography",
+    "questionEn": "Gaya is situated on the bank of which river?",
+    "questionHi": "गया किस नदी के तट पर स्थित है?",
+    "optionsEn": [
+      "Son",
+      "Falgu",
+      "Gandak",
+      "Kosi"
+    ],
+    "optionsHi": [
+      "Son",
+      "Falgu",
+      "Gandak",
+      "Kosi"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Falgu.",
+    "explanationHi": "सही उत्तर: Falgu।",
+    "id": "M4-114"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Comparisons",
+    "questionEn": "If A = 21, B = 41, and C = 51, which is greatest?",
+    "questionHi": "यदि A = 21, B = 41, C = 51, तो सबसे बड़ा कौन है?",
+    "optionsEn": [
+      "All equal",
+      "B",
+      "C",
+      "A"
+    ],
+    "optionsHi": [
+      "All equal",
+      "B",
+      "C",
+      "A"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is C.",
+    "explanationHi": "सही उत्तर: C।",
+    "id": "M4-115"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Mensuration",
+    "questionEn": "Find perimeter of a rectangle 8 cm long and 8 cm wide.",
+    "questionHi": "8 सेमी लंबाई और 8 सेमी चौड़ाई वाले आयत का परिमाप ज्ञात करें।",
+    "optionsEn": [
+      "32",
+      "28",
+      "36",
+      "40"
+    ],
+    "optionsHi": [
+      "32",
+      "28",
+      "36",
+      "40"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 32.",
+    "explanationHi": "सही उत्तर: 32।",
+    "id": "M4-116"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Environment",
+    "questionEn": "Which of these is a renewable energy source?",
+    "questionHi": "निम्न में से कौन-सा नवीकरणीय ऊर्जा स्रोत है?",
+    "optionsEn": [
+      "Solar energy",
+      "Coal",
+      "Natural gas",
+      "Petroleum"
+    ],
+    "optionsHi": [
+      "Solar energy",
+      "Coal",
+      "Natural gas",
+      "Petroleum"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Solar energy.",
+    "explanationHi": "सही उत्तर: Solar energy।",
+    "id": "M4-117"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar History",
+    "questionEn": "Who founded the Mauryan Empire?",
+    "questionHi": "मौर्य साम्राज्य की स्थापना किसने की?",
+    "optionsEn": [
+      "Chandragupta Maurya",
+      "Harshavardhana",
+      "Bindusara",
+      "Ashoka"
+    ],
+    "optionsHi": [
+      "Chandragupta Maurya",
+      "Harshavardhana",
+      "Bindusara",
+      "Ashoka"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Chandragupta Maurya.",
+    "explanationHi": "सही उत्तर: Chandragupta Maurya।",
+    "id": "M4-118"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Coding-Decoding",
+    "questionEn": "If A=1, B=2, ... Z=26, find the code-sum of BAG.",
+    "questionHi": "यदि A=1, B=2, ... Z=26, तो BAG के अक्षरों का योग क्या है?",
+    "optionsEn": [
+      "16",
+      "13",
+      "10",
+      "7"
+    ],
+    "optionsHi": [
+      "16",
+      "13",
+      "10",
+      "7"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 10.",
+    "explanationHi": "सही उत्तर: 10।",
+    "id": "M4-119"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Chemistry",
+    "questionEn": "Which metal is liquid at room temperature?",
+    "questionHi": "कमरे के तापमान पर कौन-सी धातु द्रव है?",
+    "optionsEn": [
+      "Mercury",
+      "Iron",
+      "Aluminium",
+      "Copper"
+    ],
+    "optionsHi": [
+      "Mercury",
+      "Iron",
+      "Aluminium",
+      "Copper"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is Mercury.",
+    "explanationHi": "सही उत्तर: Mercury।",
+    "id": "M4-120"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Percentages",
+    "questionEn": "What is 40% of 100?",
+    "questionHi": "100 का 40% कितना है?",
+    "optionsEn": [
+      "44",
+      "40",
+      "42",
+      "38"
+    ],
+    "optionsHi": [
+      "44",
+      "40",
+      "42",
+      "38"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 40.",
+    "explanationHi": "सही उत्तर: 40।",
+    "id": "M4-121"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Calendar",
+    "questionEn": "If today is Monday, what day will it be after 12 days?",
+    "questionHi": "यदि आज सोमवार है, तो 12 दिनों बाद कौन-सा दिन होगा?",
+    "optionsEn": [
+      "Tuesday",
+      "Monday",
+      "Wednesday",
+      "Saturday"
+    ],
+    "optionsHi": [
+      "Tuesday",
+      "Monday",
+      "Wednesday",
+      "Saturday"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Saturday.",
+    "explanationHi": "सही उत्तर: Saturday।",
+    "id": "M4-122"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 11, 18, 25, 32, 39, ?",
+    "questionHi": "अगली संख्या: 11, 18, 25, 32, 39, ?",
+    "optionsEn": [
+      "62",
+      "38",
+      "46",
+      "54"
+    ],
+    "optionsHi": [
+      "62",
+      "38",
+      "46",
+      "54"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 46.",
+    "explanationHi": "सही उत्तर: 46।",
+    "id": "M4-123"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Mensuration",
+    "questionEn": "Find perimeter of a rectangle 11 cm long and 15 cm wide.",
+    "questionHi": "11 सेमी लंबाई और 15 सेमी चौड़ाई वाले आयत का परिमाप ज्ञात करें।",
+    "optionsEn": [
+      "56",
+      "60",
+      "48",
+      "52"
+    ],
+    "optionsHi": [
+      "56",
+      "60",
+      "48",
+      "52"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 52.",
+    "explanationHi": "सही उत्तर: 52।",
+    "id": "M4-124"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Economics",
+    "questionEn": "What do we call a tax levied on an individual's income?",
+    "questionHi": "व्यक्ति की आय पर लगने वाले कर को क्या कहते हैं?",
+    "optionsEn": [
+      "Property tax",
+      "Excise duty",
+      "Income tax",
+      "Customs duty"
+    ],
+    "optionsHi": [
+      "Property tax",
+      "Excise duty",
+      "Income tax",
+      "Customs duty"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Income tax.",
+    "explanationHi": "सही उत्तर: Income tax।",
+    "id": "M4-125"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Profit & Loss",
+    "questionEn": "An item costs ₹330 and gets 50% discount. Sale price?",
+    "questionHi": "₹330 की वस्तु पर 50% छूट है। विक्रय मूल्य?",
+    "optionsEn": [
+      "155",
+      "175",
+      "165",
+      "185"
+    ],
+    "optionsHi": [
+      "155",
+      "175",
+      "165",
+      "185"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 165.",
+    "explanationHi": "सही उत्तर: 165।",
+    "id": "M4-126"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 6, 12, 24, 48, ?",
+    "questionHi": "अगली संख्या ज्ञात करें: 6, 12, 24, 48, ?",
+    "optionsEn": [
+      "96",
+      "48",
+      "98",
+      "100"
+    ],
+    "optionsHi": [
+      "96",
+      "48",
+      "98",
+      "100"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 96.",
+    "explanationHi": "सही उत्तर: 96।",
+    "id": "M4-127"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Averages",
+    "questionEn": "Find the average of 21 and 35.",
+    "questionHi": "21 और 35 का औसत ज्ञात करें।",
+    "optionsEn": [
+      "25",
+      "34",
+      "28",
+      "31"
+    ],
+    "optionsHi": [
+      "25",
+      "34",
+      "28",
+      "31"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 28.",
+    "explanationHi": "सही उत्तर: 28।",
+    "id": "M4-128"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Physics",
+    "questionEn": "What is the approximate speed of light in vacuum?",
+    "questionHi": "निर्वात में प्रकाश की लगभग गति कितनी है?",
+    "optionsEn": [
+      "3 × 10^6 m/s",
+      "3 × 10^3 m/s",
+      "3 × 10^8 m/s",
+      "3 × 10^5 m/s"
+    ],
+    "optionsHi": [
+      "3 × 10^6 m/s",
+      "3 × 10^3 m/s",
+      "3 × 10^8 m/s",
+      "3 × 10^5 m/s"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 3 × 10^8 m/s.",
+    "explanationHi": "सही उत्तर: 3 × 10^8 m/s।",
+    "id": "M4-129"
+  },
+  {
+    "section": "General Studies",
+    "topic": "General Awareness",
+    "questionEn": "Which planet is known as the Red Planet?",
+    "questionHi": "लाल ग्रह किसे कहते हैं?",
+    "optionsEn": [
+      "Jupiter",
+      "Mars",
+      "Venus",
+      "Mercury"
+    ],
+    "optionsHi": [
+      "Jupiter",
+      "Mars",
+      "Venus",
+      "Mercury"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Mars.",
+    "explanationHi": "सही उत्तर: Mars।",
+    "id": "M4-130"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the sum of digits 4, 5, and 4?",
+    "questionHi": "अंकों 4, 5, 4 का योग क्या है?",
+    "optionsEn": [
+      "13",
+      "15",
+      "17",
+      "11"
+    ],
+    "optionsHi": [
+      "13",
+      "15",
+      "17",
+      "11"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 13.",
+    "explanationHi": "सही उत्तर: 13।",
+    "id": "M4-131"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Speed & Distance",
+    "questionEn": "A vehicle moves at 30 km/h for 5 hours. Distance?",
+    "questionHi": "वाहन 30 किमी/घंटा की गति से 5 घंटे चलता है। दूरी?",
+    "optionsEn": [
+      "130",
+      "150",
+      "190",
+      "170"
+    ],
+    "optionsHi": [
+      "130",
+      "150",
+      "190",
+      "170"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 150.",
+    "explanationHi": "सही उत्तर: 150।",
+    "id": "M4-132"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Arithmetic",
+    "questionEn": "Solve: 37 + 6 × 1 = ?",
+    "questionHi": "हल करें: 37 + 6 × 1 = ?",
+    "optionsEn": [
+      "45",
+      "47",
+      "41",
+      "43"
+    ],
+    "optionsHi": [
+      "45",
+      "47",
+      "41",
+      "43"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 43.",
+    "explanationHi": "सही उत्तर: 43।",
+    "id": "M4-133"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Coding-Decoding",
+    "questionEn": "If A=1, B=2, ... Z=26, find the code-sum of BAG.",
+    "questionHi": "यदि A=1, B=2, ... Z=26, तो BAG के अक्षरों का योग क्या है?",
+    "optionsEn": [
+      "7",
+      "10",
+      "16",
+      "13"
+    ],
+    "optionsHi": [
+      "7",
+      "10",
+      "16",
+      "13"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 10.",
+    "explanationHi": "सही उत्तर: 10।",
+    "id": "M4-134"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Chemistry",
+    "questionEn": "Which acid is present in lemon?",
+    "questionHi": "नींबू में कौन-सा अम्ल पाया जाता है?",
+    "optionsEn": [
+      "Nitric acid",
+      "Sulfuric acid",
+      "Citric acid",
+      "Hydrochloric acid"
+    ],
+    "optionsHi": [
+      "Nitric acid",
+      "Sulfuric acid",
+      "Citric acid",
+      "Hydrochloric acid"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Citric acid.",
+    "explanationHi": "सही उत्तर: Citric acid।",
+    "id": "M4-135"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the square of 10?",
+    "questionHi": "10 का वर्ग क्या है?",
+    "optionsEn": [
+      "121",
+      "100",
+      "110",
+      "81"
+    ],
+    "optionsHi": [
+      "121",
+      "100",
+      "110",
+      "81"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 100.",
+    "explanationHi": "सही उत्तर: 100।",
+    "id": "M4-136"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Chemistry",
+    "questionEn": "Which gas do plants absorb during photosynthesis?",
+    "questionHi": "प्रकाश संश्लेषण के समय पौधे कौन-सी गैस लेते हैं?",
+    "optionsEn": [
+      "Hydrogen",
+      "Nitrogen",
+      "Carbon dioxide",
+      "Oxygen"
+    ],
+    "optionsHi": [
+      "Hydrogen",
+      "Nitrogen",
+      "Carbon dioxide",
+      "Oxygen"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Carbon dioxide.",
+    "explanationHi": "सही उत्तर: Carbon dioxide।",
+    "id": "M4-137"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Alphabet",
+    "questionEn": "In an alphabet code each letter moves 3 positions forward. J becomes?",
+    "questionHi": "कूट में प्रत्येक अक्षर 3 स्थान आगे जाता है। J क्या बनेगा?",
+    "optionsEn": [
+      "N",
+      "M",
+      "O",
+      "L"
+    ],
+    "optionsHi": [
+      "N",
+      "M",
+      "O",
+      "L"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is M.",
+    "explanationHi": "सही उत्तर: M।",
+    "id": "M4-138"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Biology",
+    "questionEn": "Which blood cells help fight infection?",
+    "questionHi": "कौन-सी रक्त कोशिकाएँ संक्रमण से रक्षा करती हैं?",
+    "optionsEn": [
+      "Platelets",
+      "Plasma",
+      "Red blood cells",
+      "White blood cells"
+    ],
+    "optionsHi": [
+      "Platelets",
+      "Plasma",
+      "Red blood cells",
+      "White blood cells"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is White blood cells.",
+    "explanationHi": "सही उत्तर: White blood cells।",
+    "id": "M4-139"
+  },
+  {
+    "section": "General Studies",
+    "topic": "General Awareness",
+    "questionEn": "Which instrument measures atmospheric pressure?",
+    "questionHi": "वायुमंडलीय दबाव किस यंत्र से मापा जाता है?",
+    "optionsEn": [
+      "Thermometer",
+      "Hygrometer",
+      "Anemometer",
+      "Barometer"
+    ],
+    "optionsHi": [
+      "Thermometer",
+      "Hygrometer",
+      "Anemometer",
+      "Barometer"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Barometer.",
+    "explanationHi": "सही उत्तर: Barometer।",
+    "id": "M4-140"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian History",
+    "questionEn": "In which year did the Battle of Plassey take place?",
+    "questionHi": "प्लासी का युद्ध किस वर्ष हुआ?",
+    "optionsEn": [
+      "1757",
+      "1857",
+      "1764",
+      "1799"
+    ],
+    "optionsHi": [
+      "1757",
+      "1857",
+      "1764",
+      "1799"
+    ],
+    "correctIndex": 0,
+    "explanationEn": "The correct answer is 1757.",
+    "explanationHi": "सही उत्तर: 1757।",
+    "id": "M4-141"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian Geography",
+    "questionEn": "Which river flows through the rift valley between Vindhya and Satpura?",
+    "questionHi": "विंध्य और सतपुड़ा के बीच भ्रंश घाटी से कौन-सी नदी बहती है?",
+    "optionsEn": [
+      "Krishna",
+      "Kaveri",
+      "Ganga",
+      "Narmada"
+    ],
+    "optionsHi": [
+      "Krishna",
+      "Kaveri",
+      "Ganga",
+      "Narmada"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is Narmada.",
+    "explanationHi": "सही उत्तर: Narmada।",
+    "id": "M4-142"
+  },
+  {
+    "section": "Science & Maths",
+    "topic": "Chemistry",
+    "questionEn": "What is the chemical symbol of sodium?",
+    "questionHi": "सोडियम का रासायनिक संकेत क्या है?",
+    "optionsEn": [
+      "So",
+      "Sn",
+      "Na",
+      "S"
+    ],
+    "optionsHi": [
+      "So",
+      "Sn",
+      "Na",
+      "S"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Na.",
+    "explanationHi": "सही उत्तर: Na।",
+    "id": "M4-143"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the square of 15?",
+    "questionHi": "15 का वर्ग क्या है?",
+    "optionsEn": [
+      "196",
+      "240",
+      "256",
+      "225"
+    ],
+    "optionsHi": [
+      "196",
+      "240",
+      "256",
+      "225"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 225.",
+    "explanationHi": "सही उत्तर: 225।",
+    "id": "M4-144"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Coding-Decoding",
+    "questionEn": "If A=1, B=2, ... Z=26, find the code-sum of BAT.",
+    "questionHi": "यदि A=1, B=2, ... Z=26, तो BAT के अक्षरों का योग क्या है?",
+    "optionsEn": [
+      "20",
+      "26",
+      "29",
+      "23"
+    ],
+    "optionsHi": [
+      "20",
+      "26",
+      "29",
+      "23"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 23.",
+    "explanationHi": "सही उत्तर: 23।",
+    "id": "M4-145"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Economics",
+    "questionEn": "In which sector is farming classified?",
+    "questionHi": "कृषि को अर्थव्यवस्था के किस क्षेत्र में वर्गीकृत किया जाता है?",
+    "optionsEn": [
+      "Secondary sector",
+      "Tertiary sector",
+      "Primary sector",
+      "Quaternary sector"
+    ],
+    "optionsHi": [
+      "Secondary sector",
+      "Tertiary sector",
+      "Primary sector",
+      "Quaternary sector"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is Primary sector.",
+    "explanationHi": "सही उत्तर: Primary sector।",
+    "id": "M4-146"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Indian History",
+    "questionEn": "In which year was the Quit India Movement launched?",
+    "questionHi": "भारत छोड़ो आंदोलन किस वर्ष शुरू हुआ?",
+    "optionsEn": [
+      "1920",
+      "1942",
+      "1930",
+      "1947"
+    ],
+    "optionsHi": [
+      "1920",
+      "1942",
+      "1930",
+      "1947"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is 1942.",
+    "explanationHi": "सही उत्तर: 1942।",
+    "id": "M4-147"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Logic",
+    "questionEn": "What is the square of 8?",
+    "questionHi": "8 का वर्ग क्या है?",
+    "optionsEn": [
+      "81",
+      "49",
+      "64",
+      "72"
+    ],
+    "optionsHi": [
+      "81",
+      "49",
+      "64",
+      "72"
+    ],
+    "correctIndex": 2,
+    "explanationEn": "The correct answer is 64.",
+    "explanationHi": "सही उत्तर: 64।",
+    "id": "M4-148"
+  },
+  {
+    "section": "Reasoning",
+    "topic": "Number Series",
+    "questionEn": "Find the next number: 22, 33, 44, 55, 66, ?",
+    "questionHi": "अगली संख्या: 22, 33, 44, 55, 66, ?",
+    "optionsEn": [
+      "101",
+      "89",
+      "65",
+      "77"
+    ],
+    "optionsHi": [
+      "101",
+      "89",
+      "65",
+      "77"
+    ],
+    "correctIndex": 3,
+    "explanationEn": "The correct answer is 77.",
+    "explanationHi": "सही उत्तर: 77।",
+    "id": "M4-149"
+  },
+  {
+    "section": "General Studies",
+    "topic": "Bihar Culture",
+    "questionEn": "Sonepur Mela is traditionally associated with which confluence?",
+    "questionHi": "सोनपुर मेला परंपरागत रूप से किस संगम से जुड़ा है?",
+    "optionsEn": [
+      "Kosi and Kamla",
+      "Ganga and Gandak",
+      "Son and Punpun",
+      "Ganga and Yamuna"
+    ],
+    "optionsHi": [
+      "Kosi and Kamla",
+      "Ganga and Gandak",
+      "Son and Punpun",
+      "Ganga and Yamuna"
+    ],
+    "correctIndex": 1,
+    "explanationEn": "The correct answer is Ganga and Gandak.",
+    "explanationHi": "सही उत्तर: Ganga and Gandak।",
+    "id": "M4-150"
+  }
+]

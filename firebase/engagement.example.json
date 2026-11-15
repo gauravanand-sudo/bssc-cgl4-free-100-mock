@@ -1,0 +1,99 @@
+{
+  "banners": [
+    {
+      "id": "new_mock",
+      "active": false,
+      "priority": 30,
+      "title": {
+        "en": "New Mock Test Available",
+        "hi": "नया मॉक टेस्ट उपलब्ध"
+      },
+      "subtitle": {
+        "en": "Practice, review and improve.",
+        "hi": "अभ्यास करें, विश्लेषण देखें और सुधार करें।"
+      },
+      "cta": {
+        "en": "Start Practice",
+        "hi": "अभ्यास शुरू करें"
+      },
+      "action_type": "internal",
+      "action_value": "mock_list",
+      "targetUrl": "",
+      "imageUrl": "",
+      "startsAt": null,
+      "endsAt": null
+    },
+    {
+      "id": "weak_topics",
+      "active": true,
+      "priority": 18,
+      "title": {
+        "en": "Turn Weak Topics into Strengths",
+        "hi": "कमजोर विषयों को अपनी ताकत बनाएँ"
+      },
+      "subtitle": {
+        "en": "See exactly where to focus next.",
+        "hi": "देखें, आगे किस विषय पर ध्यान देना है।"
+      },
+      "cta": {
+        "en": "View Analysis",
+        "hi": "विश्लेषण देखें"
+      },
+      "action_type": "internal",
+      "action_value": "insights",
+      "targetUrl": "",
+      "imageUrl": "",
+      "startsAt": null,
+      "endsAt": null
+    },
+    {
+      "id": "aspirant",
+      "active": true,
+      "priority": 25,
+      "title": {
+        "en": "Future ASO Starts Here",
+        "hi": "भविष्य के ASO की शुरुआत यहीं से"
+      },
+      "subtitle": {
+        "en": "One mock. One improvement. Every day.",
+        "hi": "हर दिन एक मॉक, एक नया सुधार।"
+      },
+      "cta": {
+        "en": "Explore Tests",
+        "hi": "मॉक देखें"
+      },
+      "action_type": "internal",
+      "action_value": "mock_list",
+      "targetUrl": "",
+      "imageUrl": "",
+      "startsAt": null,
+      "endsAt": null
+    },
+    {
+      "id": "official_notice_link",
+      "active": false,
+      "priority": 20,
+      "titleEn": "Latest exam notices",
+      "titleHi": "नवीनतम परीक्षा नोटिस",
+      "descriptionEn": "Review the official BSSC notice board.",
+      "descriptionHi": "आधिकारिक बीएसएससी नोटिस बोर्ड देखें।",
+      "buttonEn": "Open notices",
+      "buttonHi": "नोटिस खोलें",
+      "targetUrl": "https://bssc.bihar.gov.in/NoticeBoard.htm",
+      "imageUrl": "",
+      "startsAt": null,
+      "endsAt": null
+    }
+  ],
+  "events": [
+    {
+      "id": "cgl4_prelims",
+      "published": true,
+      "nameEn": "BSSC CGL 4 Prelims",
+      "nameHi": "बीएसएससी सीजीएल 4 प्रारंभिक परीक्षा",
+      "officialConfirmed": false,
+      "examAt": null,
+      "sourceUrl": "https://bssc.bihar.gov.in/NoticeBoard.htm"
+    }
+  ]
+}
