@@ -81,10 +81,9 @@ fun DashboardScreen(
                 Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
                     ReferenceShortcut("📝",t(hindi,"Mock Tests","मॉक टेस्ट"),Color(0xFFECE1FF),Modifier.weight(1f),onOpenTests)
                     ReferenceShortcut("📚",t(hindi,"Previous Papers","पुराने पेपर"),Color(0xFFFFE8D8),Modifier.weight(1f),onOpenTests)
-                    ReferenceShortcut("✅",t(hindi,"Subject Practice","विषय अभ्यास"),Color(0xFFE1F9EE),Modifier.weight(1f),onOpenTests)
+                    ReferenceShortcut("📊",t(hindi,"My Results","मेरे परिणाम"),Color(0xFFE2F2FF),Modifier.weight(1f),onOpenAnalytics)
                 }
                 Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
-                    ReferenceShortcut("📊",t(hindi,"My Results","मेरे परिणाम"),Color(0xFFE2F2FF),Modifier.weight(1f),onOpenAnalytics)
                     ReferenceShortcut("🏆",t(hindi,"Ranking","रैंकिंग"),Color(0xFFFFF0CF),Modifier.weight(1f),onOpenRanks)
                     ReferenceShortcut("🎯",t(hindi,"Weak Areas","कमज़ोर विषय"),Color(0xFFFFE3F0),Modifier.weight(1f),onOpenAnalytics)
                 }

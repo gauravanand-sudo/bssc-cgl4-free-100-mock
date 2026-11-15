@@ -127,20 +127,21 @@ fun GlobalExamHeader(hindi: Boolean, onLanguage: () -> Unit, notificationsEnable
     Row(Modifier.fillMaxWidth().background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF641697))))
         .padding(start=15.dp,end=14.dp,top=10.dp,bottom=10.dp),verticalAlignment=Alignment.CenterVertically) {
         Image(painterResource(R.drawable.brand_icon),"Independent Bihar exam-preparation logo",
-            Modifier.size(45.dp).clip(RoundedCornerShape(12.dp)))
+            Modifier.size(43.dp).clip(RoundedCornerShape(12.dp)))
         Spacer(Modifier.width(9.dp))
         Column(Modifier.weight(1f)) {
             Text("BSSC CGL 4",fontWeight=FontWeight.Black,color=Color.White,fontSize=16.sp, lineHeight=18.sp)
             Text("FREE 100 MOCK",color=Gold,fontSize=10.sp,fontWeight=FontWeight.Black,
                 letterSpacing=.3.sp,maxLines=1)
         }
-        if(showNotifications) IconButton(onClick=onNotifications,modifier=Modifier.size(34.dp)) {
+        if(showNotifications) IconButton(onClick=onNotifications,modifier=Modifier.size(48.dp)) {
             Icon(if(notificationsEnabled) Icons.Rounded.NotificationsActive else Icons.Rounded.NotificationsNone,
                 contentDescription=t(hindi,"Notification settings","नोटिफिकेशन सेटिंग"),
                 tint=Gold,modifier=Modifier.size(20.dp))
         }
-        Surface(onClick=onLanguage,shape=RoundedCornerShape(100.dp),color=Color.White) {
-            Row(Modifier.padding(horizontal=9.dp,vertical=8.dp),verticalAlignment=Alignment.CenterVertically) {
+        Surface(onClick=onLanguage,modifier=Modifier.heightIn(min=44.dp),
+            shape=RoundedCornerShape(100.dp),color=Color.White) {
+            Row(Modifier.padding(horizontal=11.dp,vertical=12.dp),verticalAlignment=Alignment.CenterVertically) {
                 Text(if(hindi) "हिंदी" else "HI",fontWeight=FontWeight.Black,color=if(hindi)Violet else Muted,fontSize=10.sp)
                 Text(" | ",color=Muted,fontSize=10.sp)
                 Text("EN",fontWeight=FontWeight.Black,color=if(hindi)Muted else Violet,fontSize=10.sp)

@@ -13,6 +13,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -30,6 +32,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.border
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -54,8 +60,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.statusBarColor = android.graphics.Color.rgb(38,6,68)
-        window.navigationBarColor = android.graphics.Color.rgb(246,248,252)
-        window.decorView.systemUiVisibility = android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        window.navigationBarColor = android.graphics.Color.rgb(38,6,68)
+        // Purple system bars with light icons; content itself respects safe insets.
+        window.decorView.systemUiVisibility = 0
         BrandCopy.initialize(this)
         val store = AppStore(this)
         val questions = QuestionRepository(this)
@@ -84,6 +91,7 @@ class MainActivity : ComponentActivity() {
                 var adReady by remember { mutableStateOf(false) }
                 var quickReady by remember { mutableStateOf(false) }
                 var newlyFinished by remember { mutableStateOf(false) }
+                var confirmExitTest by remember { mutableStateOf(false) }
                 var remoteBanners by remember { mutableStateOf<List<PromoBanner>>(emptyList()) }
                 var examEvents by remember { mutableStateOf<List<ExamEvent>>(emptyList()) }
                 var notificationsEnabled by remember { mutableStateOf(notificationPrefs.enabled()) }
@@ -162,9 +170,12 @@ class MainActivity : ComponentActivity() {
                     ads.showRewarded(onEarned={earnedUnlock(id)},onUnavailable=unavailable,onChange=notifyAd)
                 }
                 val quickUnlock: (Int) -> Unit = { id -> quickIntroId = id }
-                BackHandler(enabled = route != Route.Tabs) { route = Route.Tabs; tab = Tab.HOME }
-                Box(Modifier.fillMaxSize()) {
-                    Column(Modifier.fillMaxSize()) {
+                // The system Back button must not leave an ongoing exam without confirmation.
+                BackHandler(enabled = route is Route.Exam) { confirmExitTest = true }
+                BackHandler(enabled = route is Route.Result) { route = Route.Tabs; tab = Tab.HOME }
+                // Include cutouts, system status and gesture navigation insets on Android 15+.
+                Box(Modifier.fillMaxSize().background(RoyalDeep).safeDrawingPadding()) {
+                    Column(Modifier.fillMaxSize().background(Ink)) {
                         GlobalExamHeader(hindi,onLanguage={hindi=!hindi;store.setHindi(hindi)},
                             notificationsEnabled=notificationsEnabled,
                             showNotifications=route == Route.Tabs,
@@ -178,8 +189,9 @@ class MainActivity : ComponentActivity() {
                             route = Route.Tabs
                         } else ExamScreen(initial=session,questions=paper,hindi=hindi,
                             onSave={ updated -> activeSession=updated; store.saveSession(updated) },
-                            onExit={route=Route.Tabs;tab=Tab.HOME},
+                            onExit={confirmExitTest=true},
                             onFinish={ latest ->
+                                confirmExitTest=false
                                 val a=Grading.grade(latest.testId,latest.startedAt,latest.answers,paper)
                                 store.addAttempt(a)
                                 attempts=store.attempts()
@@ -206,7 +218,9 @@ class MainActivity : ComponentActivity() {
                         bottomBar={
                             Row(Modifier.fillMaxWidth().background(
                                 androidx.compose.ui.graphics.Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF521079))))
-                                .padding(horizontal=5.dp,vertical=8.dp),verticalAlignment=Alignment.CenterVertically) {
+                                .padding(horizontal=9.dp,vertical=9.dp),
+                                horizontalArrangement=Arrangement.spacedBy(7.dp),
+                                verticalAlignment=Alignment.CenterVertically) {
                                 listOf(
                                     Triple(Tab.HOME,t(hindi,"Home","होम"),Icons.Rounded.Home),
                                     Triple(Tab.TESTS,t(hindi,"Tests","टेस्ट"),Icons.Rounded.Assignment),
@@ -215,26 +229,39 @@ class MainActivity : ComponentActivity() {
                                     Triple(Tab.PROFILE,t(hindi,"More","अन्य"),Icons.Rounded.MoreHoriz)
                                 ).forEach { (item,label,icon) ->
                                     val selected=tab==item
-                                    Column(Modifier.weight(1f).clickable { tab=item }
-                                        .padding(vertical=5.dp),horizontalAlignment=Alignment.CenterHorizontally) {
-                                        Box(Modifier.size(30.dp).clip(RoundedCornerShape(11.dp))
-                                            .background(if(selected) Color.White.copy(alpha=.22f) else Color.Transparent),
-                                            contentAlignment=Alignment.Center) {
-                                            Icon(icon,contentDescription=label,tint=if(selected) Gold else Color.White.copy(alpha=.68f),
-                                                modifier=Modifier.size(21.dp))
-                                        }
-                                        Spacer(Modifier.height(2.dp))
-                                        Text(label,color=if(selected)Gold else Color.White.copy(alpha=.72f),
-                                            fontWeight=if(selected) FontWeight.ExtraBold else FontWeight.Medium,fontSize=10.sp)
+                                    val tileColor by animateColorAsState(if(selected) Gold else Color.White.copy(alpha=.11f),
+                                        animationSpec=tween(230),label="tab tile")
+                                    val outlineColor by animateColorAsState(if(selected) Gold else Color.White.copy(alpha=.24f),
+                                        animationSpec=tween(230),label="tab outline")
+                                    val tileScale by animateFloatAsState(if(selected) 1f else .97f,
+                                        animationSpec=tween(230),label="tab tap")
+                                    Column(Modifier.weight(1f).height(65.dp)
+                                        .graphicsLayer { scaleX=tileScale; scaleY=tileScale }
+                                        .clip(RoundedCornerShape(15.dp))
+                                        .background(tileColor)
+                                        .border(1.dp,outlineColor,RoundedCornerShape(15.dp))
+                                        .clickable(role=Role.Tab,onClick={tab=item})
+                                        .padding(vertical=7.dp,horizontal=2.dp),
+                                        horizontalAlignment=Alignment.CenterHorizontally,
+                                        verticalArrangement=Arrangement.Center) {
+                                        Icon(icon,contentDescription=label,tint=if(selected) RoyalDeep else Color.White,
+                                            modifier=Modifier.size(22.dp))
+                                        Spacer(Modifier.height(3.dp))
+                                        Text(label,color=if(selected) RoyalDeep else Color.White,
+                                            fontWeight=if(selected) FontWeight.Black else FontWeight.SemiBold,
+                                            fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
                                     }
                                 }
                             }
                         }) { padding ->
                         AnimatedContent(targetState=tab,modifier=Modifier.padding(padding),
                             transitionSpec={
-                                (fadeIn(tween(230)) + slideIntoContainer(
-                                    AnimatedContentTransitionScope.SlideDirection.Left,tween(260)))
-                                    .togetherWith(fadeOut(tween(160)))
+                                (fadeIn(tween(220)) + slideIntoContainer(
+                                    if(targetState.ordinal >= initialState.ordinal)
+                                        AnimatedContentTransitionScope.SlideDirection.Left
+                                    else AnimatedContentTransitionScope.SlideDirection.Right,
+                                    tween(250)))
+                                    .togetherWith(fadeOut(tween(170)))
                             },label="nav-flow") { currentTab ->
                             when(currentTab) {
                                 Tab.HOME -> DashboardScreen(name,hindi,attempts,activeSession,tests,
@@ -283,6 +310,24 @@ class MainActivity : ComponentActivity() {
                     }
                     if(splash) ReferenceSplash(hindi)
                 }
+                if(confirmExitTest && route is Route.Exam) AlertDialog(
+                    onDismissRequest={confirmExitTest=false},
+                    containerColor=CardInk,
+                    icon={Icon(Icons.Rounded.WarningAmber,contentDescription=null,tint=Amber)},
+                    title={Text(t(hindi,"Test in progress","टेस्ट अभी चल रहा है"),
+                        color=SoftWhite,fontWeight=FontWeight.ExtraBold)},
+                    text={Text(t(hindi,
+                        "Are you sure you want to exit? Your responses are saved, but the exam timer will continue. You can resume from Home before time runs out.",
+                        "क्या आप टेस्ट छोड़ना चाहते हैं? आपके उत्तर सहेजे जाएँगे, लेकिन परीक्षा का टाइमर चलता रहेगा। समय रहते होम से टेस्ट जारी कर सकते हैं।"),
+                        color=Muted)},
+                    confirmButton={TextButton(onClick={
+                        confirmExitTest=false
+                        route=Route.Tabs
+                        tab=Tab.HOME
+                    }) {Text(t(hindi,"Exit & save","बाहर जाएँ और सहेजें"),color=Red,fontWeight=FontWeight.Bold)}},
+                    dismissButton={TextButton(onClick={confirmExitTest=false}) {
+                        Text(t(hindi,"Keep testing","टेस्ट जारी रखें"),color=Violet,fontWeight=FontWeight.Bold)
+                    }})
                 if(busyPaper) AlertDialog(onDismissRequest={},title={Text(t(hindi,"Preparing your next step","आपका अगला कदम तैयार हो रहा है"))},
                     text={MotivationalLoading(hindi,
                         t(hindi,"Downloading and checking your paper…","आपका प्रश्नपत्र तैयार किया जा रहा है…"))},confirmButton={})
