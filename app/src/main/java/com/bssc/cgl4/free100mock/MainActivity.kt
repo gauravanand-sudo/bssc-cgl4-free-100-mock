@@ -271,15 +271,15 @@ class MainActivity : ComponentActivity() {
                                             tests=catalog.cached();ExamConfig.setTitles(tests)
                                             attempts=emptyList();activeSession=null
                                             unlocked=emptySet();name="Aspirant";hindi=false;tab=Tab.HOME
-                                            Toast.makeText(this,"Saved and online data deleted",Toast.LENGTH_LONG).show()
-                                        } else Toast.makeText(this,"Cloud deletion failed. Connect and retry.",Toast.LENGTH_LONG).show()
+                                            Toast.makeText(this@MainActivity,"Saved and online data deleted",Toast.LENGTH_LONG).show()
+                                        } else Toast.makeText(this@MainActivity,"Cloud deletion failed. Connect and retry.",Toast.LENGTH_LONG).show()
                                     }})
                             }
                         }
                     }
                 }
                         }
-                        if(route != Route.Exam) BiharLoveFooter(hindi)
+                        if(route !is Route.Exam) BiharLoveFooter(hindi)
                     }
                     if(splash) ReferenceSplash(hindi)
                 }
