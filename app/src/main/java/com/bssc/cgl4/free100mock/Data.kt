@@ -65,10 +65,16 @@ class QuestionRepository(private val context: Context) {
             val q = arr.getJSONObject(i)
             fun array(key: String): List<String> = q.getJSONArray(key).let { a -> List(a.length()) { a.getString(it) } }
             val answers = array("optionsEn")
-            require(answers.size == 4 && q.getInt("correctIndex") in 0..3)
+            val hindiOptions = array("optionsHi")
+            require(answers.size == 4 && hindiOptions.size == 4 &&
+                q.getInt("correctIndex") in 0..3)
+            require(q.getString("questionEn").isNotBlank() &&
+                q.getString("questionHi").isNotBlank() &&
+                q.getString("explanationEn").isNotBlank() &&
+                q.getString("explanationHi").isNotBlank())
             Question(q.getString("id"),q.getString("section"),q.getString("topic"),
                 q.getString("questionEn"),q.getString("questionHi"), answers,
-                array("optionsHi"),q.getInt("correctIndex"),
+                hindiOptions,q.getInt("correctIndex"),
                 q.getString("explanationEn"),q.getString("explanationHi"))
         }
     }

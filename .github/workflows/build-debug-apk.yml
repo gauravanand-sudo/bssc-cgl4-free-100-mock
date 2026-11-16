@@ -52,6 +52,12 @@ jobs:
       - name: Validate Firebase custom banner example (dry run)
         run: python3 firebase/manage_engagement.py --file firebase/engagement.example.json
 
+      - name: Audit bundled bilingual questions (warnings for repeats)
+        run: python3 tools/audit_mock_bank.py
+
+      - name: Test content-audit script
+        run: python3 -m unittest discover -s tools -p 'test_*.py'
+
       - name: Run access-policy unit tests
         run: gradle --no-daemon :app:testDebugUnitTest
 

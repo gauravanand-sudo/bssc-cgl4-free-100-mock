@@ -158,9 +158,12 @@ fun ResultScreen(attempt: Attempt, questions: List<Question>, hindi: Boolean,
         Spacer(Modifier.height(10.dp))
         Text(if(hindi) q.questionHi else q.questionEn,color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=14.sp,lineHeight=22.sp)
         Spacer(Modifier.height(12.dp))
-        Text("Correct: ${q.optionsEn[q.correctIndex]}",color=Aqua,fontSize=12.sp,fontWeight=FontWeight.SemiBold)
-        if(selected>=0 && selected!=q.correctIndex)
-            Text("Your choice: ${q.optionsEn[selected]}",color=Red,fontSize=12.sp)
+        val options=if(hindi)q.optionsHi else q.optionsEn
+        Text(t(hindi,"✅ Correct: ","✅ सही: ")+options[q.correctIndex],
+            color=Aqua,fontSize=12.sp,fontWeight=FontWeight.Bold)
+        if(selected in 0..3 && selected!=q.correctIndex)
+            Text(t(hindi,"Your choice: ","आपका उत्तर: ")+options[selected],
+                color=Red,fontSize=12.sp)
         Spacer(Modifier.height(9.dp))
         DividerLine()
         Spacer(Modifier.height(9.dp))
