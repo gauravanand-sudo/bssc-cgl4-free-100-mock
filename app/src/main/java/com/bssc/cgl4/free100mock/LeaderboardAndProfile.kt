@@ -76,6 +76,7 @@ import androidx.compose.ui.unit.sp
                 }
             }
         }
+        if(ads.canShowNative()) item(key="native-leaderboard") { SponsoredNative(ads) }
         if(loading) item { CircularProgressIndicator(color=Violet) }
         else if(rows==null) item {
             EmptyNotice(t(hindi,"Live ranks are not connected","लाइव रैंकिंग कनेक्ट नहीं है"),message ?: t(hindi,"Connect Firebase to enable live rankings.","लाइव रैंकिंग के लिए Firebase जोड़ें।"))

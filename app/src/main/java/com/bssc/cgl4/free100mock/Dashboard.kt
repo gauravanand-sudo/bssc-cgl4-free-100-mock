@@ -83,7 +83,6 @@ fun DashboardScreen(
             }
         }
         item(key="daily-mission"){ TodayMissionCard(attempts,hindi,onOpenTests) }
-        if (adAllowed) item(key="google-banner-home") { SponsoredBanner(ads) }
         item(key="official-countdown"){ ExamCountdown(examEvents,hindi) }
         if(homeCards.any{it.placement=="middle"}) item(key="firebase-cards-middle") {
             HomeCardSections(homeCards,"middle",hindi) {destination ->
@@ -121,6 +120,9 @@ fun DashboardScreen(
                 t(hindi,"Real progress from completed mocks","पूरे किए मॉक से असली प्रगति"))
             Spacer(Modifier.height(10.dp))
             HomeMomentum(attempts,hindi)
+        }
+        if(adAllowed && ads.canShowNative()) item(key="native-home-content") {
+            SponsoredNative(ads)
         }
         item {
             Row(verticalAlignment=Alignment.CenterVertically) {
@@ -236,16 +238,19 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
                 }
             }
         }
-        if(adAllowed) item(key="google-banner-test-list") { SponsoredBanner(ads) }
         if(loading) item { LinearProgressIndicator(modifier=Modifier.fillMaxWidth(),color=Violet) }
         if(status!=null) item {Text(status,color=Muted,fontSize=11.sp)}
         if(filtered.isEmpty()) item {EmptyNotice(t(hindi,"No mocks in this section","यहाँ कोई मॉक नहीं है"),
             t(hindi,"Refresh to check for new published papers.","नए प्रकाशित पेपर के लिए रिफ़्रेश करें।"))}
         itemsIndexed(filtered,key={_,test->test.id}) {index,test ->
-            ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
-                !MockAvailability.canStart(test, unlocked),rewardCredits[test.id] ?: 0,
-                adReady,quickReady,hindi,
-                onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
+            Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(17.dp)) {
+                ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
+                    !MockAvailability.canStart(test, unlocked),rewardCredits[test.id] ?: 0,
+                    adReady,quickReady,hindi,
+                    onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
+                // A native ad after four real cards; not inside action controls.
+                if(index==3 && adAllowed && ads.canShowNative()) SponsoredNative(ads)
+            }
         }
         item {Text(t(hindi,
             "Bundled starter mocks and published Firebase mocks are listed. Upcoming papers cannot be opened.",

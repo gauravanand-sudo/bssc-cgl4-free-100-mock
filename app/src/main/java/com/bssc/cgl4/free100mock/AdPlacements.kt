@@ -33,3 +33,17 @@ fun SponsoredBanner(ads: AdController, modifier: Modifier = Modifier) {
                 color=Muted, fontSize=10.sp)
     }
 }
+
+/** SDK-backed native ad, labeled; never fabricated when fill is missing. */
+@Composable
+fun SponsoredNative(ads: AdController, modifier: Modifier = Modifier) {
+    if(!ads.canShowNative()) return
+    Column(modifier.fillMaxWidth().padding(vertical=11.dp)
+        .clip(RoundedCornerShape(15.dp)).background(Color.White).padding(10.dp)) {
+        Text("ADVERTISEMENT · SPONSORED", color=Muted, fontSize=11.sp,
+            modifier=Modifier.padding(bottom=6.dp))
+        AndroidView(factory={ context -> ads.nativeContainer(context) },
+            modifier=Modifier.fillMaxWidth().heightIn(min=120.dp),
+            onRelease={ view -> ads.releaseNative(view) })
+    }
+}

@@ -167,7 +167,10 @@ class MainActivity : ComponentActivity() {
                     delay(800L)
                     splash=false
                 }
-                SideEffect { safeHome = route == Route.Tabs && tab == Tab.HOME }
+                SideEffect {
+                    safeHome = route == Route.Tabs && tab == Tab.HOME && !splash &&
+                        !editingContact && (signupState is SignupState.Ready || debugPracticeOnly)
+                }
                 fun startPaper(id: Int) {
                     val test = tests.firstOrNull { it.id == id }
                     if (test==null) {
@@ -304,7 +307,13 @@ class MainActivity : ComponentActivity() {
                     }
                     Route.Tabs -> Scaffold(containerColor=Ink,
                         bottomBar={
-                            // Reclaimed screen space: compact floating navigation.
+                            Column(Modifier.fillMaxWidth().background(Ink)) {
+                                // One permanent banner above nav, never during questions/login.
+                                if(adAllowed && !splash && !editingContact &&
+                                    (signupState is SignupState.Ready || debugPracticeOnly)) {
+                                    SponsoredBanner(ads, Modifier.padding(horizontal=11.dp))
+                                }
+                                // Nav remains separate from the ad's clickable area.
                             Row(Modifier.fillMaxWidth().height(56.dp)
                                 .background(Ink).padding(horizontal=9.dp,vertical=3.dp)
                                 .shadow(5.dp,RoundedCornerShape(19.dp))
@@ -342,6 +351,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                 }
+                            }
                             }
                         }) { padding ->
                         AnimatedContent(targetState=tab,modifier=Modifier.padding(padding),

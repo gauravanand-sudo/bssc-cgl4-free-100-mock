@@ -64,6 +64,7 @@ class AdController(private val activity: Activity) {
         } }
     }
     fun canShowBanner() = initialized && consent.canRequestAds()
+    fun canShowNative() = canShowBanner() && BuildConfig.ADMOB_NATIVE_ID.isNotBlank()
     fun banner(context: Context, onLoaded: () -> Unit = {},
                onFailed: (Int) -> Unit = {}): AdView = AdView(context).apply {
         adListener = object : AdListener() {
@@ -209,7 +210,10 @@ class AdController(private val activity: Activity) {
                     setBackgroundColor(AndroidColor.rgb(241,244,249))
                 }
                 val label = TextView(context).apply {
-                    text = "Ad · Sponsored"; textSize = 10f; setTextColor(AndroidColor.DKGRAY)
+                    text = "Ad · Sponsored"
+                    textSize = 12f
+                    minHeight = (20 * context.resources.displayMetrics.density).toInt()
+                    setTextColor(AndroidColor.DKGRAY)
                 }
                 val headline = TextView(context).apply {
                     text = native.headline; textSize = 17f; setTextColor(AndroidColor.rgb(30,39,60))

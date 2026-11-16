@@ -99,6 +99,7 @@ fun ResultScreen(attempt: Attempt, questions: List<Question>, hindi: Boolean,
                 Panel(Modifier.weight(1f)) { Metric(t(hindi,"Skipped","छोड़े"),"${attempt.skipped}",Amber) }
             }
         }
+        if(ads.canShowBanner()) item(key="post-result-banner") { SponsoredBanner(ads) }
         item { SectionTitle(t(hindi,"📊 Performance Analysis","📊 प्रदर्शन विश्लेषण"),
             t(hindi,"Accuracy is based on answered questions","सटीकता दिए गए उत्तरों पर आधारित है")) }
         item(key="result-subject-donuts") {
@@ -191,6 +192,7 @@ fun AnalyticsScreen(attempts:List<Attempt>, repo:QuestionRepository, modifier:Mo
                 Text("📊",fontSize=38.sp)
             }
         }
+        if(ads.canShowNative()) item(key="native-analytics") { SponsoredNative(ads) }
         if(attempts.isEmpty()) {
             item {EmptyNotice(t(hindi,"Insights unlock after your first mock","पहले मॉक के बाद विश्लेषण मिलेगा"),
                 t(hindi,"Complete a free paper to unlock progress and weak-topic insights.",
