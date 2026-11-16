@@ -4,7 +4,7 @@ App title:
 BSSC CGL 4 Mock - OneShotGS
 
 Short description:
-Free bilingual BSSC CGL practice mocks, scores, progress insights and exam alerts.
+Practice BSSC CGL 4 mocks in Hindi and English, review scores and track progress
 
 Full description:
 
