@@ -45,31 +45,35 @@ fun ResultScreen(attempt: Attempt, questions: List<Question>, hindi: Boolean,
                 Tag(t(hindi,"RESULT","परिणाम"),Aqua)
             }
         }
-        item {
-            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp))
-                .background(Brush.verticalGradient(listOf(Color(0xFF441071),Color(0xFF8131C5),Color(0xFFF7DFFF))))
-                .padding(horizontal=18.dp,vertical=20.dp),horizontalAlignment=Alignment.CenterHorizontally) {
-                Text("🏆",fontSize=59.sp)
-                Text(t(hindi,"Great Attempt! ✨","शानदार प्रयास! ✨"),color=Gold,
-                    fontWeight=FontWeight.Black,fontSize=23.sp)
-                Text(t(hindi,"Every mock brings you closer to your officer dream.",
-                    "हर मॉक से अधिकारी बनने का सपना करीब आता है।"),
-                    color=Color.White.copy(alpha=.92f),fontSize=11.sp,lineHeight=16.sp)
-                Spacer(Modifier.height(13.dp))
-                Box(Modifier.size(134.dp).clip(CircleShape).background(Color.White),
-                    contentAlignment=Alignment.Center) {
-                    CircularProgressIndicator(progress={ (attempt.score.coerceAtLeast(0) / 600f).coerceIn(0f,1f) },
-                        modifier=Modifier.fillMaxSize().padding(8.dp),color=Aqua,
-                        trackColor=Color(0xFFEAE9F1),strokeWidth=9.dp)
-                    Column(horizontalAlignment=Alignment.CenterHorizontally) {
-                        Text(t(hindi,"Your Score","आपका स्कोर"),color=Muted,fontSize=10.sp,fontWeight=FontWeight.Bold)
-                        Text("${attempt.score}",color=Royal,fontSize=37.sp,fontWeight=FontWeight.Black)
-                        Text("/ 600",color=Muted,fontSize=12.sp)
+        item(key="celebration-result-hero") {
+            val answered=attempt.correct+attempt.wrong
+            val accuracy=if(answered==0) 0 else attempt.correct*100/answered
+            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(25.dp))
+                .background(Brush.verticalGradient(listOf(RoyalDeep,Royal,Color(0xFF8439CB))))
+                .padding(horizontal=16.dp,vertical=13.dp),
+                horizontalAlignment=Alignment.CenterHorizontally,
+                verticalArrangement=Arrangement.spacedBy(7.dp)) {
+                CelebrationParticles()
+                Text(if(attempt.score>=400)"🏆" else if(attempt.score>=250)"✨" else "🔥",
+                    fontSize=33.sp)
+                Text(t(hindi,"Your next level starts now!","आपकी अगली सफलता यहीं से शुरू!"),
+                    color=Gold,fontWeight=FontWeight.Black,fontSize=20.sp)
+                Text(t(hindi,"Every honest attempt moves you forward.",
+                    "हर ईमानदार प्रयास आपको आगे बढ़ाता है।"),
+                    color=Color.White.copy(alpha=.9f),fontSize=11.sp)
+                ScoreMedallion(attempt.score,size=148.dp)
+                Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+                    Surface(shape=RoundedCornerShape(20.dp),color=Color.White.copy(alpha=.15f)) {
+                        Text("🎯 $accuracy% "+t(hindi,"accuracy","सटीकता"),
+                            Modifier.padding(horizontal=12.dp,vertical=7.dp),
+                            color=Color.White,fontWeight=FontWeight.Black,fontSize=11.sp)
+                    }
+                    Surface(shape=RoundedCornerShape(20.dp),color=Color.White.copy(alpha=.15f)) {
+                        Text("⏱ "+formatDuration(attempt.elapsedSeconds),
+                            Modifier.padding(horizontal=12.dp,vertical=7.dp),
+                            color=Color.White,fontWeight=FontWeight.Black,fontSize=11.sp)
                     }
                 }
-                Spacer(Modifier.height(12.dp))
-                Text(t(hindi,"Completed in ","समय: ")+formatDuration(attempt.elapsedSeconds),
-                    color=Color.White,fontSize=11.sp,fontWeight=FontWeight.SemiBold)
             }
         }
         item {
@@ -79,7 +83,17 @@ fun ResultScreen(attempt: Attempt, questions: List<Question>, hindi: Boolean,
                 Panel(Modifier.weight(1f)) { Metric(t(hindi,"Skipped","छोड़े"),"${attempt.skipped}",Amber) }
             }
         }
-        item { SectionTitle(t(hindi,"Performance Analysis","प्रदर्शन विश्लेषण"),t(hindi,"Accuracy is based on answered questions","सटीकता दिए गए उत्तरों पर आधारित है")) }
+        item { SectionTitle(t(hindi,"📊 Performance Analysis","📊 प्रदर्शन विश्लेषण"),
+            t(hindi,"Accuracy is based on answered questions","सटीकता दिए गए उत्तरों पर आधारित है")) }
+        item(key="result-subject-donuts") {
+            Panel {
+                Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceEvenly) {
+                    subjectScores.forEach{s ->
+                        SubjectDonut(s.section,s.accuracy,Modifier.weight(1f))
+                    }
+                }
+            }
+        }
         subjectScores.forEach { s -> item {
             Panel {
                 Row(verticalAlignment=Alignment.CenterVertically) {
@@ -145,11 +159,24 @@ fun AnalyticsScreen(attempts:List<Attempt>, repo:QuestionRepository, modifier:Mo
     val subject=remember(attempts) { Grading.subjectBreakdown(attempts,repo) }
     LazyColumn(modifier.fillMaxSize().background(Ink),contentPadding=PaddingValues(20.dp),
         verticalArrangement=Arrangement.spacedBy(18.dp)) {
-        item {
-            CapsLabel(t(hindi,"PERSONAL PERFORMANCE","व्यक्तिगत प्रदर्शन"),Violet)
-            Spacer(Modifier.height(7.dp))
-            Headline(BrandCopy.screen("insights","title",hindi,t(hindi,"Grow Stronger Every Day","हर दिन और बेहतर बनें")))
-            Text(BrandCopy.screen("insights","subtitle",hindi,t(hindi,"Find the topics that need more practice.","कमजोर विषयों पर अधिक अभ्यास करें।")),color=Muted,fontSize=13.sp)
+        item(key="analytics-premium-hero") {
+            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(23.dp))
+                .background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Violet)))
+                .padding(17.dp),verticalAlignment=Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("🧠 "+t(hindi,"SMART INSIGHTS","स्मार्ट विश्लेषण"),
+                        color=Gold,fontSize=10.sp,fontWeight=FontWeight.Black)
+                    Text(BrandCopy.screen("insights","title",hindi,
+                        t(hindi,"Grow Stronger Every Day","हर दिन और बेहतर बनें")),
+                        color=Color.White,fontSize=22.sp,lineHeight=27.sp,
+                        fontWeight=FontWeight.Black)
+                    Text(BrandCopy.screen("insights","subtitle",hindi,
+                        t(hindi,"Find the topics that need more practice.",
+                            "कमजोर विषयों पर अधिक अभ्यास करें।")),
+                        color=Color.White.copy(alpha=.91f),fontSize=11.sp)
+                }
+                Text("📊",fontSize=38.sp)
+            }
         }
         if(attempts.isEmpty()) {
             item {EmptyNotice(t(hindi,"Insights unlock after your first mock","पहले मॉक के बाद विश्लेषण मिलेगा"),
@@ -164,7 +191,45 @@ fun AnalyticsScreen(attempts:List<Attempt>, repo:QuestionRepository, modifier:Mo
                     Panel(Modifier.weight(1f)) { Metric(t(hindi,"Average score","औसत स्कोर"),"$avg",Violet) }
                 }
             }
-            item {SectionTitle(t(hindi,"Subject accuracy","विषयवार सटीकता"),t(hindi,"Right answers / attempted answers","सही उत्तर / दिए गए उत्तर"))}
+            item(key="chart-score-journey") {
+                Panel {
+                    Row(verticalAlignment=Alignment.CenterVertically) {
+                        Text("📈 "+t(hindi,"Score journey","स्कोर की प्रगति"),
+                            color=SoftWhite,fontWeight=FontWeight.Black,fontSize=16.sp,
+                            modifier=Modifier.weight(1f))
+                        Tag("${attempts.size} "+t(hindi,"attempts","प्रयास"),Violet)
+                    }
+                    Spacer(Modifier.height(9.dp))
+                    ScoreTrendChart(PrepMomentum.chronologicalScores(attempts))
+                    Spacer(Modifier.height(3.dp))
+                    Text(t(hindi,"Earlier → latest · scale −150…600 marks",
+                        "पुराने → नए · −150 से 600 अंक का पैमाना"),
+                        color=Muted,fontSize=10.sp)
+                }
+            }
+            item(key="real-time-management") {
+                val avg=attempts.map{it.elapsedSeconds}.average().toInt()
+                Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(17.dp))
+                    .background(SoftMint).padding(13.dp),verticalAlignment=Alignment.CenterVertically) {
+                    Text("⏱",fontSize=26.sp)
+                    Spacer(Modifier.width(12.dp))
+                    Column {
+                        Text(t(hindi,"Average mock duration","औसत मॉक अवधि"),
+                            color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=12.sp)
+                        Text(formatDuration(avg),color=Aqua,
+                            fontSize=19.sp,fontWeight=FontWeight.Black)
+                    }
+                }
+            }
+            item {SectionTitle(t(hindi,"🎯 Subject accuracy","🎯 विषयवार सटीकता"),
+                t(hindi,"Correct / answered across your attempts","आपके प्रयासों में सही / दिए गए उत्तर"))}
+            item(key="subject-donut-dashboard") {
+                Panel {
+                    Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceEvenly) {
+                        subject.forEach{s -> SubjectDonut(s.section,s.accuracy,Modifier.weight(1f))}
+                    }
+                }
+            }
             subject.forEach { s -> item {
                 Panel {
                     Row(verticalAlignment=Alignment.CenterVertically) {
@@ -177,7 +242,7 @@ fun AnalyticsScreen(attempts:List<Attempt>, repo:QuestionRepository, modifier:Mo
                     Text("${s.correct} correct · ${s.wrong} incorrect · ${s.skipped} not attempted",color=Muted,fontSize=11.sp)
                 }
             } }
-            item { SectionTitle(BrandCopy.screen("insights","focus_next",hindi,t(hindi,"Focus Next","अगला फोकस")),t(hindi,"Topics with the lowest accuracy","सबसे कम सटीकता वाले विषय")) }
+            item { SectionTitle("⚡ "+BrandCopy.screen("insights","focus_next",hindi,t(hindi,"Focus Next","अगला फोकस")),t(hindi,"Topics with the lowest accuracy","सबसे कम सटीकता वाले विषय")) }
             val weakest=details.filter { it.attempted>0 }.take(6)
             if(weakest.isEmpty()) item { EmptyNotice("No attempted topics yet","Try answering questions in a mock to receive personalized recommendations.") }
             else weakest.forEachIndexed { index, s -> item {
@@ -199,27 +264,6 @@ fun AnalyticsScreen(attempts:List<Attempt>, repo:QuestionRepository, modifier:Mo
                     Text(t(hindi,"Revise this chapter, then retake a full mock.","यह अध्याय पढ़ें और फिर मॉक टेस्ट दें।"),color=Muted,fontSize=11.sp)
                 }
             } }
-            item { SectionTitle(t(hindi,"Score history","स्कोर इतिहास"),t(hindi,"Your most recent attempts","हाल के मॉक")) }
-            item {
-                Panel {
-                    val recent=attempts.take(8).reversed()
-                    Row(Modifier.fillMaxWidth().height(128.dp),verticalAlignment=Alignment.Bottom,
-                        horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-                        recent.forEachIndexed { index,a ->
-                            val height=(a.score.coerceAtLeast(0)/600f).coerceAtLeast(.045f)
-                            Column(Modifier.weight(1f),horizontalAlignment=Alignment.CenterHorizontally) {
-                                Text("${a.score}",color=Muted,fontSize=10.sp)
-                                Spacer(Modifier.height(5.dp))
-                                Box(Modifier.fillMaxWidth().height((95*height).dp)
-                                    .clip(RoundedCornerShape(topStart=7.dp,topEnd=7.dp))
-                                    .background(if(index==recent.lastIndex) Aqua else Violet.copy(alpha=.65f)))
-                            }
-                        }
-                    }
-                    Spacer(Modifier.height(6.dp))
-                    Text("Earlier attempts → latest attempts",color=Muted,fontSize=10.sp)
-                }
-            }
             item {SectionTitle(t(hindi,"Attempt history","पिछले प्रयास"))}
             itemsIndexed(attempts) { _,a ->
                 Panel(Modifier.clickable {onViewResult(a)}) {
