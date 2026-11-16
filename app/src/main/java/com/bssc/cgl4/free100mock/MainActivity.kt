@@ -75,6 +75,7 @@ class MainActivity : ComponentActivity() {
         val ads = adController
         val board = LeaderboardRepository(this)
         val engagement = EngagementRepository(this)
+        val homeContent = HomeCardsRepository(this)
         val notificationPrefs = PushPreferences(this)
         ExamPushService.ensureChannel(this)
         setContent {
@@ -107,6 +108,7 @@ class MainActivity : ComponentActivity() {
                 var confirmExitTest by remember { mutableStateOf(false) }
                 var remoteBanner by remember { mutableStateOf<PromoBanner?>(null) }
                 var examEvents by remember { mutableStateOf<List<ExamEvent>>(emptyList()) }
+                var homeCards by remember { mutableStateOf<List<HomeCard>>(emptyList()) }
                 var notificationsEnabled by remember { mutableStateOf(notificationPrefs.enabled()) }
                 var splash by remember { mutableStateOf(true) }
                 val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -136,12 +138,13 @@ class MainActivity : ComponentActivity() {
                         loadingCatalog = false
                     }
                 }
-                // Live Firebase console edits update the single banner,
-                // official countdown and cutoff without reinstalling or reopening.
+                // Firebase controls the single banner, countdown and modular Home cards.
+                // All listeners are removed with the UI lifecycle.
                 DisposableEffect(Unit) {
                     val stopBanner=engagement.observeBanner {remoteBanner=it}
                     val stopEvents=engagement.observeEvents {examEvents=it}
-                    onDispose {stopBanner();stopEvents()}
+                    val stopCards=homeContent.observe {homeCards=it}
+                    onDispose {stopBanner();stopEvents();stopCards()}
                 }
                 LaunchedEffect(Unit) {
                     ExamConfig.setTitles(tests)
@@ -337,20 +340,20 @@ class MainActivity : ComponentActivity() {
                                     .togetherWith(fadeOut(tween(170)))
                             },label="nav-flow") { currentTab ->
                             when(currentTab) {
-                                Tab.HOME -> DashboardScreen(name,hindi,attempts,activeSession,tests,
+                                Tab.HOME -> DashboardScreen(hindi,attempts,activeSession,tests,
                                     catalogStatus,loadingCatalog,unlocked,rewardCredits,adReady,quickReady,
-                                    ads.canShowBanner(),ads,remoteBanner,examEvents,Modifier,startTest,unlock,quickUnlock,
+                                    remoteBanner,examEvents,homeCards,Modifier,startTest,unlock,quickUnlock,
                                     onResume={ activeSession?.let { startPaper(it.testId) } },
                                     onViewResult={newlyFinished=false;route=Route.Result(it)},
-                                    onToggleLanguage={hindi=!hindi;store.setHindi(hindi)},
-                                    onRefresh={ refreshCatalogue() },
                                     onOpenTests={tab=Tab.TESTS},onOpenAnalytics={tab=Tab.ANALYTICS},
                                     onOpenRanks={tab=Tab.RANKS},
                                     onBannerAction={ destination ->
                                         when(destination) {
                                             "insights" -> tab=Tab.ANALYTICS
                                             "ranking" -> tab=Tab.RANKS
-                                            "home", "mock_list" -> tab=Tab.HOME
+                                            "home" -> tab=Tab.HOME
+                                            "mock_list" -> tab=Tab.TESTS
+                                            "profile" -> tab=Tab.PROFILE
                                         }
                                     })
                                 Tab.TESTS -> TestCatalogueScreen(tests,attempts,unlocked,rewardCredits,adReady,quickReady,

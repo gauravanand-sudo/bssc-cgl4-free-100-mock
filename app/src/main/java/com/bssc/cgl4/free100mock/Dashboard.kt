@@ -27,19 +27,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 
-/** V5 home: hierarchy, colors, cards and navigation follow the two user-supplied phone mockups. */
+/** Lightweight Home with content groups remotely published by Firebase. */
 @Composable
 fun DashboardScreen(
-    name: String, hindi: Boolean, attempts: List<Attempt>, session: ExamSession?,
+    hindi: Boolean, attempts: List<Attempt>, session: ExamSession?,
     tests: List<MockTest>, catalogStatus: String?, loadingCatalog: Boolean,
     unlocked: Set<Int>, rewardCredits: Map<Int, Int>,
-    adReady: Boolean, quickReady: Boolean, adAllowed: Boolean, ads: AdController,
-    banner: PromoBanner?, examEvents: List<ExamEvent>,
+    adReady: Boolean, quickReady: Boolean,
+    banner: PromoBanner?, examEvents: List<ExamEvent>, homeCards:List<HomeCard>,
     modifier: Modifier, onStart: (Int)->Unit, onUnlock: (Int)->Unit, onQuickUnlock: (Int)->Unit,
-    onResume: ()->Unit, onViewResult: (Attempt)->Unit, onToggleLanguage: ()->Unit,
-    onRefresh: ()->Unit, onBannerAction: (String)->Unit,
+    onResume: ()->Unit, onViewResult: (Attempt)->Unit,
+    onBannerAction: (String)->Unit,
     onOpenTests: ()->Unit={}, onOpenAnalytics: ()->Unit={}, onOpenRanks: ()->Unit={}
 ) {
     val available=tests.filterNot{it.isUpcoming}
@@ -71,9 +70,18 @@ fun DashboardScreen(
                 }
             }
         }
+        if(homeCards.any {it.placement=="top"}) item(key="firebase-cards-top") {
+            HomeCardSections(homeCards,"top",hindi) {destination ->
+                if(destination=="mock_list")onOpenTests() else onBannerAction(destination)
+            }
+        }
         item(key="daily-mission"){ TodayMissionCard(attempts,hindi,onOpenTests) }
         item(key="official-countdown"){ ExamCountdown(examEvents,hindi) }
-        item(key="cutoff-tracker"){ ExamCutoffCard(examEvents,hindi) }
+        if(homeCards.any{it.placement=="middle"}) item(key="firebase-cards-middle") {
+            HomeCardSections(homeCards,"middle",hindi) {destination ->
+                if(destination=="mock_list")onOpenTests() else onBannerAction(destination)
+            }
+        }
         item {
             Column(verticalArrangement=Arrangement.spacedBy(9.dp)) {
                 Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
@@ -128,7 +136,11 @@ fun DashboardScreen(
         }
         if(loadingCatalog) item { LinearProgressIndicator(modifier=Modifier.fillMaxWidth(),color=Violet) }
         if(catalogStatus!=null) item {Text(catalogStatus,color=Muted,fontSize=10.sp)}
-        item { OfficerMotivationCard(hindi) }
+        if(homeCards.any{it.placement=="bottom"}) item(key="firebase-cards-bottom") {
+            HomeCardSections(homeCards,"bottom",hindi) {destination ->
+                if(destination=="mock_list")onOpenTests() else onBannerAction(destination)
+            }
+        }
         if(attempts.isNotEmpty()) item {
             Panel(Modifier.clickable {onViewResult(attempts.first())}) {
                 Row(verticalAlignment=Alignment.CenterVertically) {
@@ -158,20 +170,6 @@ private fun ReferenceShortcut(emoji:String,title:String,color:Color,modifier:Mod
         Spacer(Modifier.height(6.dp))
         Text(title,color=RoyalDeep,fontSize=11.sp,lineHeight=13.sp,fontWeight=FontWeight.Black,maxLines=2,
             textAlign=androidx.compose.ui.text.style.TextAlign.Center)
-    }
-}
-
-@Composable
-private fun ReferenceMetric(emoji:String,value:String,label:String,modifier:Modifier=Modifier) {
-    Row(modifier.clip(RoundedCornerShape(16.dp)).background(CardInk)
-        .border(1.dp,Color(0xFFE8DDF3),RoundedCornerShape(16.dp)).padding(12.dp),
-        verticalAlignment=Alignment.CenterVertically) {
-        Text(emoji,fontSize=24.sp)
-        Spacer(Modifier.width(10.dp))
-        Column {
-            Text(value,color=Violet,fontWeight=FontWeight.Black,fontSize=20.sp)
-            Text(label,color=Muted,fontSize=10.sp)
-        }
     }
 }
 

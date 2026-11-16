@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -59,21 +58,13 @@ data class PromoBanner(
     val internalTarget: String = "",
     val imageOnly: Boolean = false
 )
-data class ExamCutoff(
-    val type: String, // "expected" or "official"
-    val marks: Map<String, Double>,
-    val sourceUrl: String,
-    val noteEn: String,
-    val noteHi: String
-)
 data class ExamEvent(
     val id: String,
     val nameEn: String,
     val nameHi: String,
     val scheduledAtMs: Long?,
     val confirmed: Boolean,
-    val sourceUrl: String,
-    val cutoff: ExamCutoff? = null
+    val sourceUrl: String
 )
 
 class EngagementRepository(private val context: Context) {
@@ -143,10 +134,8 @@ class EngagementRepository(private val context: Context) {
     }
 
     /**
-     * Exam date and cutoff share admin-only exam_events documents.
-     * The date remains invisible until officialConfirmed, an official BSSC URL
-     * and a valid Firestore Timestamp are all present. Cutoff scores are never
-     * inferred from mock results or presented as official without BSSC source.
+     * Exam date is controlled by exam_events; category cutoffs are now
+     * independent home_cards documents. No hardcoded cutoff widget.
      */
     fun observeEvents(callback: (List<ExamEvent>) -> Unit): () -> Unit {
         var disposed=false
@@ -164,31 +153,11 @@ class EngagementRepository(private val context: Context) {
                                 val confirmed=d.getBoolean("officialConfirmed")==true &&
                                     source.startsWith("https://bssc.bihar.gov.in/") &&
                                     examDate!=null
-                                val cutoffType=d.getString("cutoffType").orEmpty()
-                                val cutoffSource=d.getString("cutoffSourceUrl").orEmpty()
-                                val rawMarks=d.get("cutoffMarks") as? Map<*,*>
-                                val marks=rawMarks?.mapNotNull{(label,score)->
-                                    val name=label as? String
-                                    val number=(score as? Number)?.toDouble()
-                                    if(name.isNullOrBlank() || name.length>30 || number==null ||
-                                        !number.isFinite() || number !in 0.0..600.0)
-                                        null else name to number
-                                }?.take(16)?.toMap().orEmpty()
-                                val cutoff=if(d.getBoolean("cutoffPublished")==true &&
-                                    cutoffType in setOf("expected","official") &&
-                                    (cutoffType!="official" ||
-                                        cutoffSource.startsWith("https://bssc.bihar.gov.in/")) &&
-                                    marks.isNotEmpty())
-                                    ExamCutoff(cutoffType,marks,
-                                        if(safeHttps(cutoffSource))cutoffSource else "",
-                                        d.getString("cutoffNoteEn").orEmpty().take(200),
-                                        d.getString("cutoffNoteHi").orEmpty().take(200))
-                                else null
                                 ExamEvent(d.id,
                                     d.getString("nameEn")?:"BSSC CGL 4 Prelims",
                                     d.getString("nameHi")?:"बीएसएससी सीजीएल 4 प्रारंभिक",
                                     if(confirmed)examDate else null,
-                                    confirmed,source,cutoff)
+                                    confirmed,source)
                             }.sortedWith(compareBy<ExamEvent>{
                                 it.scheduledAtMs?:Long.MAX_VALUE
                             }.thenBy{it.id}))
@@ -231,38 +200,6 @@ fun GlobalExamHeader(hindi: Boolean, onLanguage: () -> Unit, notificationsEnable
                 Text(" | ",color=Muted,fontSize=10.sp)
                 Text("EN",fontWeight=FontWeight.Black,color=if(hindi)Muted else Violet,fontSize=10.sp)
                 Icon(Icons.Rounded.SwapHoriz,null,tint=Violet,modifier=Modifier.size(13.dp))
-            }
-        }
-    }
-}
-
-@Composable
-fun AnimatedStudyHero(hindi:Boolean,onStart:()->Unit) {
-    val movement=rememberInfiniteTransition(label="officer journey")
-    val drift by movement.animateFloat(initialValue=1f,targetValue=1.045f,
-        animationSpec=infiniteRepeatable(tween(3500),RepeatMode.Reverse),label="subtle officer artwork movement")
-    Box(Modifier.fillMaxWidth().height(186.dp).clip(RoundedCornerShape(20.dp))
-        .background(Brush.horizontalGradient(listOf(RoyalDeep,Color(0xFF591596),Color(0xFFA95BD2))))) {
-        Image(painterResource(R.drawable.officer_journey),"Aspirant studying and imagined future officer",
-            Modifier.fillMaxSize().scale(drift),contentScale=ContentScale.Crop)
-        Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(
-            RoyalDeep.copy(alpha=.99f),Royal.copy(alpha=.93f),Royal.copy(alpha=.10f)))))
-        Column(Modifier.fillMaxHeight().fillMaxWidth(.67f).padding(15.dp),
-            verticalArrangement=Arrangement.SpaceBetween) {
-            Column {
-                Text(t(hindi,"🚀 YOUR OFFICER JOURNEY","🚀 अधिकारी बनने का सपना"),
-                    color=Gold,fontSize=9.sp,fontWeight=FontWeight.Black)
-                Spacer(Modifier.height(8.dp))
-                Text(t(hindi,"Future ASO\nStarts Here","भविष्य के ASO\nकी शुरुआत यहाँ"),
-                    color=Gold,fontSize=21.sp,lineHeight=25.sp,fontWeight=FontWeight.Black)
-                Spacer(Modifier.height(7.dp))
-                Text(t(hindi,"Practice Today.\nServe Bihar Tomorrow.","आज मेहनत करें,\nकल बिहार की सेवा करें।"),
-                    color=Color.White,fontSize=10.sp,lineHeight=14.sp,fontWeight=FontWeight.SemiBold)
-            }
-            Surface(onClick=onStart,color=Gold,shape=RoundedCornerShape(40.dp)) {
-                Row(Modifier.padding(horizontal=13.dp,vertical=9.dp),verticalAlignment=Alignment.CenterVertically) {
-                    Text(t(hindi,"Start Mock →","मॉक शुरू करें →"),color=RoyalDeep,fontWeight=FontWeight.Black,fontSize=11.sp)
-                }
             }
         }
     }
@@ -325,73 +262,6 @@ fun ExamCountdown(events:List<ExamEvent>,hindi:Boolean) {
                     catch (_:Exception) {}
                 }
             }) { Text(t(hindi,"Notice ↗","नोटिस ↗"),color=Gold,fontSize=11.sp) }
-        }
-    }
-}
-
-@Composable
-fun ExamCutoffCard(events:List<ExamEvent>,hindi:Boolean) {
-    val cutoff=events.firstOrNull{it.cutoff!=null}?.cutoff
-    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(19.dp))
-        .background(CardInk).padding(14.dp),
-        verticalArrangement=Arrangement.spacedBy(10.dp)) {
-        Row(verticalAlignment=Alignment.CenterVertically) {
-            Text("🎯",fontSize=25.sp)
-            Spacer(Modifier.width(9.dp))
-            Column(Modifier.weight(1f)) {
-                Text(t(hindi,"Cut-off tracker","कट-ऑफ ट्रैकर"),
-                    color=SoftWhite,fontWeight=FontWeight.Black,fontSize=16.sp)
-                Text(if(cutoff==null)
-                    t(hindi,"No cut-off published yet","कट-ऑफ अभी प्रकाशित नहीं हुआ है")
-                else if(cutoff.type=="official")
-                    t(hindi,"Official · Source linked","आधिकारिक · स्रोत उपलब्ध")
-                else t(hindi,"Expected · Not official","अनुमानित · आधिकारिक नहीं"),
-                    color=if(cutoff?.type=="official")Aqua else Muted,
-                    fontWeight=FontWeight.Bold,fontSize=11.sp)
-            }
-        }
-        if(cutoff==null) {
-            Text(t(hindi,"Category-wise marks will appear here when configured in Firebase. No estimates are shown without a source.",
-                "Firebase में सेट होने पर श्रेणीवार अंक दिखेंगे। बिना पुष्टि के कोई अंक नहीं दिखेंगे।"),
-                color=Muted,fontSize=11.sp,lineHeight=16.sp)
-        } else {
-            val order=listOf("UR","GENERAL","EWS","BC","EBC","SC","ST","WOMEN","PWD")
-            val entries=cutoff.marks.entries.sortedWith(compareBy({
-                val index=order.indexOf(it.key.uppercase(Locale.ROOT))
-                if(index<0)100 else index
-            },{it.key}))
-            entries.chunked(2).forEach {pair ->
-                Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
-                    pair.forEach {item ->
-                        Column(Modifier.weight(1f).clip(RoundedCornerShape(12.dp))
-                            .background(SoftLavender).padding(10.dp)) {
-                            Text(item.key,color=Muted,fontWeight=FontWeight.Bold,fontSize=11.sp)
-                            val markText=if(item.value%1.0==0.0)item.value.toInt().toString()
-                                else "%.2f".format(Locale.US,item.value).trimEnd('0').trimEnd('.')
-                            Text("$markText / 600",color=RoyalDeep,
-                                fontWeight=FontWeight.Black,fontSize=17.sp)
-                        }
-                    }
-                    if(pair.size==1) Spacer(Modifier.weight(1f))
-                }
-            }
-            val note=t(hindi,cutoff.noteEn,cutoff.noteHi.ifBlank{cutoff.noteEn})
-            if(note.isNotBlank()) Text(note,color=Muted,fontSize=11.sp,lineHeight=16.sp)
-            if(cutoff.type=="expected") Text(
-                t(hindi,"Estimated cut-off, not a BSSC announcement.",
-                    "यह अनुमानित कट-ऑफ है, BSSC की घोषणा नहीं।"),
-                color=Amber,fontWeight=FontWeight.Bold,fontSize=11.sp)
-            if(safeHttps(cutoff.sourceUrl)) {
-                val context=LocalContext.current
-                TextButton(onClick={
-                    try {
-                        context.startActivity(Intent(Intent.ACTION_VIEW,Uri.parse(cutoff.sourceUrl)))
-                    } catch (_:Exception) {}
-                }) {
-                    Text(t(hindi,"View cut-off source ↗","कट-ऑफ स्रोत देखें ↗"),
-                        color=Violet,fontWeight=FontWeight.Black,fontSize=11.sp)
-                }
-            }
         }
     }
 }
