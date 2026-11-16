@@ -9,7 +9,7 @@ import com.google.firebase.firestore.Query
 import org.json.JSONArray
 import org.json.JSONObject
 
-/** No registration page: Firebase creates a silent anonymous identity for protected reads/rankings. */
+/** Anonymous Firebase identity can fetch catalogues; V22 gates the UI until Google account + mobile registration. */
 object CloudBackend {
     private var instance: FirebaseApp? = null
     fun configured() = BuildConfig.FIREBASE_API_KEY.isNotBlank() && BuildConfig.FIREBASE_APP_ID.isNotBlank() &&

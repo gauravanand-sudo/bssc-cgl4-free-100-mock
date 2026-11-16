@@ -375,8 +375,16 @@ class MainActivity : ComponentActivity() {
                                 Tab.PROFILE -> ProfileScreen(name,hindi,attempts.size,Modifier,
                                     student=signupState as? SignupState.Ready,
                                     onEditContact={editingContact=true},
-                                    onSignOut={studentRegistration.signOut(this@MainActivity);
-                                        editingContact=false;debugPracticeOnly=false},
+                                    onSignOut={
+                                        studentRegistration.signOut(this@MainActivity)
+                                        store.clearAll()
+                                        questions.clearPaperCache()
+                                        catalog.clearCache()
+                                        attempts=emptyList();activeSession=null
+                                        unlocked=emptySet();rewardCredits=emptyMap()
+                                        name="Aspirant";hindi=false;tab=Tab.HOME
+                                        editingContact=false;debugPracticeOnly=false
+                                    },
                                     notificationsEnabled=notificationsEnabled,onNotifications=toggleNotifications,
                                     onSetName={name=it;store.setName(it)},
                                     onSetHindi={hindi=it;store.setHindi(it)},

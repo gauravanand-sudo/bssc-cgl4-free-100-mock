@@ -1,45 +1,36 @@
-# Draft privacy policy — BSSC CGL 4 Free 100 Mock
+# Privacy Policy Draft — OneShotGS BSSC CGL 4 Free Mock (V22)
 
-> **TEMPLATE ONLY — COMPLETE THE BLANKS, VERIFY THE SDK BEHAVIOUR, SEEK APPROPRIATE LEGAL REVIEW, AND HOST AT A PUBLIC HTTPS URL BEFORE PUBLISHING.**
+**Draft for publisher review, not a publicly hosted policy. Fill in legal publisher name, retention period, effective date and hosted URL before distributing the app.**
 
-Last updated: [DATE]
+Effective date: [ENTER DATE].
+Publisher: [LEGAL ENTITY], email: ruhionlabs@gmail.com.
+OneShotGS BSSC CGL 4 Free Mock is independent and is not affiliated with BSSC or the Bihar Government.
 
-BSSC CGL 4 Free 100 Mock is independently developed by [PUBLISHER LEGAL NAME], reachable at [CONTACT EMAIL]. It is not affiliated with or endorsed by Bihar Staff Selection Commission.
+## Account registration
+To create a student account, you sign in with Google. Firebase Authentication processes your Google account identifier, name and email address. You provide an Indian mobile number to complete student registration. The number is **self-entered and not verified by an OTP**; we cannot guarantee the number belongs to the account holder.
 
-## Information stored locally
+We store your Google email, display name, user identifier, phone number, an explicit separate opt-in flag for WhatsApp exam updates, and registration/update timestamps in Cloud Firestore. The opt-in is **off by default** and can be changed later in More > Edit mobile / consent. We will not use a number for promotional messaging without appropriate affirmative consent. WhatsApp use must also comply with Meta's requirements.
 
-The app stores your nickname, language preference, exam answers, marked questions, unlocked mock IDs, cached question papers, downloaded test metadata, and attempt results on your device. The app uses Android local preferences for these records. Device backups are disabled by the app manifest. Uninstalling normally deletes this local app data.
+## Why this data is collected
+- To identify an account, support students, maintain a reliable registration count and provide exam-related communications when you opt in.
+- The account cannot receive SMS/WhatsApp OTP via the app; no automated WhatsApp messaging service is currently integrated.
+- Only authorized publisher administrators may access the registration database. Other students cannot read your contact profile. Public leaderboards do not show email or phone.
+- Student registration data is not sold.
 
-## Online leaderboard data (if enabled)
+## Practice activity and local data
+The app stores mock answers, attempt scores, language preferences and ad-reward unlocks on the device. These local records are not currently synced across Google accounts. Signing out clears this local progress, so another person cannot view it. Deleting the account also clears local records.
 
-If Firestore is enabled, Firebase Authentication silently creates a pseudonymous anonymous user ID (there is no signup screen). The ID is also used to request published test content and, if enabled, to participate in rankings. Cloud Firestore stores that ID, your chosen display name/nickname, best score for each mock, correct-answer count and submission time. Leaderboard names and results may be visible to other app users. This data is used for ranking and app functionality.
+## Cloud services, advertisements and notifications
+Firebase/Google process information needed to provide authentication, Firestore and opt-in push notifications. AdMob may process advertising/device data and app interactions in accordance with Google policies. The app asks for advertising consent when applicable and uses Google's test ads in the review APK. Firebase-controlled promotions can link to external HTTPS web pages; see those websites' privacy notices.
 
-## Ads and third-party services
+## Sharing and security
+We use Firebase Authentication and Firestore security rules to restrict student profile reads/edits to the owning UID. Authorized administrators can access data via Firebase Console/Admin SDK. Internet services cannot guarantee zero security risk.
 
-Google AdMob may process advertising identifiers, device and interaction information as described by Google's privacy practices. The app supports adaptive banners, inline native ads, optional rewarded and rewarded-interstitial unlock ads, frequency-capped interstitials at natural post-result breaks, and app-open ads when returning to the home screen. Timed exams contain no advertising. Native ads are visibly identified as sponsored. A rewarded video grants content only after an SDK reward callback. Where applicable, Google User Messaging Platform obtains privacy choices. See Google's privacy information: https://policies.google.com/privacy.
+## Deletion and retention
+More > Delete account & app data removes the registration document, ranking rows and Firebase account, then local content, when online deletion succeeds. Recent Google reauthentication might be needed if Firebase refuses account deletion. The publisher must define its actual retention period: [ENTER]. To request assistance, email ruhionlabs@gmail.com.
 
-## Optional exam alerts and controlled banners
+## Children and jurisdiction
+Designed for competitive examination aspirants. If students under 18 may use it, the publisher must evaluate applicable child-data and parental-consent obligations before deployment. [ENTER TARGET AUDIENCE AND OTHER REQUIRED DISCLOSURES.]
 
-If you opt into alerts, Firebase Cloud Messaging may create an app-instance messaging token and use it to subscribe this installation to the exam-update topic. The token can be used to deliver notifications about exam announcements and new mock tests; this app does not save the FCM token in its Firestore database or ask for an email address. Android 13+ asks for system notification permission. You can switch off notifications in Profile or device settings. Google Firebase may process information needed to deliver messages; see https://firebase.google.com/support/privacy .
-
-The app may show promotional banners supplied by the publisher through Firebase Firestore. Tapping an active banner opens an external HTTPS page. That site may have its own privacy practices. A banner is separate from AdMob ads. The publisher can update the banner title, image, link or its active period without releasing a new version of the app. Exam countdown dates are drawn from publisher-managed Firestore documents, and are shown as confirmed only when linked to official BSSC notices.
-
-## Retention and deletion
-
-Local exam results remain until the user clears app data or uninstalls. Optional Firebase leaderboard data persists according to [DEFINE YOUR ACTUAL RETENTION POLICY]. You can choose **Profile > Delete app & ranking data** to delete local results and your optional Firebase anonymous leaderboard account and scores. This action also clears downloaded paper/cache files and local catalogue metadata after successful cloud identity deletion, where configured. When online rankings are enabled, this requires internet access; if cloud deletion fails, the app keeps data so you can retry. You may also request assistance from [CONTACT EMAIL]. [VERIFY ACTUAL BACKEND DATA DELETION AND APPLICABLE GOOGLE PLAY REQUIREMENTS BEFORE RELEASE.]
-
-## Data security
-
-Data is protected through platform and cloud security features but no internet service offers absolute security. Cloud rules restrict writes to authenticated user rows; client-side exam scores in this prototype are not independently verified.
-
-## Children
-
-The app is intended for competitive exam aspirants, not specifically for children. [DEFINE THE ACTUAL TARGET AUDIENCE AND AD CONTENT RATING.]
-
-## Contact
-
-For privacy questions and data deletion requests: [CONTACT EMAIL].
-
-## Changes
-
-We may update this policy and will publish the effective date and new policy at [PUBLIC URL].
+## Changes and contact
+For privacy requests, contact ruhionlabs@gmail.com. The maintained policy will be hosted at [PUBLIC HTTPS URL], and updates will show an effective date. Google privacy: https://policies.google.com/privacy, Firebase privacy: https://firebase.google.com/support/privacy .

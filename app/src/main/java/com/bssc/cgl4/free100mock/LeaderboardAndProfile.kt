@@ -143,6 +143,7 @@ import androidx.compose.ui.unit.sp
                                onSetName:(String)->Unit,onSetHindi:(Boolean)->Unit,onPrivacy:()->Unit, onDelete:()->Unit, ads:AdController) {
     var draft by remember(name) {mutableStateOf(name)}
     var confirmDelete by remember { mutableStateOf(false) }
+    var confirmSignOut by remember { mutableStateOf(false) }
     val context= LocalContext.current
     Column(modifier.fillMaxSize().background(Ink).verticalScroll(rememberScrollState())
         .padding(20.dp),verticalArrangement=Arrangement.spacedBy(18.dp)) {
@@ -180,7 +181,7 @@ import androidx.compose.ui.unit.sp
             OutlinedButton(onClick=onEditContact,enabled=student!=null) {
                 Text(t(hindi,"Edit mobile / consent","मोबाइल / सहमति बदलें"),color=Violet)
             }
-            TextButton(onClick=onSignOut,enabled=student!=null) {
+            TextButton(onClick={confirmSignOut=true},enabled=student!=null) {
                 Text(t(hindi,"Sign out","साइन आउट"),color=Violet)
             }
         }
@@ -325,6 +326,19 @@ import androidx.compose.ui.unit.sp
         Text("BSSC CGL 4 Free 100 Mock · v" + BuildConfig.VERSION_NAME + " · " + BrandCopy.tagline(hindi),
             color=Muted,fontSize=11.sp)
     }
+    if(confirmSignOut) AlertDialog(
+        onDismissRequest={confirmSignOut=false},containerColor=CardInk,
+        title={Text(t(hindi,"Sign out and clear device data?","साइन आउट कर डिवाइस डेटा मिटाएँ?"),color=SoftWhite)},
+        text={Text(t(hindi,
+            "Mock attempts and unlocks are saved on this device, not synced across accounts. Signing out clears local progress so the next student cannot see it.",
+            "मॉक के परिणाम और अनलॉक इस डिवाइस पर सहेजे जाते हैं। साइन आउट पर स्थानीय प्रगति मिटेगी ताकि दूसरे छात्र को यह न दिखे।"),
+            color=Muted)},
+        confirmButton={TextButton(onClick={confirmSignOut=false;onSignOut()}) {
+            Text(t(hindi,"Clear and sign out","डेटा हटाकर साइन आउट"),color=Red)
+        }},
+        dismissButton={TextButton(onClick={confirmSignOut=false}) {
+            Text(t(hindi,"Cancel","रद्द करें"),color=Violet)
+        }})
     if(confirmDelete) AlertDialog(onDismissRequest={confirmDelete=false},containerColor=CardInk,
         title={Text("Permanently delete your data?",color=SoftWhite)},
         text={Text("This removes saved results and mock unlocks. It cannot be undone.",color=Muted)},
