@@ -59,10 +59,12 @@ object HomeCardPolicy {
         if(imageUrl.isNotBlank() && !safeHttps(imageUrl)) return false
         if(titleEn.isBlank() && titleHi.isBlank() && imageUrl.isBlank()) return false
         if(type=="image" && !safeHttps(imageUrl)) return false
-        if(type=="cutoff" && (value.isBlank() || claim !in claims ||
-            (claim=="official" &&
-            (!safeHttps(sourceUrl) || !sourceUrl.startsWith("https://bssc.bihar.gov.in/"))))
-            return false
+        if(type=="cutoff") {
+            if(value.isBlank() || claim !in claims) return false
+            if(claim=="official" &&
+                (!safeHttps(sourceUrl) ||
+                 !sourceUrl.startsWith("https://bssc.bihar.gov.in/"))) return false
+        }
         return sourceUrl.isBlank() || safeHttps(sourceUrl)
     }
 
