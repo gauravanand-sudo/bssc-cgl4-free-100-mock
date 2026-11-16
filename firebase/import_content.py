@@ -82,14 +82,29 @@ def main():
         doc=f'mock_{number:03d}'
         title,subtitle,difficulty=DEFAULT_TITLES.get(number,(f'Mock {number:03d}','Full-length BSSC CGL 4 practice','Balanced'))
         custom=metadata.get(number,{})
-        # Paper first; publish catalogue last so a new visible mock always has questions.
-        db.collection('mock_papers').document(doc).set({'questionsJson':raw,'version':int(custom.get('version',1))})
-        db.collection('mock_catalog').document(doc).set({
-            'testId':number,'title':custom.get('title',title),'subtitle':custom.get('subtitle',subtitle),
+        # Upload the paper first; catalogue metadata is the separately controlled
+        # listing state. IMPORTANT: merge preserves a Firebase Upcoming switch
+        # and any scheduled display date instead of making a mock playable
+        # automatically just because its questions were uploaded.
+        status=custom.get('status')
+        if status is not None and status not in ('upcoming','available'):
+            raise ValueError(f'{doc}: status must be upcoming or available')
+        fields={
+            'testId':number,'title':custom.get('title',title),
+            'subtitle':custom.get('subtitle',subtitle),
             'difficulty':custom.get('difficulty',difficulty),'questionCount':150,
-            'durationMinutes':135,'sortOrder':number,'isFree':bool(custom.get('isFree',number<=2)),
+            'durationMinutes':135,'sortOrder':number,
+            'isFree':bool(custom.get('isFree',number<=2)),
             'version':int(custom.get('version',1)),'published':bool(args.publish)
+        }
+        for field in ('titleHi','comingSoonTextEn','comingSoonTextHi'):
+            if field in custom:
+                fields[field]=str(custom[field])[:160]
+        if status is not None: fields['status']=status
+        db.collection('mock_papers').document(doc).set({
+            'questionsJson':raw,'version':int(custom.get('version',1))
         })
+        db.collection('mock_catalog').document(doc).set(fields,merge=True)
         print(f'{doc}: uploaded ({"PUBLISHED" if args.publish else "DRAFT"})')
     print('Done. Test from a device with Anonymous Auth enabled and rules deployed.')
 

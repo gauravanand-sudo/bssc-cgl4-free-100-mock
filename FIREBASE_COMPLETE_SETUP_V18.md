@@ -70,6 +70,11 @@ configured in `GOOGLE_APPLICATION_CREDENTIALS`. The release command refuses
 to mark a mock available unless its 150-question paper is uploaded and
 structurally valid. Never place that credential in GitHub or the Android APK.
 To import a reviewed 150-question paper, use `firebase/import_content.py`.
+The importer now merges catalogue metadata: uploading questions **does not
+silently overwrite an existing `status=upcoming`**. After review and upload,
+explicitly release the mock in Firebase Console or the admin helper.
+A new document without a status uses legacy default `available` once published.
+
 
 ## 2. Home promotional banner — exactly ONE
 
