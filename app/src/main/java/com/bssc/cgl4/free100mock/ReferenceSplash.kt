@@ -31,13 +31,21 @@ import kotlinx.coroutines.delay
         verticalArrangement=Arrangement.SpaceBetween) {
         Spacer(Modifier.height(4.dp))
         Column(horizontalAlignment=Alignment.CenterHorizontally) {
-            Image(painterResource(R.drawable.brand_icon),"Original Bihar recruitment exam prep app icon",
-                Modifier.size(128.dp).clip(RoundedCornerShape(24.dp)))
-            Spacer(Modifier.height(14.dp))
-            Text("BSSC CGL 4",color=Color.White,fontSize=27.sp,fontWeight=FontWeight.Black)
-            Text("Free 100 Mock",color=Gold,fontSize=24.sp,fontWeight=FontWeight.Black)
-            Spacer(Modifier.height(9.dp))
-            Text(BrandCopy.tagline(hindi),color=Gold,fontSize=19.sp,fontWeight=FontWeight.Bold)
+            Image(painterResource(R.drawable.brand_icon),
+                "BSSC CGL 4 target and exam-book symbol",
+                Modifier.size(100.dp).clip(RoundedCornerShape(22.dp)))
+            Spacer(Modifier.height(10.dp))
+            Text("बीएसएससी सीजीएल 4",color=Color.White,
+                fontSize=22.sp,fontWeight=FontWeight.Black)
+            Text("फ्री मॉक",color=Gold,
+                fontSize=21.sp,fontWeight=FontWeight.Black)
+            Text("BSSC CGL 4 Free Mock",color=Color.White,
+                fontSize=17.sp,fontWeight=FontWeight.Black)
+            Spacer(Modifier.height(8.dp))
+            Text("लक्ष्य: १५,००० प्रश्न",color=Gold,
+                fontSize=15.sp,fontWeight=FontWeight.Black)
+            Text(t(hindi,"100 planned mock tests","१०० नियोजित मॉक टेस्ट"),
+                color=Color.White.copy(alpha=.86f),fontSize=11.sp)
         }
         Image(painterResource(R.drawable.officer_journey),"Journey from aspirant to future officer",
             Modifier.fillMaxWidth().height(200.dp).scale(scale).clip(RoundedCornerShape(23.dp)),
