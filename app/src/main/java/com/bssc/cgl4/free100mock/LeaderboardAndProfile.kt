@@ -37,11 +37,23 @@ import androidx.compose.ui.unit.sp
     }
     LazyColumn(modifier.fillMaxSize().background(Ink), contentPadding=PaddingValues(20.dp),
         verticalArrangement=Arrangement.spacedBy(18.dp)) {
-        item {
-            CapsLabel(t(hindi,"COMMUNITY LEADERBOARD","अभ्यर्थियों की रैंकिंग"),Amber)
-            Spacer(Modifier.height(7.dp))
-            Headline(BrandCopy.screen("ranking","title",hindi,t(hindi,"Learn. Improve. Rise.","सीखें, सुधारें, आगे बढ़ें।")))
-            Text(BrandCopy.screen("ranking","subtitle",hindi,t(hindi,"Compare with aspirants who took the same mock","उसी मॉक के अभ्यर्थियों से तुलना करें")),color=Muted,fontSize=12.sp)
+        item(key="leaderboard-hero") {
+            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(23.dp))
+                .background(androidx.compose.ui.graphics.Brush.horizontalGradient(
+                    listOf(RoyalDeep,Royal,Color(0xFF7C2EBB))))
+                .padding(17.dp),verticalAlignment=Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(t(hindi,"🏆 PRACTICE LEADERBOARD","🏆 अभ्यास रैंकिंग"),
+                        color=Gold,fontWeight=FontWeight.Black,fontSize=10.sp)
+                    Text(BrandCopy.screen("ranking","title",hindi,
+                        t(hindi,"Learn. Improve. Rise.","सीखें, सुधारें, आगे बढ़ें।")),
+                        color=Color.White,fontWeight=FontWeight.Black,fontSize=22.sp,lineHeight=27.sp)
+                    Text(t(hindi,"Compare with aspirants on the same mock.",
+                        "उसी मॉक के अभ्यर्थियों से तुलना करें।"),
+                        color=Color.White.copy(alpha=.91f),fontSize=11.sp)
+                }
+                Text("🥇",fontSize=40.sp)
+            }
         }
         item {
             LazyRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
@@ -130,10 +142,24 @@ import androidx.compose.ui.unit.sp
     val context= LocalContext.current
     Column(modifier.fillMaxSize().background(Ink).verticalScroll(rememberScrollState())
         .padding(20.dp),verticalArrangement=Arrangement.spacedBy(18.dp)) {
-        CapsLabel("YOUR SPACE",Violet)
-        Headline(BrandCopy.screen("profile","title",hindi,t(hindi,"My Preparation","मेरी तैयारी")))
+        Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp))
+            .background(androidx.compose.ui.graphics.Brush.horizontalGradient(
+                listOf(RoyalDeep,Royal,Color(0xFF7432AD))))
+            .padding(16.dp),verticalAlignment=Alignment.CenterVertically) {
+            Text("👨‍🎓",fontSize=36.sp)
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text("✨ "+t(hindi,"YOUR SPACE","आपकी प्रोफ़ाइल"),
+                    color=Gold,fontSize=10.sp,fontWeight=FontWeight.Black)
+                Text(BrandCopy.screen("profile","title",hindi,
+                    t(hindi,"My Preparation","मेरी तैयारी")),
+                    color=Color.White,fontWeight=FontWeight.Black,fontSize=22.sp)
+                Text("${attempts} "+t(hindi,"attempts saved","प्रयास सुरक्षित"),
+                    color=Color.White.copy(alpha=.92f),fontSize=11.sp)
+            }
+        }
         Panel {
-            Text("DISPLAY NAME",color=Muted,fontSize=11.sp,fontWeight=FontWeight.Bold)
+            Text("✍️ "+t(hindi,"DISPLAY NAME","नाम सेट करें"),color=Muted,fontSize=11.sp,fontWeight=FontWeight.Bold)
             Spacer(Modifier.height(8.dp))
             OutlinedTextField(value=draft,onValueChange={if(it.length<=28) draft=it},singleLine=true,
                 modifier=Modifier.fillMaxWidth(),label={Text("Name on rankings")},
@@ -179,7 +205,8 @@ import androidx.compose.ui.unit.sp
         }
         SponsoredBanner(ads)
         Panel {
-            Text("ADS & PRIVACY",color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=14.sp)
+            Text("🛡️ "+t(hindi,"ADS & PRIVACY","विज्ञापन और गोपनीयता"),
+                color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=14.sp)
             Spacer(Modifier.height(8.dp))
             Text("Rewarded ads are optional: mocks 3–50 need 1 completed ad, and mocks 51–100 need 2 completed ads. Each credit and unlock is saved on this device. Consent choices can be changed here where applicable.",
                 color=Muted,fontSize=12.sp,lineHeight=19.sp)
@@ -197,7 +224,8 @@ import androidx.compose.ui.unit.sp
             }) { Text("Official BSSC notice board ↗",color=Aqua) }
         }
         Panel {
-            Text("Delete my data",color=SoftWhite,fontWeight=FontWeight.Bold)
+            Text("🗑️ "+t(hindi,"Delete my data","मेरा डेटा मिटाएँ"),
+                color=SoftWhite,fontWeight=FontWeight.Bold)
             Spacer(Modifier.height(7.dp))
             Text("Delete saved attempts, unlocked mocks and your online leaderboard identity (if configured). Requires connectivity when using rankings.",
                 color=Muted,fontSize=12.sp,lineHeight=19.sp)

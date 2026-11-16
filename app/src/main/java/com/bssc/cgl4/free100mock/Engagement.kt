@@ -169,7 +169,7 @@ fun AnimatedStudyHero(hindi:Boolean,onStart:()->Unit) {
         Column(Modifier.fillMaxHeight().fillMaxWidth(.67f).padding(15.dp),
             verticalArrangement=Arrangement.SpaceBetween) {
             Column {
-                Text(t(hindi,"YOUR OFFICER JOURNEY ✦","अधिकारी बनने का सपना ✦"),
+                Text(t(hindi,"🚀 YOUR OFFICER JOURNEY","🚀 अधिकारी बनने का सपना"),
                     color=Gold,fontSize=9.sp,fontWeight=FontWeight.Black)
                 Spacer(Modifier.height(8.dp))
                 Text(t(hindi,"Future ASO\nStarts Here","भविष्य के ASO\nकी शुरुआत यहाँ"),
@@ -240,6 +240,15 @@ fun FirebasePromotions(banners:List<PromoBanner>,hindi:Boolean,
                        onInternalAction:(String)->Unit={}) {
     if (banners.isEmpty()) return
     val pager=androidx.compose.foundation.pager.rememberPagerState(pageCount={banners.size})
+    // Autoplay editorial promotions only when this Home widget is composed.
+    // Pauses for active swipes; ads themselves never autoplay or reload here.
+    LaunchedEffect(banners.map{it.id}) {
+        if(banners.size>1) while(true) {
+            delay(6500L)
+            if(!pager.isScrollInProgress)
+                pager.animateScrollToPage((pager.currentPage+1)%banners.size)
+        }
+    }
     Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
             Text(t(hindi,"FEATURED FOR YOU","आपके लिए खास"),

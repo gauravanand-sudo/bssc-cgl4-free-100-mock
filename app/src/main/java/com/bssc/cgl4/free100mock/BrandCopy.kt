@@ -81,7 +81,7 @@ fun OfficerMotivationCard(hindi: Boolean) {
         Row(verticalAlignment=Alignment.CenterVertically) {
             Icon(Icons.Rounded.AutoAwesome,null,tint=Amber,modifier=Modifier.size(21.dp))
             Spacer(Modifier.width(8.dp))
-            Text(t(hindi,"THE OFFICER MINDSET","अधिकारी बनने का संकल्प"),
+            Text(t(hindi,"✨ THE OFFICER MINDSET","✨ अधिकारी बनने का संकल्प"),
                 fontSize=10.sp,fontWeight=FontWeight.Black,color=Violet,letterSpacing=.6.sp)
         }
         Spacer(Modifier.height(8.dp))
