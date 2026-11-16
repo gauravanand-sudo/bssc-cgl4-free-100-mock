@@ -74,6 +74,7 @@ class MainActivity : ComponentActivity() {
         adController = AdController(this)
         val ads = adController
         val board = LeaderboardRepository(this)
+        val studentRegistration = StudentRegistrationRepository(this)
         val engagement = EngagementRepository(this)
         val homeContent = HomeCardsRepository(this)
         val notificationPrefs = PushPreferences(this)
@@ -111,6 +112,13 @@ class MainActivity : ComponentActivity() {
                 var homeCards by remember { mutableStateOf<List<HomeCard>>(emptyList()) }
                 var notificationsEnabled by remember { mutableStateOf(notificationPrefs.enabled()) }
                 var splash by remember { mutableStateOf(true) }
+                var signupState by remember { mutableStateOf<SignupState>(SignupState.Loading) }
+                var editingContact by remember { mutableStateOf(false) }
+                var debugPracticeOnly by remember { mutableStateOf(false) }
+                DisposableEffect(Unit) {
+                    val stop = studentRegistration.observe { signupState = it }
+                    onDispose { stop() }
+                }
                 val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
                     if (granted) notificationPrefs.change(true) { ok ->
                         notificationsEnabled=ok
@@ -365,6 +373,10 @@ class MainActivity : ComponentActivity() {
                                     onViewResult={newlyFinished=false;route=Route.Result(it)},ads=ads)
                                 Tab.RANKS -> LeaderboardScreen(board,tests,Modifier,hindi,ads=ads)
                                 Tab.PROFILE -> ProfileScreen(name,hindi,attempts.size,Modifier,
+                                    student=signupState as? SignupState.Ready,
+                                    onEditContact={editingContact=true},
+                                    onSignOut={studentRegistration.signOut(this@MainActivity);
+                                        editingContact=false;debugPracticeOnly=false},
                                     notificationsEnabled=notificationsEnabled,onNotifications=toggleNotifications,
                                     onSetName={name=it;store.setName(it)},
                                     onSetHindi={hindi=it;store.setHindi(it)},
@@ -394,6 +406,36 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     if(splash) ReferenceSplash(hindi)
+                    else if ((signupState !is SignupState.Ready && !debugPracticeOnly) || editingContact) {
+                        val form = if(editingContact && signupState is SignupState.Ready) {
+                            val registered = signupState as SignupState.Ready
+                            SignupState.NeedsPhone(registered.email,registered.displayName,
+                                registered.phone,registered.whatsappOptIn)
+                        } else signupState
+                        StudentRegistrationGate(
+                            state=form,hindi=hindi,editing=editingContact,
+                            onGoogle={ callback ->
+                                studentRegistration.signInWithGoogle(this@MainActivity,callback)
+                            },
+                            onSave={ mobile,optIn,callback ->
+                                studentRegistration.savePhone(mobile,optIn) { ready,error ->
+                                    if (ready != null) {
+                                        signupState=ready
+                                        editingContact=false
+                                        if(name=="Aspirant" && ready is SignupState.Ready &&
+                                            ready.displayName.isNotBlank()) {
+                                            name=ready.displayName.take(28)
+                                            store.setName(name)
+                                        }
+                                    }
+                                    callback(error)
+                                }
+                            },
+                            onRetry={studentRegistration.loadProfile{signupState=it}},
+                            onCancel={editingContact=false},
+                            onPreview={debugPracticeOnly=true}
+                        )
+                    }
                 }
                 if(confirmExitTest && route is Route.Exam) AlertDialog(
                     onDismissRequest={confirmExitTest=false},

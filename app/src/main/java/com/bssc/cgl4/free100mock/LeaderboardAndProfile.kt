@@ -138,6 +138,7 @@ import androidx.compose.ui.unit.sp
 }
 
 @Composable fun ProfileScreen(name:String, hindi:Boolean, attempts:Int, modifier:Modifier,
+                               student:SignupState.Ready?,onEditContact:()->Unit,onSignOut:()->Unit,
                                notificationsEnabled:Boolean,onNotifications:()->Unit,
                                onSetName:(String)->Unit,onSetHindi:(Boolean)->Unit,onPrivacy:()->Unit, onDelete:()->Unit, ads:AdController) {
     var draft by remember(name) {mutableStateOf(name)}
@@ -159,6 +160,28 @@ import androidx.compose.ui.unit.sp
                     color=Color.White,fontWeight=FontWeight.Black,fontSize=22.sp)
                 Text("${attempts} "+t(hindi,"attempts saved","प्रयास सुरक्षित"),
                     color=Color.White.copy(alpha=.92f),fontSize=11.sp)
+            }
+        }
+        Panel {
+            Text(t(hindi,"👤 Registered student","👤 पंजीकृत छात्र"),
+                color=SoftWhite,fontWeight=FontWeight.Black,fontSize=16.sp)
+            Spacer(Modifier.height(8.dp))
+            Text(student?.email ?: t(hindi,"Review mode (not registered)","समीक्षा मोड (पंजीकृत नहीं)"),
+                color=Violet,fontSize=13.sp)
+            Text(student?.phone ?: t(hindi,"No phone saved","मोबाइल नंबर नहीं सहेजा गया"),
+                color=SoftWhite,fontSize=13.sp)
+            Text(t(hindi,"Phone is self-reported, not OTP-verified.",
+                "मोबाइल नंबर OTP से सत्यापित नहीं है।"),color=Muted,fontSize=10.sp)
+            Text(t(hindi,"WhatsApp updates: ","WhatsApp अपडेट: ")+
+                (if(student?.whatsappOptIn==true) t(hindi,"Opted in","सहमति दी")
+                else t(hindi,"Not opted in","सहमति नहीं दी")),
+                color=Muted,fontSize=11.sp)
+            Spacer(Modifier.height(9.dp))
+            OutlinedButton(onClick=onEditContact,enabled=student!=null) {
+                Text(t(hindi,"Edit mobile / consent","मोबाइल / सहमति बदलें"),color=Violet)
+            }
+            TextButton(onClick=onSignOut,enabled=student!=null) {
+                Text(t(hindi,"Sign out","साइन आउट"),color=Violet)
             }
         }
         Panel {
@@ -293,10 +316,10 @@ import androidx.compose.ui.unit.sp
             Text("🗑️ "+t(hindi,"Delete my data","मेरा डेटा मिटाएँ"),
                 color=SoftWhite,fontWeight=FontWeight.Bold)
             Spacer(Modifier.height(7.dp))
-            Text("Delete saved attempts, unlocked mocks and your online leaderboard identity (if configured). Requires connectivity when using rankings.",
+            Text("Delete saved attempts, unlocked mocks, private registration profile and your Firebase account. Requires connectivity.",
                 color=Muted,fontSize=12.sp,lineHeight=19.sp)
             Spacer(Modifier.height(9.dp))
-            OutlinedButton(onClick={confirmDelete=true}) { Text("Delete app & ranking data",color=Red) }
+            OutlinedButton(onClick={confirmDelete=true}) { Text("Delete account & app data",color=Red) }
         }
         BiharLoveFooter(hindi)
         Text("BSSC CGL 4 Free 100 Mock · v" + BuildConfig.VERSION_NAME + " · " + BrandCopy.tagline(hindi),

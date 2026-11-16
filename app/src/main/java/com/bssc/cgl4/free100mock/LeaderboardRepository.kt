@@ -65,6 +65,7 @@ class LeaderboardRepository(context: Context) {
         val user = login.currentUser ?: run { onComplete(false); return }
         val batch = firestore.batch()
         (1..100).forEach { id -> batch.delete(firestore.collection("leaderboard_mock_$id").document(user.uid)) }
+        batch.delete(firestore.collection("student_profiles").document(user.uid))
         batch.commit().addOnSuccessListener {
             user.delete().addOnCompleteListener { onComplete(it.isSuccessful) }
         }.addOnFailureListener { onComplete(false) }

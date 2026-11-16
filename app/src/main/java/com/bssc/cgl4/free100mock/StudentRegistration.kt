@@ -1,6 +1,6 @@
 package com.bssc.cgl4.free100mock
 
-import android.app.Activity
+import androidx.activity.ComponentActivity
 import android.content.Context
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
@@ -123,7 +123,7 @@ class StudentRegistrationRepository(private val context: Context) {
         return if (id != 0) context.getString(id) else ""
     }
 
-    fun signInWithGoogle(activity: Activity, complete: (String?) -> Unit) {
+    fun signInWithGoogle(activity: ComponentActivity, complete: (String?) -> Unit) {
         val firebaseAuth = auth ?: run {
             complete("Firebase is not configured.")
             return
@@ -214,7 +214,7 @@ class StudentRegistrationRepository(private val context: Context) {
         }
     }
 
-    fun signOut(activity: Activity) {
+    fun signOut(activity: ComponentActivity) {
         auth?.signOut()
         activity.lifecycleScope.launch {
             try {
@@ -231,10 +231,11 @@ fun StudentRegistrationGate(
     state: SignupState,
     hindi: Boolean,
     editing: Boolean,
-    onGoogle: () -> Unit,
+    onGoogle: ((String?) -> Unit) -> Unit,
     onSave: (String, Boolean, (String?) -> Unit) -> Unit,
     onRetry: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onPreview: () -> Unit
 ) {
     var phone by remember(state) {
         mutableStateOf((state as? SignupState.NeedsPhone)?.phone?.removePrefix("+91").orEmpty())
@@ -267,7 +268,10 @@ fun StudentRegistrationGate(
                     "Continue with Google to use your verified account email.",
                     "अपनी सत्यापित ईमेल के लिए Google से लॉग इन करें।"),
                     color = SoftWhite, fontSize = 14.sp)
-                Button(onClick = { localError = null; onGoogle() },
+                Button(onClick = {
+                    localError = null; busy = true
+                    onGoogle { error -> busy = false; localError = error }
+                }, enabled = !busy,
                     modifier = Modifier.fillMaxWidth()) {
                     Text(t(hindi, "Continue with Google", "Google से जारी रखें"))
                 }
@@ -314,6 +318,12 @@ fun StudentRegistrationGate(
             is SignupState.Ready -> Unit
         }
         localError?.let { Text(it, color = Color(0xFFFFCDD2), fontSize = 12.sp) }
+        if (BuildConfig.DEBUG && !editing) {
+            TextButton(onClick = onPreview) {
+                Text(t(hindi, "Review other screens without registration (test only)",
+                    "बिना पंजीकरण बाकी स्क्रीन देखें (सिर्फ परीक्षण)"),color=Gold)
+            }
+        }
         Text(t(hindi,
             "Your email and mobile are stored privately in Firebase. Only your account can view/edit its profile; administrators can manage registrations. We never send WhatsApp messages without separate consent. Delete your account from More.",
             "ईमेल और मोबाइल Firebase में निजी रूप से सुरक्षित रहेंगे। अपना डेटा आप और अधिकृत प्रशासक देख सकते हैं। बिना अलग सहमति के WhatsApp संदेश नहीं भेजे जाएंगे। खाता हटाने के लिए अन्य टैब खोलें।"),
