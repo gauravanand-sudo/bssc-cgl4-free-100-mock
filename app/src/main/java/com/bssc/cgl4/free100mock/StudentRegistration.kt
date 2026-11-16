@@ -153,8 +153,10 @@ class StudentRegistrationRepository(private val context: Context) {
         return if (id != 0) context.getString(id) else ""
     }
 
-    fun signInWithGoogle(activity: ComponentActivity, nameInput: String, complete: (String?) -> Unit) {
-        val chosenName = StudentName.normalize(nameInput) ?: run {
+    fun signInWithGoogle(activity: ComponentActivity, nameInput: String?, complete: (String?) -> Unit) {
+        // null means an existing student is signing in; they should NOT be
+        // forced to enter a name/phone again if their Firebase profile is complete.
+        val chosenName = if (nameInput == null) null else StudentName.normalize(nameInput) ?: run {
             complete("Enter your name (2–28 characters).")
             return
         }
@@ -163,7 +165,7 @@ class StudentRegistrationRepository(private val context: Context) {
             return
         }
         enteredName = chosenName
-        requirePhoneConfirmation = true
+        requirePhoneConfirmation = chosenName != null
         val clientId = googleWebClientId()
         if (clientId.endsWith(".apps.googleusercontent.com")) {
             launchGoogleFlow(activity, firebaseAuth, clientId, complete)

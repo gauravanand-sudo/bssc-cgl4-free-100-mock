@@ -68,7 +68,7 @@ fun StudentRegistrationGate(
     hindi: Boolean,
     editing: Boolean,
     onLanguage: () -> Unit,
-    onGoogle: (String, (String?) -> Unit) -> Unit,
+    onGoogle: (String?, (String?) -> Unit) -> Unit,
     onSave: (String, String, Boolean, (String?) -> Unit) -> Unit,
     onRetry: () -> Unit,
     onCancel: () -> Unit,
@@ -227,6 +227,20 @@ fun StudentRegistrationGate(
                                     "मुफ़्त खाता • कोई SMS OTP शुल्क नहीं"),
                                     color=SecondaryInk,fontSize=10.sp,
                                     modifier=Modifier.align(Alignment.CenterHorizontally))
+                                HorizontalDivider(color=SubtleBorder)
+                                TextButton(
+                                    enabled=!working,
+                                    modifier=Modifier.fillMaxWidth(),
+                                    onClick={
+                                        error=null;working=true
+                                        onGoogle(null) { result -> working=false;error=result }
+                                    }) {
+                                    Text(t(hindi,
+                                        "Already registered? Sign in with Google",
+                                        "पहले से खाता है? Google से लॉगिन करें"),
+                                        color=RoyalPurple,fontSize=12.sp,
+                                        fontWeight=FontWeight.Bold)
+                                }
                             }
                             is SignupState.NeedsPhone -> {
                                 Text(t(hindi,"Almost ready!","बस एक कदम और!"),
