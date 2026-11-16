@@ -68,7 +68,7 @@ fun StudentRegistrationGate(
     hindi: Boolean,
     editing: Boolean,
     onLanguage: () -> Unit,
-    onGoogle: ((String?) -> Unit) -> Unit,
+    onGoogle: (String, (String?) -> Unit) -> Unit,
     onSave: (String, String, Boolean, (String?) -> Unit) -> Unit,
     onRetry: () -> Unit,
     onCancel: () -> Unit,
@@ -110,34 +110,30 @@ fun StudentRegistrationGate(
                 horizontalAlignment=Alignment.CenterHorizontally,
                 verticalArrangement=Arrangement.spacedBy(12.dp)
             ) {
-                Row(Modifier.fillMaxWidth(),
-                    horizontalArrangement=Arrangement.SpaceBetween,
-                    verticalAlignment=Alignment.CenterVertically) {
-                    Row(verticalAlignment=Alignment.CenterVertically) {
-                        Box(Modifier.size(46.dp).clip(RoundedCornerShape(13.dp))
-                            .background(Color.White).padding(2.dp)) {
-                            Image(painterResource(R.drawable.bssc_bilingual_logo),
-                                contentDescription="Approved OneShotGS logo",
-                                modifier=Modifier.fillMaxSize(),
-                                contentScale=ContentScale.Fit)
-                        }
-                        Spacer(Modifier.width(9.dp))
-                        Column {
-                            Text("OneShotGS",fontSize=19.sp,fontWeight=FontWeight.Black,
-                                color=Color.White)
-                            Text("BSSC CGL 4 • FREE MOCK",color=WarmGold,fontSize=9.sp,
-                                fontWeight=FontWeight.Black,letterSpacing=.5.sp)
-                        }
-                    }
-                    Surface(onClick=onLanguage,shape=RoundedCornerShape(12.dp),
+                // Logo center is independent from the language switch.
+                // This is centered relative to the entire login card width.
+                Box(Modifier.fillMaxWidth().height(33.dp)) {
+                    Surface(onClick=onLanguage,
+                        modifier=Modifier.align(Alignment.CenterEnd),
+                        shape=RoundedCornerShape(11.dp),
                         color=Color.White.copy(alpha=.13f),
                         border=androidx.compose.foundation.BorderStroke(
                             1.dp,Color.White.copy(alpha=.26f))) {
                         Text(if(hindi)"EN" else "हिंदी",
-                            modifier=Modifier.padding(horizontal=13.dp,vertical=10.dp),
-                            color=Color.White,fontWeight=FontWeight.Black,fontSize=12.sp)
+                            modifier=Modifier.padding(horizontal=12.dp,vertical=8.dp),
+                            color=Color.White,fontWeight=FontWeight.Black,fontSize=11.sp)
                     }
                 }
+                Image(painterResource(R.drawable.bssc_bilingual_logo),
+                    contentDescription="Approved OneShotGS BSSC CGL 4 logo",
+                    modifier=Modifier.size(105.dp).align(Alignment.CenterHorizontally),
+                    contentScale=ContentScale.Fit)
+                Text("OneShotGS",color=Color.White,fontSize=21.sp,
+                    fontWeight=FontWeight.Black,textAlign=TextAlign.Center,
+                    modifier=Modifier.fillMaxWidth())
+                Text("BSSC CGL 4 • FREE MOCK",color=WarmGold,fontSize=10.sp,
+                    fontWeight=FontWeight.Black,textAlign=TextAlign.Center,
+                    modifier=Modifier.fillMaxWidth())
                 Column(Modifier.fillMaxWidth(),
                     horizontalAlignment=Alignment.CenterHorizontally,
                     verticalArrangement=Arrangement.spacedBy(5.dp)) {
@@ -203,7 +199,7 @@ fun StudentRegistrationGate(
                                 Button(
                                     onClick={
                                         error=null;working=true
-                                        onGoogle { result -> working=false;error=result }
+                                        onGoogle(cleanName!!) { result -> working=false;error=result }
                                     },enabled=!working && cleanName!=null,
                                     modifier=Modifier.fillMaxWidth().height(52.dp),
                                     shape=RoundedCornerShape(14.dp),

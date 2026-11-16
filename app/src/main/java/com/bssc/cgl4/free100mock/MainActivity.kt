@@ -401,6 +401,7 @@ class MainActivity : ComponentActivity() {
                                     student=signupState as? SignupState.Ready,
                                     onEditContact={editingContact=true},
                                     onSignOut={
+                                        signupState=SignupState.NeedsGoogle
                                         studentRegistration.signOut(this@MainActivity)
                                         store.clearAll()
                                         questions.clearPaperCache()
@@ -415,6 +416,8 @@ class MainActivity : ComponentActivity() {
                                     onPrivacy={ads.showPrivacyOptions({})},ads=ads,
                                     onDelete={board.deleteMyData { ok ->
                                         if(ok) {
+                                            signupState=SignupState.NeedsGoogle
+                                            studentRegistration.signOut(this@MainActivity)
                                             store.clearAll();questions.clearPaperCache();catalog.clearCache()
                                             tests=catalog.cached();ExamConfig.setTitles(tests)
                                             attempts=emptyList();activeSession=null
@@ -447,8 +450,8 @@ class MainActivity : ComponentActivity() {
                         StudentRegistrationGate(
                             state=form,hindi=hindi,editing=editingContact,
                             onLanguage={hindi=!hindi;store.setHindi(hindi)},
-                            onGoogle={ callback ->
-                                studentRegistration.signInWithGoogle(this@MainActivity,callback)
+                            onGoogle={ chosenName,callback ->
+                                studentRegistration.signInWithGoogle(this@MainActivity,chosenName,callback)
                             },
                             onSave={ fullName,mobile,optIn,callback ->
                                 studentRegistration.savePhone(fullName,mobile,optIn) { ready,error ->
