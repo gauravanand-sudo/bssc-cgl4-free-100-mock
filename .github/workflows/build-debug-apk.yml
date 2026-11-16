@@ -52,6 +52,9 @@ jobs:
       - name: Validate Firebase custom banner example (dry run)
         run: python3 firebase/manage_engagement.py --file firebase/engagement.example.json
 
+      - name: Test Firebase countdown and cutoff validation
+        run: python3 -m unittest discover -s firebase -p 'test_*.py'
+
       - name: Audit bundled bilingual questions (warnings for repeats)
         run: python3 tools/audit_mock_bank.py
 

@@ -42,7 +42,6 @@ fun DashboardScreen(
 ) {
     val completed=attempts.map { it.testId }.distinct().size
     val progress by animateFloatAsState(if(tests.isEmpty()) 0f else completed.toFloat()/tests.size,label="mock progress")
-    val firstFree=tests.firstOrNull { it.isFree }
     LazyColumn(modifier.fillMaxSize().background(Ink),
         contentPadding=PaddingValues(start=14.dp,end=14.dp,top=12.dp,bottom=18.dp),
         verticalArrangement=Arrangement.spacedBy(12.dp)) {
@@ -58,9 +57,12 @@ fun DashboardScreen(
         banner?.let { active ->
             item(key="firebase-home-promotion") {
                 BoxWithConstraints(Modifier.fillMaxWidth()) {
-                    FirebasePromotion(active,hindi) { destination ->
-                        if(destination=="mock_list") onOpenTests()
-                        else onBannerAction(destination)
+                    val bannerHeight=(maxWidth*(9f/16f)).coerceIn(160.dp,220.dp)
+                    Box(Modifier.fillMaxWidth().height(bannerHeight)) {
+                        FirebasePromotion(active,hindi) { destination ->
+                            if(destination=="mock_list") onOpenTests()
+                            else onBannerAction(destination)
+                        }
                     }
                 }
             }
