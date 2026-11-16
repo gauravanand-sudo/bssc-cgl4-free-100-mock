@@ -47,9 +47,13 @@ import kotlinx.coroutines.delay
             Text(t(hindi,"100 planned mock tests","१०० नियोजित मॉक टेस्ट"),
                 color=Color.White.copy(alpha=.86f),fontSize=11.sp)
         }
-        Image(painterResource(R.drawable.officer_journey),"Journey from aspirant to future officer",
-            Modifier.fillMaxWidth().height(200.dp).scale(scale).clip(RoundedCornerShape(23.dp)),
-            contentScale=ContentScale.Crop)
+        Box(Modifier.fillMaxWidth().height(244.dp)
+            .clip(RoundedCornerShape(23.dp)).background(Color.White),
+            contentAlignment=Alignment.Center) {
+            Image(painterResource(R.drawable.bssc_bilingual_logo),
+                "बीएसएससी सीजीएल 4 फ्री मॉक · BSSC CGL 4 Free Mock · लक्ष्य: १५,००० प्रश्न",
+                Modifier.fillMaxSize().scale(scale),contentScale=ContentScale.Fit)
+        }
         Column(horizontalAlignment=Alignment.CenterHorizontally) {
             Text(t(hindi,"Preparing your officer journey…","अधिकारी बनने का सफर तैयार हो रहा है…"),
                 color=Color.White,fontSize=13.sp,fontWeight=FontWeight.Bold)
