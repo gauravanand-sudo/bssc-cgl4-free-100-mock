@@ -71,8 +71,7 @@ fun StudentRegistrationGate(
     onGoogle: (String?, (String?) -> Unit) -> Unit,
     onSave: (String, String, Boolean, (String?) -> Unit) -> Unit,
     onRetry: () -> Unit,
-    onCancel: () -> Unit,
-    onPreview: () -> Unit
+    onCancel: () -> Unit
 ) {
     // NOT keyed by Firebase auth state: survives Google sign-in and phone step.
     var studentName by rememberSaveable { mutableStateOf("") }
@@ -353,13 +352,6 @@ fun StudentRegistrationGate(
                     "आज की मेहनत, कल की सफलता।"),
                     color=WarmGold,fontWeight=FontWeight.Bold,fontSize=12.sp,
                     textAlign=TextAlign.Center)
-                if(BuildConfig.DEBUG && !editing) {
-                    TextButton(onClick=onPreview) {
-                        Text(t(hindi,"Preview app without login (test only)",
-                            "बिना लॉगिन ऐप देखें (सिर्फ परीक्षण)"),
-                            color=Color.White.copy(alpha=.8f),fontSize=10.sp)
-                    }
-                }
                 Text(t(hindi,
                     "Your details are stored privately. Mobile numbers are not verified. WhatsApp updates require separate consent.",
                     "आपका डेटा निजी रहेगा। मोबाइल OTP सत्यापित नहीं है। WhatsApp अपडेट के लिए अलग सहमति चाहिए।"),

@@ -124,7 +124,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 var editingContact by remember { mutableStateOf(false) }
-                var debugPracticeOnly by remember { mutableStateOf(false) }
                 DisposableEffect(Unit) {
                     val stop = studentRegistration.observe { signupState = it }
                     onDispose { stop() }
@@ -178,7 +177,7 @@ class MainActivity : ComponentActivity() {
                 }
                 SideEffect {
                     safeHome = route == Route.Tabs && tab == Tab.HOME && !splash &&
-                        !editingContact && (signupState is SignupState.Ready || debugPracticeOnly)
+                        !editingContact && (signupState is SignupState.Ready)
                 }
                 fun startPaper(id: Int) {
                     val test = tests.firstOrNull { it.id == id }
@@ -319,7 +318,7 @@ class MainActivity : ComponentActivity() {
                             Column(Modifier.fillMaxWidth().background(Ink)) {
                                 // One permanent banner above nav, never during questions/login.
                                 if(adAllowed && !splash && !editingContact &&
-                                    (signupState is SignupState.Ready || debugPracticeOnly)) {
+                                    (signupState is SignupState.Ready)) {
                                     SponsoredBanner(ads, Modifier.padding(horizontal=11.dp))
                                 }
                                 // Nav remains separate from the ad's clickable area.
@@ -409,7 +408,7 @@ class MainActivity : ComponentActivity() {
                                         attempts=emptyList();activeSession=null
                                         unlocked=emptySet();rewardCredits=emptyMap()
                                         name="Aspirant";hindi=false;tab=Tab.HOME
-                                        editingContact=false;debugPracticeOnly=false
+                                        editingContact=false
                                     },
                                     notificationsEnabled=notificationsEnabled,onNotifications=toggleNotifications,
                                     onSetHindi={hindi=it;store.setHindi(it)},
@@ -441,7 +440,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     if(splash) ReferenceSplash(hindi)
-                    else if ((signupState !is SignupState.Ready && !debugPracticeOnly) || editingContact) {
+                    else if ((signupState !is SignupState.Ready) || editingContact) {
                         val form = if(editingContact && signupState is SignupState.Ready) {
                             val registered = signupState as SignupState.Ready
                             SignupState.NeedsPhone(registered.email,registered.displayName,
@@ -467,8 +466,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             },
                             onRetry={studentRegistration.loadProfile{signupState=it}},
-                            onCancel={editingContact=false},
-                            onPreview={debugPracticeOnly=true}
+                            onCancel={editingContact=false}
                         )
                     }
                 }
