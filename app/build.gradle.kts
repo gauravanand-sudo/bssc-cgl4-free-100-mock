@@ -41,14 +41,18 @@ android {
         applicationId = "com.bssc.cgl4.free100mock" // Finalize before first Play Store upload.
         minSdk = 24
         targetSdk = 36
-        versionCode = 7
-        versionName = "0.7.0"
+        versionCode = 8
+        versionName = "0.8.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders["ADMOB_APP_ID"] = p("ADMOB_APP_ID").ifBlank { testApp }
-        buildConfigField("String", "ADMOB_REWARDED_ID", quoted(p("ADMOB_REWARDED_ID").ifBlank { testRewarded }))
-        buildConfigField("String", "ADMOB_BANNER_ID", quoted(p("ADMOB_BANNER_ID").ifBlank { testBanner }))
+        // Debug APKs use ONLY Google's demo units, even if production IDs are configured.
+        // This prevents accidental invalid-traffic clicks during testing.
+        manifestPlaceholders["ADMOB_APP_ID"] = if(isReleaseBuild) p("ADMOB_APP_ID") else testApp
+        buildConfigField("String", "ADMOB_REWARDED_ID",
+            quoted(if(isReleaseBuild) p("ADMOB_REWARDED_ID") else testRewarded))
+        buildConfigField("String", "ADMOB_BANNER_ID",
+            quoted(if(isReleaseBuild) p("ADMOB_BANNER_ID") else testBanner))
         sampleUnits.forEach { (name, sample) ->
-            buildConfigField("String", name, quoted(p(name).ifBlank { sample }))
+            buildConfigField("String", name, quoted(if(isReleaseBuild) p(name) else sample))
         }
         buildConfigField("String", "FIREBASE_API_KEY", quoted(p("FIREBASE_API_KEY")))
         buildConfigField("String", "FIREBASE_APP_ID", quoted(p("FIREBASE_APP_ID")))

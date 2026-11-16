@@ -122,7 +122,7 @@ fun DashboardScreen(
         }
         items(tests.take(3), key={ it.id }) { test ->
             ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
-                !test.isFree && test.id !in unlocked,adReady,quickReady,hindi,
+                !MockAccess.isAccessible(test.id, unlocked),adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
         }
         if(loadingCatalog) item { LinearProgressIndicator(modifier=Modifier.fillMaxWidth(),color=Violet) }
@@ -186,8 +186,8 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
     var filter by remember { mutableStateOf("all") }
     val filtered=remember(tests,unlocked,filter) {
         when(filter) {
-            "free" -> tests.filter { it.isFree }
-            "unlocked" -> tests.filter { it.isFree || it.id in unlocked }
+            "free" -> tests.filter { MockAccess.isFree(it.id) }
+            "unlocked" -> tests.filter { MockAccess.isAccessible(it.id, unlocked) }
             else -> tests
         }
     }
@@ -221,7 +221,7 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
             t(hindi,"Refresh to check for new published papers.","नए प्रकाशित पेपर के लिए रिफ़्रेश करें।"))}
         itemsIndexed(filtered,key={_,test->test.id}) {index,test ->
             ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
-                !test.isFree && test.id !in unlocked,adReady,quickReady,hindi,
+                !MockAccess.isAccessible(test.id, unlocked),adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
             if(index==4 && adAllowed) {
                 Spacer(Modifier.height(12.dp))
@@ -242,6 +242,7 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
 @Composable
 private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,
     adReady:Boolean,quickReady:Boolean,hindi:Boolean,onStart:()->Unit,onUnlock:()->Unit,onQuickUnlock:()->Unit) {
+    val premiumLocked = locked && MockAccess.isPremium(test.id)
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(19.dp)).background(Color.White)
         .border(1.dp,Color(0xFFECDFF5),RoundedCornerShape(19.dp)).animateContentSize().padding(13.dp)) {
         Row(verticalAlignment=Alignment.CenterVertically) {
@@ -255,7 +256,9 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,
                     color=SoftWhite,fontSize=14.sp,fontWeight=FontWeight.Black)
                 Text("150 Q  •  600 " + t(hindi,"marks","अंक") + "  •  2h 15m",color=Muted,fontSize=10.sp)
             }
-            Tag(if(locked)t(hindi,"AD UNLOCK","विज्ञापन") else if(test.isFree)t(hindi,"FREE","मुफ़्त")
+            Tag(if(premiumLocked)t(hindi,"PREMIUM ₹25","प्रीमियम ₹25")
+                else if(locked)t(hindi,"AD UNLOCK","विज्ञापन")
+                else if(MockAccess.isFree(test.id))t(hindi,"FREE","मुफ़्त")
                 else t(hindi,"READY","तैयार"),if(locked) Amber else Aqua)
         }
         if(previous!=null) {
@@ -264,7 +267,15 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,
                 color=Violet,fontWeight=FontWeight.Bold,fontSize=10.sp)
         }
         Spacer(Modifier.height(11.dp))
-        if(locked) {
+        if(premiumLocked) {
+            Button(onClick={},enabled=false,shape=RoundedCornerShape(14.dp),
+                modifier=Modifier.fillMaxWidth().height(43.dp)) {
+                Icon(Icons.Rounded.Lock,null,modifier=Modifier.size(17.dp))
+                Spacer(Modifier.width(6.dp))
+                Text(t(hindi,"₹25 pack · Coming soon","₹25 पैक · जल्द आएगा"),
+                    fontSize=12.sp,fontWeight=FontWeight.Bold)
+            }
+        } else if(locked) {
             Button(onClick=onUnlock,enabled=adReady,shape=RoundedCornerShape(14.dp),
                 modifier=Modifier.fillMaxWidth().height(43.dp),
                 colors=ButtonDefaults.buttonColors(containerColor=Violet)) {

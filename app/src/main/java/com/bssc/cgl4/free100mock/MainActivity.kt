@@ -136,6 +136,13 @@ class MainActivity : ComponentActivity() {
                 fun startPaper(id: Int) {
                     val test = tests.firstOrNull { it.id == id }
                         ?: MockTest(id,ExamConfig.title(id),"Saved mock","Balanced",false)
+                    // Direct resume must obey the same access gates as the catalogue.
+                    if (!MockAccess.isAccessible(id, unlocked)) {
+                        paperError = if (MockAccess.isPremium(id))
+                            t(hindi,"Premium pack (₹25) is not available yet.","₹25 का प्रीमियम पैक अभी उपलब्ध नहीं है।")
+                        else t(hindi,"Unlock this mock with a rewarded ad first.","पहले विज्ञापन देखकर इस मॉक को अनलॉक करें।")
+                        return
+                    }
                     val existing = activeSession
                     if (existing != null && existing.testId != id) {
                         Toast.makeText(this@MainActivity,"Resume or finish your active mock first",Toast.LENGTH_LONG).show()
@@ -156,20 +163,30 @@ class MainActivity : ComponentActivity() {
                 val startTest: (Int) -> Unit = { id ->
                     val test = tests.firstOrNull { it.id == id }
                     if (test == null) paperError = "This mock isn't in the current catalogue."
-                    else if (test.isFree || id in unlocked) startPaper(id)
-                    else Toast.makeText(this,"Watch a rewarded ad to unlock this mock",Toast.LENGTH_SHORT).show()
+                    else if (MockAccess.isAccessible(id, unlocked)) startPaper(id)
+                    else if (MockAccess.isPremium(id))
+                        Toast.makeText(this@MainActivity,
+                            t(hindi,"₹25 Premium Pack coming soon","₹25 प्रीमियम पैक जल्द आएगा"),Toast.LENGTH_LONG).show()
+                    else Toast.makeText(this@MainActivity,
+                        t(hindi,"Watch a rewarded ad to unlock","विज्ञापन देखकर अनलॉक करें"),Toast.LENGTH_SHORT).show()
                 }
                 val earnedUnlock: (Int) -> Unit = { id ->
-                    store.unlock(id); unlocked = store.unlocked()
-                    Toast.makeText(this,"Mock %03d unlocked!".format(id),Toast.LENGTH_LONG).show()
+                    if (MockAccess.isRewarded(id)) {
+                        store.unlock(id); unlocked = store.unlocked()
+                        Toast.makeText(this@MainActivity,"Mock %03d unlocked!".format(id),Toast.LENGTH_LONG).show()
+                    }
                 }
                 val unavailable = {
                     Toast.makeText(this,"No ad available. Please try again shortly.",Toast.LENGTH_LONG).show()
                 }
                 val unlock: (Int) -> Unit = { id ->
-                    ads.showRewarded(onEarned={earnedUnlock(id)},onUnavailable=unavailable,onChange=notifyAd)
+                    if (MockAccess.isRewarded(id) && id !in unlocked) {
+                        ads.showRewarded(onEarned={earnedUnlock(id)},onUnavailable=unavailable,onChange=notifyAd)
+                    }
                 }
-                val quickUnlock: (Int) -> Unit = { id -> quickIntroId = id }
+                val quickUnlock: (Int) -> Unit = { id ->
+                    if (MockAccess.isRewarded(id) && id !in unlocked) quickIntroId = id
+                }
                 // The system Back button must not leave an ongoing exam without confirmation.
                 BackHandler(enabled = route is Route.Exam) { confirmExitTest = true }
                 BackHandler(enabled = route is Route.Result) { route = Route.Tabs; tab = Tab.HOME }
@@ -335,7 +352,7 @@ class MainActivity : ComponentActivity() {
                     AlertDialog(onDismissRequest={paperError=null},title={Text(t(hindi,"Mock unavailable","मॉक उपलब्ध नहीं है"))},
                         text={Text(message)},confirmButton={TextButton(onClick={paperError=null}) {Text("OK")} })
                 }
-                quickIntroId?.let { id ->
+                quickIntroId?.takeIf { MockAccess.isRewarded(it) }?.let { id ->
                     AlertDialog(onDismissRequest={quickIntroId=null},
                         title={Text("Unlock Mock %03d".format(id))},
                         text={Text("Watch a rewarded quick ad to unlock this mock permanently. You can skip and stay on this screen without losing anything.")},

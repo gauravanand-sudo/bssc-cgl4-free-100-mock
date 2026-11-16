@@ -56,7 +56,7 @@ class CatalogRepository(private val context: Context) {
         val arr = JSONArray(prefs.getString("catalog", ""))
         (0 until arr.length()).map { i -> val o = arr.getJSONObject(i)
             MockTest(o.getInt("id"), o.getString("title"), o.optString("subtitle"),
-                o.optString("difficulty", "Balanced"), o.optBoolean("isFree", false),
+                o.optString("difficulty", "Balanced"), MockAccess.isFree(o.getInt("id")),
                 o.optInt("version", 1), o.optInt("questionCount", 150), o.optInt("durationMinutes", 135))
         }.filter { it.id in 1..100 && it.questionCount == 150 && it.durationMinutes == 135 }.ifEmpty { bundled }
     } catch (_: Exception) { bundled }
@@ -74,7 +74,7 @@ class CatalogRepository(private val context: Context) {
                         if (id !in 1..100 || count != 150 || minutes != 135) return@mapNotNull null
                         MockTest(id, d.getString("title") ?: "Mock $id",
                             d.getString("subtitle") ?: "Full-length prelims test",
-                            d.getString("difficulty") ?: "Balanced", d.getBoolean("isFree") == true,
+                            d.getString("difficulty") ?: "Balanced", MockAccess.isFree(id),
                             (d.getLong("version") ?: 1L).toInt(), count, minutes)
                     } catch (_: Exception) { null } }.distinctBy { it.id }
                     if (tests.isNotEmpty()) {
