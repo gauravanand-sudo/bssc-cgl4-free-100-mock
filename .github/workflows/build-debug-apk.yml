@@ -83,8 +83,10 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Publish direct APK download in GitHub Releases
+      - name: Publish optional direct APK release (repository policy may deny releases)
+        # GitHub Actions artifact above is the guaranteed fallback if Releases API is blocked.
         if: success()
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
