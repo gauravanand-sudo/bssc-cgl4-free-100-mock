@@ -114,6 +114,15 @@ class MainActivity : ComponentActivity() {
                 var notificationsEnabled by remember { mutableStateOf(notificationPrefs.enabled()) }
                 var splash by remember { mutableStateOf(true) }
                 var signupState by remember { mutableStateOf<SignupState>(SignupState.Loading) }
+                // Re-hydrate the one-time registration name on every login / app restart.
+                LaunchedEffect(signupState) {
+                    val profile = signupState as? SignupState.Ready
+                    val savedName = profile?.displayName?.let(StudentName::normalize)
+                    if(savedName != null && name != savedName) {
+                        name = savedName
+                        store.setName(savedName)
+                    }
+                }
                 var editingContact by remember { mutableStateOf(false) }
                 var debugPracticeOnly by remember { mutableStateOf(false) }
                 DisposableEffect(Unit) {
@@ -364,7 +373,7 @@ class MainActivity : ComponentActivity() {
                                     .togetherWith(fadeOut(tween(170)))
                             },label="nav-flow") { currentTab ->
                             when(currentTab) {
-                                Tab.HOME -> DashboardScreen(hindi,attempts,activeSession,tests,
+                                Tab.HOME -> DashboardScreen(hindi,name,attempts,activeSession,tests,
                                     catalogStatus,loadingCatalog,unlocked,rewardCredits,adReady,quickReady,
                                     adAllowed,ads,remoteBanner,examEvents,homeCards,Modifier,startTest,unlock,quickUnlock,
                                     onResume={ activeSession?.let { startPaper(it.testId) } },
@@ -402,7 +411,6 @@ class MainActivity : ComponentActivity() {
                                         editingContact=false;debugPracticeOnly=false
                                     },
                                     notificationsEnabled=notificationsEnabled,onNotifications=toggleNotifications,
-                                    onSetName={name=it;store.setName(it)},
                                     onSetHindi={hindi=it;store.setHindi(it)},
                                     onPrivacy={ads.showPrivacyOptions({})},ads=ads,
                                     onDelete={board.deleteMyData { ok ->
@@ -442,14 +450,13 @@ class MainActivity : ComponentActivity() {
                             onGoogle={ callback ->
                                 studentRegistration.signInWithGoogle(this@MainActivity,callback)
                             },
-                            onSave={ mobile,optIn,callback ->
-                                studentRegistration.savePhone(mobile,optIn) { ready,error ->
+                            onSave={ fullName,mobile,optIn,callback ->
+                                studentRegistration.savePhone(fullName,mobile,optIn) { ready,error ->
                                     if (ready != null) {
                                         signupState=ready
                                         editingContact=false
-                                        if(name=="Aspirant" && ready is SignupState.Ready &&
-                                            ready.displayName.isNotBlank()) {
-                                            name=ready.displayName.take(28)
+                                        if(ready is SignupState.Ready) {
+                                            name=ready.displayName
                                             store.setName(name)
                                         }
                                     }

@@ -36,6 +36,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.launch
 
+/** A student chooses the name once at registration (also shown on leaderboards). */
+object StudentName {
+    fun normalize(input: String): String? {
+        val name = input.trim().replace(Regex("\\s+"), " ")
+        return name.takeIf {
+            it.length in 2..28 && it.none { char -> Character.isISOControl(char) }
+        }
+    }
+}
+
 /** Phone capture is free and NOT phone ownership verification. */
 object IndianMobile {
     private val tenDigits = Regex("^[6-9][0-9]{9}$")
@@ -99,7 +109,8 @@ class StudentRegistrationRepository(private val context: Context) {
         firestore.collection("student_profiles").document(user.uid).get()
             .addOnSuccessListener { doc ->
                 val email = user.email.orEmpty()
-                val name = user.displayName.orEmpty().take(100)
+                val name = doc.getString("displayName").orEmpty()
+                    .ifBlank { user.displayName.orEmpty().take(28) }
                 val phone = doc.getString("phoneE164").orEmpty()
                 val optIn = doc.getBoolean("whatsappOptIn") == true
                 if (doc.exists() && IndianMobile.normalize(phone) == phone &&
@@ -195,8 +206,12 @@ class StudentRegistrationRepository(private val context: Context) {
         }
     }
 
-    fun savePhone(phoneInput: String, whatsappOptIn: Boolean,
+    fun savePhone(nameInput: String, phoneInput: String, whatsappOptIn: Boolean,
                   onResult: (SignupState?, String?) -> Unit) {
+        val name = StudentName.normalize(nameInput) ?: run {
+            onResult(null, "Please enter your name (2–28 characters).")
+            return
+        }
         val phone = IndianMobile.normalize(phoneInput) ?: run {
             onResult(null, "Enter a valid Indian 10-digit mobile number.")
             return
@@ -210,13 +225,15 @@ class StudentRegistrationRepository(private val context: Context) {
             return
         }
         val email = user.email.orEmpty()
-        val name = user.displayName.orEmpty().take(100)
         val reference = firestore.collection("student_profiles").document(user.uid)
         reference.get().addOnSuccessListener { existing ->
             // createdAt is immutable; saved only on initial registration.
+            val savedName = StudentName.normalize(existing.getString("displayName").orEmpty())
+            // A registered student's name is kept on subsequent phone/consent edits.
+            val finalName = savedName ?: name
             val values = mutableMapOf<String, Any>(
                 "email" to email,
-                "displayName" to name,
+                "displayName" to finalName,
                 "phoneE164" to phone,
                 "phoneVerified" to false,
                 "whatsappOptIn" to whatsappOptIn,
@@ -227,7 +244,7 @@ class StudentRegistrationRepository(private val context: Context) {
             if (!existing.exists()) values["createdAt"] = FieldValue.serverTimestamp()
             reference.set(values, SetOptions.merge())
                 .addOnSuccessListener {
-                    onResult(SignupState.Ready(email, name, phone, whatsappOptIn), null)
+                    onResult(SignupState.Ready(email, finalName, phone, whatsappOptIn), null)
                 }
                 .addOnFailureListener {
                     onResult(null, "Could not save registration. Verify Firebase rules and internet.")

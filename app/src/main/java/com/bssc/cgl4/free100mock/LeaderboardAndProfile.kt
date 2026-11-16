@@ -71,7 +71,7 @@ import androidx.compose.ui.unit.sp
                 Row(verticalAlignment=Alignment.CenterVertically) {
                     Icon(Icons.Rounded.VerifiedUser,null,tint=Aqua)
                     Spacer(Modifier.width(10.dp))
-                    Text(t(hindi,"Rankings appear after connecting Firebase. No fake competitors; choose a nickname.","Firebase जुड़ने पर रैंक दिखेगी। नकली प्रतियोगी नहीं; उपनाम चुनें।"),
+                    Text(t(hindi,"Rankings show your registered name when Firebase is connected. No fake competitors.","Firebase जुड़ने पर पंजीकृत नाम से रैंकिंग दिखेगी। नकली प्रतियोगी नहीं।"),
                         color=Muted,fontSize=12.sp,lineHeight=18.sp)
                 }
             }
@@ -141,8 +141,7 @@ import androidx.compose.ui.unit.sp
 @Composable fun ProfileScreen(name:String, hindi:Boolean, attempts:Int, modifier:Modifier,
                                student:SignupState.Ready?,onEditContact:()->Unit,onSignOut:()->Unit,
                                notificationsEnabled:Boolean,onNotifications:()->Unit,
-                               onSetName:(String)->Unit,onSetHindi:(Boolean)->Unit,onPrivacy:()->Unit, onDelete:()->Unit, ads:AdController) {
-    var draft by remember(name) {mutableStateOf(name)}
+                               onSetHindi:(Boolean)->Unit,onPrivacy:()->Unit, onDelete:()->Unit, ads:AdController) {
     var confirmDelete by remember { mutableStateOf(false) }
     var confirmSignOut by remember { mutableStateOf(false) }
     val context= LocalContext.current
@@ -165,8 +164,8 @@ import androidx.compose.ui.unit.sp
             }
         }
         Panel {
-            Text(t(hindi,"👤 Registered student","👤 पंजीकृत छात्र"),
-                color=SoftWhite,fontWeight=FontWeight.Black,fontSize=16.sp)
+            Text(t(hindi,"👤 " + name,"👤 " + name),
+                color=SoftWhite,fontWeight=FontWeight.Black,fontSize=17.sp)
             Spacer(Modifier.height(8.dp))
             Text(student?.email ?: t(hindi,"Review mode (not registered)","समीक्षा मोड (पंजीकृत नहीं)"),
                 color=Violet,fontSize=13.sp)
@@ -185,18 +184,6 @@ import androidx.compose.ui.unit.sp
             TextButton(onClick={confirmSignOut=true},enabled=student!=null) {
                 Text(t(hindi,"Sign out","साइन आउट"),color=Violet)
             }
-        }
-        Panel {
-            Text("✍️ "+t(hindi,"DISPLAY NAME","नाम सेट करें"),color=Muted,fontSize=11.sp,fontWeight=FontWeight.Bold)
-            Spacer(Modifier.height(8.dp))
-            OutlinedTextField(value=draft,onValueChange={if(it.length<=28) draft=it},singleLine=true,
-                modifier=Modifier.fillMaxWidth(),label={Text("Name on rankings")},
-                shape=RoundedCornerShape(15.dp))
-            Spacer(Modifier.height(11.dp))
-            PrimaryAction("Save name",Modifier.fillMaxWidth(),onClick={onSetName(draft)})
-            Spacer(Modifier.height(10.dp))
-            Text("Please use a nickname. Your name may be public on the leaderboard.",
-                color=Muted,fontSize=11.sp,lineHeight=18.sp)
         }
         Panel {
             Row(verticalAlignment=Alignment.CenterVertically) {

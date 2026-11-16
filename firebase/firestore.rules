@@ -28,7 +28,8 @@ service cloud.firestore {
           request.resource.data.email == request.auth.token.email &&
           request.resource.data.email.size() <= 254 &&
           request.resource.data.displayName is string &&
-          request.resource.data.displayName.size() <= 100 &&
+          request.resource.data.displayName.size() >= 2 &&
+          request.resource.data.displayName.size() <= 28 &&
           request.resource.data.phoneE164 is string &&
           request.resource.data.phoneE164.matches('^\\+91[6-9][0-9]{9}$') &&
           request.resource.data.phoneVerified == false &&

@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 /** Lightweight Home with content groups remotely published by Firebase. */
 @Composable
 fun DashboardScreen(
-    hindi: Boolean, attempts: List<Attempt>, session: ExamSession?,
+    hindi: Boolean, studentName: String, attempts: List<Attempt>, session: ExamSession?,
     tests: List<MockTest>, catalogStatus: String?, loadingCatalog: Boolean,
     unlocked: Set<Int>, rewardCredits: Map<Int, Int>,
     adReady: Boolean, quickReady: Boolean, adAllowed:Boolean, ads:AdController,
@@ -50,7 +50,9 @@ fun DashboardScreen(
         verticalArrangement=Arrangement.spacedBy(12.dp)) {
         item {
             Column {
-                Text(t(hindi,"Ready to rise, Future Officer? ✨","आज की तैयारी, कल की सफलता ✨"),
+                Text(t(hindi,
+                    "Ready to rise, " + studentName.take(28) + "? ✨",
+                    "तैयार हैं, " + studentName.take(28) + "? ✨"),
                     color=SoftWhite,fontSize=18.sp,fontWeight=FontWeight.Black)
                 Text(BrandCopy.tagline(hindi),color=Violet,fontSize=14.sp,fontWeight=FontWeight.ExtraBold)
                 Spacer(Modifier.height(8.dp))
