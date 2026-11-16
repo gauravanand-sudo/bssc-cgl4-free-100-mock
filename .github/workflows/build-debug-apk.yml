@@ -3,7 +3,7 @@ name: Build Android test APK
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, 'ui/modern-compose-refresh']
 
 jobs:
   build-debug-apk:

@@ -213,20 +213,24 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
     LazyColumn(Modifier.fillMaxSize().background(Ink),
         contentPadding=PaddingValues(horizontal=14.dp,vertical=15.dp),
         verticalArrangement=Arrangement.spacedBy(12.dp)) {
-        item {
-            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp))
-                .background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Violet)))
-                .padding(17.dp),verticalAlignment=Alignment.CenterVertically) {
+        item(key="catalogue-header") {
+            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text(t(hindi,"📚 YOUR PRACTICE ARENA","📚 आपका अभ्यास क्षेत्र"),
-                        color=Gold,fontWeight=FontWeight.Black,fontSize=11.sp)
-                    Text(t(hindi,"Mock Tests","मॉक टेस्ट")+"  (${tests.size})",
-                        fontWeight=FontWeight.Black,fontSize=23.sp,color=Color.White)
+                    Text(t(hindi,"PRACTICE LIBRARY","अभ्यास लाइब्रेरी"),
+                        color=Violet,fontWeight=FontWeight.Bold,
+                        fontSize=10.sp,letterSpacing=1.sp)
+                    Spacer(Modifier.height(4.dp))
+                    Text(t(hindi,"Mock Tests","मॉक टेस्ट")+"  ("+tests.size+")",
+                        fontWeight=FontWeight.Bold,fontSize=25.sp,color=SoftWhite)
                     Text(t(hindi,"150 questions · 600 marks · 135 mins",
                         "150 प्रश्न · 600 अंक · 135 मिनट"),
-                        color=Color.White.copy(alpha=.91f),fontSize=11.sp)
+                        color=Muted,fontSize=12.sp)
                 }
-                Text("🏆",fontSize=37.sp)
+                Box(Modifier.size(52.dp).clip(RoundedCornerShape(17.dp))
+                    .background(SoftLavender),contentAlignment=Alignment.Center) {
+                    Icon(Icons.Rounded.Assignment,
+                        contentDescription=null,tint=Violet,modifier=Modifier.size(25.dp))
+                }
             }
         }
         item {
