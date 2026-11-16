@@ -58,8 +58,8 @@ android {
         applicationId = "com.bssc.cgl4.free100mock" // Finalize before first Play Store upload.
         minSdk = 24
         targetSdk = 36
-        versionCode = 29
-        versionName = "0.29.0"
+        versionCode = 30
+        versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Debug APKs use ONLY Google's demo units, even if production IDs are configured.
         // This prevents accidental invalid-traffic clicks during testing.
@@ -80,8 +80,31 @@ android {
         buildConfigField("String", "FIREBASE_SENDER_ID", quoted(p("FIREBASE_SENDER_ID")))
         buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", quoted(p("GOOGLE_WEB_CLIENT_ID")))
     }
+    // One permanent Play upload key, supplied by the publisher via protected
+    // environment variables. No passwords/keystores are stored in Git.
+    signingConfigs {
+        val keyFile = System.getenv("PLAY_UPLOAD_KEYSTORE_PATH").orEmpty()
+        if (keyFile.isNotEmpty()) {
+            val pass = System.getenv("PLAY_UPLOAD_STORE_PASSWORD").orEmpty()
+            val alias = System.getenv("PLAY_UPLOAD_KEY_ALIAS").orEmpty()
+            val keyPass = System.getenv("PLAY_UPLOAD_KEY_PASSWORD").orEmpty()
+            require(pass.isNotBlank() && alias.isNotBlank() && keyPass.isNotBlank()) {
+                "Play AAB signing credentials are incomplete."
+            }
+            require(file(keyFile).isFile) { "Play upload keystore file does not exist." }
+            create("playUpload") {
+                storeFile = file(keyFile)
+                storePassword = pass
+                keyAlias = alias
+                keyPassword = keyPass
+            }
+        }
+    }
     buildTypes {
         release {
+            if (System.getenv("PLAY_UPLOAD_KEYSTORE_PATH").orEmpty().isNotEmpty()) {
+                signingConfig = signingConfigs.getByName("playUpload")
+            }
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
