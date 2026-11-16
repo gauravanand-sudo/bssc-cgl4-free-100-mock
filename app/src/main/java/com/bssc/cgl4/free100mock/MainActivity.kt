@@ -153,9 +153,18 @@ class MainActivity : ComponentActivity() {
                 SideEffect { safeHome = route == Route.Tabs && tab == Tab.HOME }
                 fun startPaper(id: Int) {
                     val test = tests.firstOrNull { it.id == id }
-                        ?: MockTest(id,ExamConfig.title(id),"Saved mock","Balanced",false)
-                    // Direct resume must obey the same access gates as the catalogue.
-                    if (!MockAccess.isAccessible(id, unlocked)) {
+                    if (test==null) {
+                        paperError=t(hindi,"This mock is not in the catalogue.",
+                            "यह मॉक अभी सूची में नहीं है।")
+                        return
+                    }
+                    // Firebase Upcoming overrides all older saved ad unlocks.
+                    if (test.isUpcoming) {
+                        paperError=t(hindi,"⏳ This mock is coming soon. Check again later.",
+                            "⏳ यह मॉक जल्द आएगा। बाद में जाँचें।")
+                        return
+                    }
+                    if (!MockAvailability.canStart(test, unlocked)) {
                         paperError = t(hindi,"Watch a rewarded ad to unlock this mock.","विज्ञापन देखकर मॉक खोलें।")
                         return
                     }
@@ -168,20 +177,27 @@ class MainActivity : ComponentActivity() {
                     paperError = null
                     questions.load(test) { available, error ->
                         busyPaper = false
-                        if (available && MockAccess.isAccessible(id, unlocked)) {
+                        if (available && MockAvailability.canStart(test, unlocked)) {
                             val session = existing ?: ExamSession(id,System.currentTimeMillis())
                             activeSession = session
                             store.saveSession(session)
                             route = Route.Exam(id)
-                        } else paperError = if (!MockAccess.isAccessible(id, unlocked))
-                            t(hindi,"Watch a rewarded ad to unlock this mock.","विज्ञापन देखकर मॉक खोलें।")
+                        } else paperError = if (test.isUpcoming)
+                            t(hindi,"This mock is coming soon.","यह मॉक जल्द आएगा।")
+                            else if (!MockAvailability.canStart(test, unlocked))
+                                t(hindi,"Watch a rewarded ad to unlock this mock.","विज्ञापन देखकर मॉक खोलें।")
                             else error ?: "This paper could not be loaded."
                     }
                 }
                 val startTest: (Int) -> Unit = { id ->
                     val test = tests.firstOrNull { it.id == id }
                     if (test == null) paperError = "This mock isn't in the current catalogue."
-                    else if (MockAccess.isAccessible(id, unlocked)) {
+                    else if (test.isUpcoming) {
+                        Toast.makeText(this@MainActivity,
+                            t(hindi,"⏳ Mock coming soon","⏳ मॉक जल्द उपलब्ध होगा"),
+                            Toast.LENGTH_LONG).show()
+                    }
+                    else if (MockAvailability.canStart(test, unlocked)) {
                         if(activeSession!=null && activeSession?.testId != id) {
                             Toast.makeText(this@MainActivity,
                                 t(hindi,"Finish or resume your current exam first",
@@ -194,7 +210,7 @@ class MainActivity : ComponentActivity() {
                         t(hindi,"Watch a rewarded ad to unlock","विज्ञापन देखकर अनलॉक करें"),Toast.LENGTH_SHORT).show()
                 }
                 val earnedUnlock: (Int) -> Unit = { id ->
-                    if (MockAccess.isRewarded(id) && id !in unlocked) {
+                    if (tests.any {it.id==id && MockAvailability.canWatchReward(it,unlocked)}) {
                         val earned = store.recordEarnedReward(id)
                         rewardCredits = store.rewardCredits()
                         unlocked = store.unlocked()
@@ -206,12 +222,13 @@ class MainActivity : ComponentActivity() {
                     Toast.makeText(this,"No ad available. Please try again shortly.",Toast.LENGTH_LONG).show()
                 }
                 val unlock: (Int) -> Unit = { id ->
-                    if (MockAccess.isRewarded(id) && id !in unlocked) {
+                    if (tests.any {it.id==id && MockAvailability.canWatchReward(it,unlocked)}) {
                         ads.showRewarded(onEarned={earnedUnlock(id)},onUnavailable=unavailable,onChange=notifyAd)
                     }
                 }
                 val quickUnlock: (Int) -> Unit = { id ->
-                    if (MockAccess.isRewarded(id) && id !in unlocked) quickIntroId = id
+                    if (tests.any {it.id==id && MockAvailability.canWatchReward(it,unlocked)})
+                        quickIntroId = id
                 }
                 // The system Back button must not leave an ongoing exam without confirmation.
                 BackHandler(enabled = route is Route.Exam) { confirmExitTest = true }
@@ -404,7 +421,9 @@ class MainActivity : ComponentActivity() {
                     AlertDialog(onDismissRequest={paperError=null},title={Text(t(hindi,"Mock unavailable","मॉक उपलब्ध नहीं है"))},
                         text={Text(message)},confirmButton={TextButton(onClick={paperError=null}) {Text("OK")} })
                 }
-                quickIntroId?.takeIf { MockAccess.isRewarded(it) && it !in unlocked }?.let { id ->
+                quickIntroId?.takeIf { id ->
+                    tests.any {it.id==id && MockAvailability.canWatchReward(it,unlocked)}
+                }?.let { id ->
                     val needed = MockAccess.requiredAds(id)
                     val completed = rewardCredits[id] ?: 0
                     AlertDialog(onDismissRequest={quickIntroId=null},
