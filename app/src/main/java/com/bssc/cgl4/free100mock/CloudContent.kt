@@ -88,9 +88,16 @@ class CatalogRepository(private val context: Context) {
                              d.getString("comingSoonTextHi").orEmpty().take(160),
                              d.getString("titleHi").orEmpty().take(120))
                     } catch (_: Exception) { null } }.distinctBy { it.id }
-                    if (tests.isNotEmpty()) {
+                    // Keep the four offline starter mocks visible even when
+                    // Firebase only publishes an Upcoming placeholder. A remote
+                    // record with the same ID takes priority, so admins can
+                    // override its status to Upcoming.
+                    val visible=(bundled.filterNot { local ->
+                        tests.any { it.id == local.id }
+                    } + tests).sortedBy {it.id}
+                    if (visible.isNotEmpty()) {
                         val array = JSONArray()
-                        tests.forEach { t -> array.put(JSONObject()
+                        visible.forEach { t -> array.put(JSONObject()
                             .put("id", t.id).put("title", t.title).put("subtitle", t.subtitle)
                             .put("difficulty", t.difficulty).put("isFree", t.isFree)
                             .put("version", t.version).put("questionCount", t.questionCount)
@@ -100,7 +107,7 @@ class CatalogRepository(private val context: Context) {
                              .put("comingSoonTextHi",t.comingSoonTextHi)
                              .put("titleHi",t.titleHi)) }
                         prefs.edit().putString("catalog", array.toString()).apply()
-                        onLoaded(tests, null)
+                        onLoaded(visible, null)
                     } else onLoaded(cached(), "No published online mocks yet. Showing offline starter tests.")
                 }.addOnFailureListener { onLoaded(cached(), "Offline mode: showing saved tests.") }
         }, failed = { onLoaded(cached(), it) })

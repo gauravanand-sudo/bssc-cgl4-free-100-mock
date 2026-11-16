@@ -240,8 +240,9 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
                 adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
         }
-        item {Text(t(hindi,"Published mocks are listed, including Firebase Upcoming cards. Coming Soon papers cannot be opened.",
-            "Firebase से प्रकाशित आगामी मॉक भी दिखेंगे, पर जारी होने तक नहीं खुलेंगे।"),
+        item {Text(t(hindi,
+            "Bundled starter mocks and published Firebase mocks are listed. Upcoming papers cannot be opened.",
+            "ऐप के शुरुआती मॉक और Firebase के प्रकाशित मॉक दिखेंगे। आगामी मॉक अभी नहीं खुलेंगे।"),
             fontSize=10.sp,color=Muted)}
     }
 }

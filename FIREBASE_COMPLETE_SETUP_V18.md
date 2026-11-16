@@ -29,6 +29,10 @@ collection `mock_catalog` → document `mock_055` (replace 055).
 | `comingSoonTextHi` | String | `नया मॉक इस सप्ताह आएगा` |
 | `version` | Number/integer | `1` |
 
+The four offline starter mocks remain listed even if you publish only a new
+Upcoming card. Where a remote catalogue document has the same test ID as an
+offline starter, the Firebase status overrides the starter card.
+
 **Critical distinction:** `published=true` makes the *catalogue card visible*,
 including upcoming cards. `status=upcoming` makes the card non-playable and
 disables rewarded ads. There is no need for a `mock_papers/mock_055` document
