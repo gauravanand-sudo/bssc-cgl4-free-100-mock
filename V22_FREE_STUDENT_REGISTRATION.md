@@ -10,11 +10,13 @@
 - Debug APK optionally allows reviewing other screens WITHOUT registering; this does not count towards registered students.
 
 ## Essential Firebase owner setup (not possible from source code alone)
-Existing app/google-services.json has "oauth_client": [] and cannot support Google sign-in yet.
+Existing app/google-services.json has "oauth_client": [] and cannot support Google sign-in by itself.
+V22 also supports a **public Firestore webClientId config**, so activating Google after the APK is delivered does NOT require rebuilding that specific APK.
 1. In https://console.firebase.google.com/project/bssc-cgl/authentication/providers enable Google as a sign-in provider and choose contact email.
 2. In Firebase Project Settings > Android app com.bssc.cgl4.free100mock register the SHA-1 and SHA-256 of the exact APK signing certificate, NOT a different debug build.
-3. Download refreshed google-services.json with OAuth web client, replace app/google-services.json and rebuild, or set public GOOGLE_WEB_CLIENT_ID=...apps.googleusercontent.com (Web client, not Android client) as Gradle property; signing SHA-1 still required.
-4. Review and deploy firebase/firestore.rules using Firebase CLI with your Firebase account: firebase deploy --project bssc-cgl --only firestore:rules.
+3. Recommended for the delivered APK: in Cloud Firestore create collection auth_public, document google, Boolean field enabled=true, String field webClientId set to your OAuth **Web application** client ID ending in .apps.googleusercontent.com. This ID is public, not an API secret. The app reads it when Google Sign-In is tapped. No APK rebuild is required.
+   Alternative for future source builds: refresh app/google-services.json with generated OAuth client, or set public GOOGLE_WEB_CLIENT_ID in gradle.properties.
+4. Review and deploy firebase/firestore.rules using Firebase CLI with your Firebase account: firebase deploy --project bssc-cgl --only firestore:rules. These rules permit authenticated (including anonymous) reads of the single active auth_public/google client-ID document.
 5. Test from an actual Android phone with internet: sign in, save profile, reload, edit opt-in, delete account.
 6. Publish a real privacy policy and accurate Google Play Data safety information before distribution.
 These operations require authenticated project-owner permissions. A Git commit does NOT deploy Firestore rules or activate Google authentication.

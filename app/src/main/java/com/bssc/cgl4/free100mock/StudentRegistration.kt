@@ -129,10 +129,33 @@ class StudentRegistrationRepository(private val context: Context) {
             return
         }
         val clientId = googleWebClientId()
-        if (!clientId.endsWith(".apps.googleusercontent.com")) {
-            complete("Google login setup is incomplete. Enable Google in Firebase, add the APK SHA-1, then refresh google-services.json.")
+        if (clientId.endsWith(".apps.googleusercontent.com")) {
+            launchGoogleFlow(activity, firebaseAuth, clientId, complete)
             return
         }
+        // Public configuration can be enabled in Firebase after APK distribution.
+        // No secret or downloaded credentials are stored in this document.
+        val firestore = db ?: run {
+            complete("Firestore unavailable. Check Firebase setup.")
+            return
+        }
+        firestore.collection("auth_public").document("google").get()
+            .addOnSuccessListener { snapshot ->
+                val remoteId = snapshot.getString("webClientId").orEmpty().trim()
+                if (snapshot.getBoolean("enabled") == true &&
+                    remoteId.endsWith(".apps.googleusercontent.com")) {
+                    launchGoogleFlow(activity, firebaseAuth, remoteId, complete)
+                } else complete("Enable Google login and set auth_public/google webClientId in Firebase Console.")
+            }
+            .addOnFailureListener {
+                complete("Google login needs the Firestore auth_public/google config and deployed security rules.")
+            }
+    }
+
+    private fun launchGoogleFlow(
+        activity: ComponentActivity, firebaseAuth: FirebaseAuth,
+        clientId: String, complete: (String?) -> Unit
+    ) {
         activity.lifecycleScope.launch {
             try {
                 val option = GetGoogleIdOption.Builder()
