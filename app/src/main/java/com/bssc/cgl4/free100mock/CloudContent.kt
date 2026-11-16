@@ -40,8 +40,10 @@ object CloudBackend {
 data class MockTest(
     val id: Int, val title: String, val subtitle: String, val difficulty: String,
     val isFree: Boolean, val version: Int = 1, val questionCount: Int = 150,
-    val durationMinutes: Int = 135
-)
+    val durationMinutes: Int = 135, val status:String="available",
+    val availableAtMs:Long?=null, val comingSoonTextEn:String="",
+    val comingSoonTextHi:String="", val titleHi:String=""
+) { val isUpcoming:Boolean get()=status!="available" }
 
 /** Full list is data-driven; the four bundled mocks are an offline starter, not fabricated extra papers. */
 class CatalogRepository(private val context: Context) {
@@ -57,7 +59,11 @@ class CatalogRepository(private val context: Context) {
         (0 until arr.length()).map { i -> val o = arr.getJSONObject(i)
             MockTest(o.getInt("id"), o.getString("title"), o.optString("subtitle"),
                 o.optString("difficulty", "Balanced"), MockAccess.isFree(o.getInt("id")),
-                o.optInt("version", 1), o.optInt("questionCount", 150), o.optInt("durationMinutes", 135))
+                o.optInt("version", 1), o.optInt("questionCount", 150), o.optInt("durationMinutes", 135),
+                if(o.optString("status","available")=="available") "available" else "upcoming",
+                o.optLong("availableAtMs",0L).takeIf{it>0L},
+                o.optString("comingSoonTextEn"),o.optString("comingSoonTextHi"),
+                o.optString("titleHi"))
         }.filter { it.id in 1..100 && it.questionCount == 150 && it.durationMinutes == 135 }.ifEmpty { bundled }
     } catch (_: Exception) { bundled }
 
@@ -75,7 +81,12 @@ class CatalogRepository(private val context: Context) {
                         MockTest(id, d.getString("title") ?: "Mock $id",
                             d.getString("subtitle") ?: "Full-length prelims test",
                             d.getString("difficulty") ?: "Balanced", MockAccess.isFree(id),
-                            (d.getLong("version") ?: 1L).toInt(), count, minutes)
+                            (d.getLong("version") ?: 1L).toInt(), count, minutes,
+                             if((d.getString("status")?:"available")=="available") "available" else "upcoming",
+                             d.getTimestamp("availableAt")?.toDate()?.time,
+                             d.getString("comingSoonTextEn").orEmpty().take(160),
+                             d.getString("comingSoonTextHi").orEmpty().take(160),
+                             d.getString("titleHi").orEmpty().take(120))
                     } catch (_: Exception) { null } }.distinctBy { it.id }
                     if (tests.isNotEmpty()) {
                         val array = JSONArray()
@@ -83,7 +94,11 @@ class CatalogRepository(private val context: Context) {
                             .put("id", t.id).put("title", t.title).put("subtitle", t.subtitle)
                             .put("difficulty", t.difficulty).put("isFree", t.isFree)
                             .put("version", t.version).put("questionCount", t.questionCount)
-                            .put("durationMinutes", t.durationMinutes)) }
+                            .put("durationMinutes", t.durationMinutes).put("status",t.status)
+                             .put("availableAtMs",t.availableAtMs ?: 0L)
+                             .put("comingSoonTextEn",t.comingSoonTextEn)
+                             .put("comingSoonTextHi",t.comingSoonTextHi)
+                             .put("titleHi",t.titleHi)) }
                         prefs.edit().putString("catalog", array.toString()).apply()
                         onLoaded(tests, null)
                     } else onLoaded(cached(), "No published online mocks yet. Showing offline starter tests.")

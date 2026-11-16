@@ -24,7 +24,8 @@ service cloud.firestore {
         get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.published == true &&
         get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId is int &&
         get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId >= 1 &&
-        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId <= 100;
+        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId <= 100 &&
+        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.get('status','available') == 'available';
       allow list, write: if false;
     }
     // Firebase Console / Admin SDK controls what the app shows; no client writes.
