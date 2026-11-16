@@ -179,30 +179,47 @@ fun safeHttps(value: String): Boolean = try {
 } catch (_:Exception) { false }
 
 @Composable
-fun GlobalExamHeader(hindi: Boolean, onLanguage: () -> Unit, notificationsEnabled:Boolean,
-                     showNotifications:Boolean, onNotifications:()->Unit) {
-    Row(Modifier.fillMaxWidth().background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF641697))))
-        .padding(start=13.dp,end=13.dp,top=5.dp,bottom=5.dp),verticalAlignment=Alignment.CenterVertically) {
-        Image(painterResource(R.drawable.brand_icon),"Independent Bihar exam-preparation logo",
+fun GlobalExamHeader(hindi:Boolean,onLanguage:()->Unit,notificationsEnabled:Boolean,
+                     showNotifications:Boolean,onNotifications:()->Unit) {
+    Row(Modifier.fillMaxWidth()
+        .background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF641697))))
+        .padding(start=9.dp,end=9.dp,top=5.dp,bottom=5.dp),
+        verticalAlignment=Alignment.CenterVertically) {
+        Image(painterResource(R.drawable.brand_icon),
+            t(hindi,"BSSC CGL 4 learning app","बीएसएससी सीजीएल 4 अभ्यास ऐप"),
             Modifier.size(38.dp).clip(RoundedCornerShape(10.dp)))
-        Spacer(Modifier.width(9.dp))
+        Spacer(Modifier.width(7.dp))
         Column(Modifier.weight(1f)) {
-            Text("BSSC CGL 4",fontWeight=FontWeight.Black,color=Color.White,fontSize=16.sp, lineHeight=18.sp)
-            Text("FREE 100 MOCK · OneShotGS",color=Gold,fontSize=9.sp,fontWeight=FontWeight.Black,
-                letterSpacing=.3.sp,maxLines=1)
+            Text("बीएसएससी CGL 4 · फ्री मॉक",
+                fontWeight=FontWeight.Black,color=Color.White,fontSize=12.sp,
+                lineHeight=15.sp,maxLines=1,
+                overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+            Text("BSSC CGL 4 Free Mock · OneShotGS",
+                color=Gold,fontSize=9.sp,fontWeight=FontWeight.Black,maxLines=1,
+                overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
         }
-        if(showNotifications) IconButton(onClick=onNotifications,modifier=Modifier.size(44.dp)) {
-            Icon(if(notificationsEnabled) Icons.Rounded.NotificationsActive else Icons.Rounded.NotificationsNone,
+        if(showNotifications) IconButton(onClick=onNotifications,modifier=Modifier.size(40.dp)) {
+            Icon(if(notificationsEnabled) Icons.Rounded.NotificationsActive
+                else Icons.Rounded.NotificationsNone,
                 contentDescription=t(hindi,"Notification settings","नोटिफिकेशन सेटिंग"),
-                tint=Gold,modifier=Modifier.size(20.dp))
+                tint=Gold,modifier=Modifier.size(19.dp))
         }
-        Surface(onClick=onLanguage,modifier=Modifier.heightIn(min=42.dp),
-            shape=RoundedCornerShape(100.dp),color=Color.White) {
-            Row(Modifier.padding(horizontal=10.dp,vertical=9.dp),verticalAlignment=Alignment.CenterVertically) {
-                Text(if(hindi) "हिंदी" else "HI",fontWeight=FontWeight.Black,color=if(hindi)Violet else Muted,fontSize=10.sp)
-                Text(" | ",color=Muted,fontSize=10.sp)
-                Text("EN",fontWeight=FontWeight.Black,color=if(hindi)Muted else Violet,fontSize=10.sp)
-                Icon(Icons.Rounded.SwapHoriz,null,tint=Violet,modifier=Modifier.size(13.dp))
+        Surface(onClick=onLanguage,modifier=Modifier.heightIn(min=46.dp),
+            shape=RoundedCornerShape(13.dp),color=Color.White) {
+            Column(Modifier.padding(horizontal=7.dp,vertical=5.dp),
+                horizontalAlignment=Alignment.CenterHorizontally) {
+                Text(t(hindi,"🌐 Language","🌐 भाषा बदलें"),
+                    fontWeight=FontWeight.Black,color=RoyalDeep,fontSize=10.sp,maxLines=1)
+                Row(verticalAlignment=Alignment.CenterVertically) {
+                    Text("हिंदी",fontWeight=if(hindi)FontWeight.Black else FontWeight.Medium,
+                        color=if(hindi)Violet else Muted,fontSize=10.sp)
+                    Icon(Icons.Rounded.SwapHoriz,
+                        contentDescription=t(hindi,"Switch app language",
+                            "ऐप की भाषा बदलें"),
+                        tint=Violet,modifier=Modifier.size(14.dp))
+                    Text("EN",fontWeight=if(hindi)FontWeight.Medium else FontWeight.Black,
+                        color=if(hindi)Muted else Violet,fontSize=10.sp)
+                }
             }
         }
     }

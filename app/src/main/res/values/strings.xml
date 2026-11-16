@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources><string name="app_name">BSSC CGL 4 Free 100 Mock</string></resources>
+<resources>
+    <string name="app_name">BSSC CGL 4 Free Mock</string>
+</resources>

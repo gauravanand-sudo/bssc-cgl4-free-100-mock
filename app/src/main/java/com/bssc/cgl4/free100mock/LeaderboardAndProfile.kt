@@ -178,8 +178,10 @@ import androidx.compose.ui.unit.sp
                 Icon(Icons.Rounded.Language,null,tint=Aqua)
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("हिंदी प्रश्न / Hindi questions",color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=14.sp)
-                    Text("Switch question and interface labels",color=Muted,fontSize=11.sp)
+                    Text(t(hindi,"🌐 Switch app language","🌐 ऐप की भाषा बदलें"),
+                        color=SoftWhite,fontWeight=FontWeight.Black,fontSize=14.sp)
+                    Text("हिंदी ⇄ English · "+t(hindi,"Questions and interface",
+                        "प्रश्न और ऐप इंटरफ़ेस"),color=Muted,fontSize=11.sp)
                 }
                 Switch(checked=hindi,onCheckedChange=onSetHindi)
             }
