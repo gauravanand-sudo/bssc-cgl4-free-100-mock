@@ -56,13 +56,14 @@ fun DashboardScreen(
         item { AnimatedStudyHero(hindi) {
             if(firstFree!=null) onStart(firstFree.id) else onOpenTests()
         } }
-        item(key="daily-mission"){ TodayMissionCard(attempts,hindi,onOpenTests) }
-        item { ExamCountdown(examEvents,hindi) }
         if(banners.isNotEmpty()) item(key="featured-promotions") {
             FirebasePromotions(banners,hindi) { destination ->
                 if(destination=="mock_list") onOpenTests() else onBannerAction(destination)
             }
         }
+        item(key="daily-mission"){ TodayMissionCard(attempts,hindi,onOpenTests) }
+        if(adAllowed) item(key="home-mid-ad") { SponsoredBanner(ads) }
+        item { ExamCountdown(examEvents,hindi) }
         item {
             Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(17.dp))
                 .background(Brush.horizontalGradient(listOf(Color(0xFF630B62),Color(0xFF8C1666),Royal)))
@@ -91,8 +92,7 @@ fun DashboardScreen(
                 }
             }
         }
-        // Sponsored content is separated from the navigation shortcuts.
-        if(adAllowed) item(key="home-mid-ad") { SponsoredBanner(ads) }
+        // Sponsored content is intentionally separated from interactive shortcuts.
         if(session!=null) item {
             Panel(Modifier.clickable(onClick=onResume)) {
                 Row(verticalAlignment=Alignment.CenterVertically) {

@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -57,24 +58,30 @@ fun GlowingStat(emoji:String,label:String,number:Int?,fallback:String="—",
     }
 }
 
+/** Compact horizontal stats: one scrollable row, less vertical than a grid. */
 @Composable
 fun HomeMomentum(attempts:List<Attempt>,hindi:Boolean) {
     val completed=attempts.map{it.testId}.distinct().size
     val streak=PrepMomentum.currentStreak(attempts)
     val best=attempts.maxOfOrNull{it.score}
     val accuracy=PrepMomentum.accuracyPercent(attempts)
-    Column(verticalArrangement=Arrangement.spacedBy(9.dp)) {
-        Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
+    LazyRow(horizontalArrangement=Arrangement.spacedBy(9.dp),
+        contentPadding=PaddingValues(vertical=3.dp)) {
+        item {
             GlowingStat("📚",t(hindi,"Mocks finished","मॉक पूरे"),completed,
-                accent=Violet,modifier=Modifier.weight(1f))
-            GlowingStat("🔥",t(hindi,"Day streak","दिन की स्ट्रीक"),streak,
-                accent=Color(0xFFCB631A),modifier=Modifier.weight(1f))
+                accent=Violet,modifier=Modifier.width(132.dp))
         }
-        Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
+        item {
+            GlowingStat("🔥",t(hindi,"Day streak","दिन की स्ट्रीक"),streak,
+                accent=Color(0xFFCB631A),modifier=Modifier.width(132.dp))
+        }
+        item {
             GlowingStat("🏅",t(hindi,"Best score","सर्वश्रेष्ठ स्कोर"),best,
-                accent=Color(0xFF86600A),modifier=Modifier.weight(1f))
+                accent=Color(0xFF86600A),modifier=Modifier.width(132.dp))
+        }
+        item {
             GlowingStat("🎯",t(hindi,"Accuracy %","सटीकता %"),accuracy,
-                accent=Aqua,modifier=Modifier.weight(1f))
+                accent=Aqua,modifier=Modifier.width(132.dp))
         }
     }
 }
