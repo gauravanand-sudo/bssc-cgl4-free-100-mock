@@ -204,7 +204,9 @@ import androidx.compose.ui.unit.sp
             Spacer(Modifier.height(9.dp))
             OutlinedButton(onClick={confirmDelete=true}) { Text("Delete app & ranking data",color=Red) }
         }
-        Text("BSSC CGL 4 Free 100 Mock · v0.4 · " + BrandCopy.tagline(hindi),color=Muted,fontSize=11.sp)
+        BiharLoveFooter(hindi)
+        Text("BSSC CGL 4 Free 100 Mock · v" + BuildConfig.VERSION_NAME + " · " + BrandCopy.tagline(hindi),
+            color=Muted,fontSize=11.sp)
     }
     if(confirmDelete) AlertDialog(onDismissRequest={confirmDelete=false},containerColor=CardInk,
         title={Text("Permanently delete your data?",color=SoftWhite)},

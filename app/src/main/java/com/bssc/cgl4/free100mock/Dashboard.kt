@@ -44,12 +44,12 @@ fun DashboardScreen(
     val progress by animateFloatAsState(if(tests.isEmpty()) 0f else completed.toFloat()/tests.size,label="mock progress")
     val firstFree=tests.firstOrNull { it.isFree }
     LazyColumn(modifier.fillMaxSize().background(Ink),
-        contentPadding=PaddingValues(start=14.dp,end=14.dp,top=12.dp,bottom=22.dp),
-        verticalArrangement=Arrangement.spacedBy(14.dp)) {
+        contentPadding=PaddingValues(start=14.dp,end=14.dp,top=12.dp,bottom=18.dp),
+        verticalArrangement=Arrangement.spacedBy(12.dp)) {
         item {
             Column {
-                Text(t(hindi,"नमस्कार, Future Officer 👋","नमस्कार, भावी अधिकारी 👋"),
-                    color=SoftWhite,fontSize=17.sp,fontWeight=FontWeight.Black)
+                Text(t(hindi,"Ready to rise, Future Officer? ✨","आज की तैयारी, कल की सफलता ✨"),
+                    color=SoftWhite,fontSize=18.sp,fontWeight=FontWeight.Black)
                 Text(BrandCopy.tagline(hindi),color=Violet,fontSize=14.sp,fontWeight=FontWeight.ExtraBold)
             }
         }
@@ -80,13 +80,13 @@ fun DashboardScreen(
         item {
             Column(verticalArrangement=Arrangement.spacedBy(9.dp)) {
                 Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
-                    ReferenceShortcut("📝",t(hindi,"Mock Tests","मॉक टेस्ट"),Color(0xFFECE1FF),Modifier.weight(1f),onOpenTests)
-                    ReferenceShortcut("📚",t(hindi,"Previous Papers","पुराने पेपर"),Color(0xFFFFE8D8),Modifier.weight(1f),onOpenTests)
-                    ReferenceShortcut("📊",t(hindi,"My Results","मेरे परिणाम"),Color(0xFFE2F2FF),Modifier.weight(1f),onOpenAnalytics)
+                    ReferenceShortcut("📝",t(hindi,"Mock Tests","मॉक टेस्ट"),Color(0xFFDDC4FF),Modifier.weight(1f),onOpenTests)
+                    ReferenceShortcut("📚",t(hindi,"Previous Papers","पुराने पेपर"),Color(0xFFFFD8B8),Modifier.weight(1f),onOpenTests)
+                    ReferenceShortcut("📊",t(hindi,"My Results","मेरे परिणाम"),Color(0xFFCDE8FF),Modifier.weight(1f),onOpenAnalytics)
                 }
                 Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
-                    ReferenceShortcut("🏆",t(hindi,"Ranking","रैंकिंग"),Color(0xFFFFF0CF),Modifier.weight(1f),onOpenRanks)
-                    ReferenceShortcut("🎯",t(hindi,"Weak Areas","कमज़ोर विषय"),Color(0xFFFFE3F0),Modifier.weight(1f),onOpenAnalytics)
+                    ReferenceShortcut("🏆",t(hindi,"Ranking","रैंकिंग"),Color(0xFFFFE2A9),Modifier.weight(1f),onOpenRanks)
+                    ReferenceShortcut("🎯",t(hindi,"Weak Areas","कमज़ोर विषय"),Color(0xFFFFCDE9),Modifier.weight(1f),onOpenAnalytics)
                 }
             }
         }
@@ -153,12 +153,14 @@ fun DashboardScreen(
 
 @Composable
 private fun ReferenceShortcut(emoji:String,title:String,color:Color,modifier:Modifier=Modifier,onClick:()->Unit) {
-    Column(modifier.height(80.dp).clip(RoundedCornerShape(17.dp)).background(color).clickable(onClick=onClick)
+    Column(modifier.height(76.dp).clip(RoundedCornerShape(16.dp)).background(color)
+        .border(1.dp,Royal.copy(alpha=.16f),RoundedCornerShape(16.dp))
+        .clickable(onClick=onClick)
         .padding(horizontal=5.dp,vertical=10.dp),horizontalAlignment=Alignment.CenterHorizontally,
         verticalArrangement=Arrangement.Center) {
         Text(emoji,fontSize=23.sp)
         Spacer(Modifier.height(6.dp))
-        Text(title,color=SoftWhite,fontSize=10.sp,lineHeight=12.sp,fontWeight=FontWeight.Black,maxLines=2,
+        Text(title,color=RoyalDeep,fontSize=11.sp,lineHeight=13.sp,fontWeight=FontWeight.Black,maxLines=2,
             textAlign=androidx.compose.ui.text.style.TextAlign.Center)
     }
 }

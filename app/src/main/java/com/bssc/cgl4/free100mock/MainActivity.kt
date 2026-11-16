@@ -246,10 +246,12 @@ class MainActivity : ComponentActivity() {
                     }
                     Route.Tabs -> Scaffold(containerColor=Ink,
                         bottomBar={
-                            Row(Modifier.fillMaxWidth().background(
-                                androidx.compose.ui.graphics.Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF521079))))
-                                .padding(horizontal=9.dp,vertical=9.dp),
-                                horizontalArrangement=Arrangement.spacedBy(7.dp),
+                            // Reclaimed screen space: 56dp tab bar with >=50dp touch targets.
+                            Row(Modifier.fillMaxWidth().height(56.dp).background(
+                                androidx.compose.ui.graphics.Brush.horizontalGradient(
+                                    listOf(RoyalDeep,Royal,Color(0xFF611998))))
+                                .padding(horizontal=6.dp,vertical=3.dp),
+                                horizontalArrangement=Arrangement.spacedBy(4.dp),
                                 verticalAlignment=Alignment.CenterVertically) {
                                 listOf(
                                     Triple(Tab.HOME,t(hindi,"Home","होम"),Icons.Rounded.Home),
@@ -259,27 +261,23 @@ class MainActivity : ComponentActivity() {
                                     Triple(Tab.PROFILE,t(hindi,"More","अन्य"),Icons.Rounded.MoreHoriz)
                                 ).forEach { (item,label,icon) ->
                                     val selected=tab==item
-                                    val tileColor by animateColorAsState(if(selected) Gold else Color.White.copy(alpha=.11f),
-                                        animationSpec=tween(230),label="tab tile")
-                                    val outlineColor by animateColorAsState(if(selected) Gold else Color.White.copy(alpha=.24f),
-                                        animationSpec=tween(230),label="tab outline")
-                                    val tileScale by animateFloatAsState(if(selected) 1f else .97f,
-                                        animationSpec=tween(230),label="tab tap")
-                                    Column(Modifier.weight(1f).height(65.dp)
-                                        .graphicsLayer { scaleX=tileScale; scaleY=tileScale }
-                                        .clip(RoundedCornerShape(15.dp))
+                                    val tileColor by animateColorAsState(
+                                        if(selected) Gold else Color.Transparent,
+                                        animationSpec=tween(190),label="compact nav tile")
+                                    Column(Modifier.weight(1f).fillMaxHeight()
+                                        .clip(RoundedCornerShape(12.dp))
                                         .background(tileColor)
-                                        .border(1.dp,outlineColor,RoundedCornerShape(15.dp))
                                         .clickable(role=Role.Tab,onClick={tab=item})
-                                        .padding(vertical=7.dp,horizontal=2.dp),
+                                        .padding(vertical=3.dp,horizontal=1.dp),
                                         horizontalAlignment=Alignment.CenterHorizontally,
                                         verticalArrangement=Arrangement.Center) {
-                                        Icon(icon,contentDescription=label,tint=if(selected) RoyalDeep else Color.White,
-                                            modifier=Modifier.size(22.dp))
-                                        Spacer(Modifier.height(3.dp))
+                                        Icon(icon,contentDescription=label,
+                                            tint=if(selected) RoyalDeep else Color.White,
+                                            modifier=Modifier.size(20.dp))
+                                        Spacer(Modifier.height(2.dp))
                                         Text(label,color=if(selected) RoyalDeep else Color.White,
                                             fontWeight=if(selected) FontWeight.Black else FontWeight.SemiBold,
-                                            fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+                                            fontSize=9.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
                                     }
                                 }
                             }
@@ -336,7 +334,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                         }
-                        if(route !is Route.Exam) BiharLoveFooter(hindi)
                     }
                     if(splash) ReferenceSplash(hindi)
                 }

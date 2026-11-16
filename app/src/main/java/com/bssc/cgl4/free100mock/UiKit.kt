@@ -20,21 +20,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // V5: visual language matched to the reference mockups — royal purple, gold and ivory.
-val Ink = Color(0xFFFBF7FF)
+val Ink = Color(0xFFF4F0FC)
 val CardInk = Color(0xFFFFFFFF)
-val CardInkLight = Color(0xFFF6EFFF)
-val Violet = Color(0xFF7023D3)
-val Blue = Color(0xFF3277E8)
-val Aqua = Color(0xFF05A96B)
-val Amber = Color(0xFFFFAE16)
-val SoftWhite = Color(0xFF291343)
-val Muted = Color(0xFF827598)
-val Red = Color(0xFFE63258)
-val SoftMint = Color(0xFFE9FFF1)
-val SoftLavender = Color(0xFFF3E9FF)
-val Royal = Color(0xFF3E0C69)
-val RoyalDeep = Color(0xFF260644)
-val Gold = Color(0xFFFFD357)
+val CardInkLight = Color(0xFFEEE3FF)
+val Violet = Color(0xFF6424C8)
+val Blue = Color(0xFF2266D8)
+val Aqua = Color(0xFF007C58)
+val Amber = Color(0xFFA85A00)
+val SoftWhite = Color(0xFF23103D)
+val Muted = Color(0xFF5D506F)
+val Red = Color(0xFFC92349)
+val SoftMint = Color(0xFFDAF7EA)
+val SoftLavender = Color(0xFFE8D8FF)
+val Royal = Color(0xFF46107A)
+val RoyalDeep = Color(0xFF260642)
+val Gold = Color(0xFFFFD45D)
 
 @Composable fun RankTheme(content: @Composable () -> Unit) {
     MaterialTheme(colorScheme = lightColorScheme(
@@ -46,7 +46,7 @@ val Gold = Color(0xFFFFD357)
 
 @Composable fun Panel(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
     Column(modifier = modifier.fillMaxWidth().clip(RoundedCornerShape(19.dp))
-        .background(CardInk).border(1.dp, Color(0xFFEADDF6), RoundedCornerShape(19.dp))
+        .background(CardInk).border(1.dp, Color(0xFFD9C7EC), RoundedCornerShape(19.dp))
         .padding(18.dp), content = content)
 }
 
@@ -67,8 +67,8 @@ val Gold = Color(0xFFFFD357)
 }
 
 @Composable fun Tag(text: String, color: Color = Aqua) {
-    Box(Modifier.clip(RoundedCornerShape(100.dp)).background(color.copy(alpha=.12f)).padding(horizontal=10.dp, vertical=6.dp)) {
-        Text(text, color=color, fontWeight=FontWeight.SemiBold, fontSize=11.sp)
+    Box(Modifier.clip(RoundedCornerShape(100.dp)).background(color.copy(alpha=.16f)).padding(horizontal=10.dp, vertical=6.dp)) {
+        Text(text, color=color, fontWeight=FontWeight.ExtraBold, fontSize=11.sp)
     }
 }
 
@@ -113,7 +113,7 @@ val Gold = Color(0xFFFFD357)
         .background(if(selected) Violet else CardInk)
         .border(1.dp, if(selected) Violet else Color(0xFFEADDF6), RoundedCornerShape(14.dp))
         .clickable { onClick() }.padding(horizontal=13.dp, vertical=10.dp)) {
-        Text(title, color=if(selected) Color.White else Muted, fontWeight=FontWeight.Bold, fontSize=12.sp,
+        Text(title, color=if(selected) Color.White else SoftWhite, fontWeight=FontWeight.Bold, fontSize=12.sp,
             maxLines=1, overflow=TextOverflow.Ellipsis)
     }
 }
