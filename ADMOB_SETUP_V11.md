@@ -22,8 +22,8 @@ via `manifestPlaceholders["ADMOB_APP_ID"]` and `BuildConfig`.
 1. Build a properly signed, reviewed **Android App Bundle (AAB)** using secure signing material that is never stored in the public repository.
 2. Confirm AdMob app readiness, supported-store linking, privacy policy, Google UMP consent and Play Data Safety.
 3. Verify ad placements, reward callback and premium gating against a **test device/test app**, not live ad clicks.
-4. Firebase `app_config/monetization.premiumEnabled`: false means Mock 3–100 rewarded; true means Mock 3–49 rewarded and 50–100 ₹25 premium **coming soon**, pending secure payment integration. The Firestore rules from V9 must actually be deployed to enforce premium-mode reads.
-5. The local rewarded unlock is not tamper-proof or server verified; production content access should use AdMob SSV and server-side entitlements. Keep premium purchase unavailable until authenticated, receipt-verified billing is ready.
+4. **Current launch V12:** Mock 1–2 free; Mock 3–100 rewarded; no premium purchase UI, Razorpay or Firebase premium switch. Deploy the V12 Firestore rules so old premium flags do not block papers.
+5. The local rewarded unlock is not tamper-proof or server verified; production content access should use AdMob SSV and server-side entitlements. Payment features can be introduced later under Google Play-compliant billing.
 
 ## References
 - https://developers.google.com/admob/android/quick-start

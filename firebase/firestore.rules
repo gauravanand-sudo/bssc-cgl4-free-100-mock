@@ -6,30 +6,25 @@ service cloud.firestore {
       allow read: if request.auth != null && resource.data.published == true;
       allow write: if false;
     }
-    // Firebase administrator-only access switch. A missing doc means rewarded mode.
+    // The old premium monetization switch is retired. Clients cannot read or
+    // write app_config from the student app. Administrators may still keep
+    // historical documents in Firebase Console.
     match /app_config/{configId} {
-      allow get: if request.auth != null && configId == 'monetization';
-      allow list, write: if false;
-    }
-    function premiumModeEnabled() {
-      return exists(/databases/$(database)/documents/app_config/monetization) &&
-        get(/databases/$(database)/documents/app_config/monetization).data.premiumEnabled == true;
+      allow read, write: if false;
     }
     // Every paper is a document with questionsJson string (up to Firestore 1 MiB limit).
     // Anonymous authentication is silent; no signup page is required.
     // IMPORTANT: this protects against public anonymous requests, NOT against answer scraping.
     // For verified contests use Cloud Functions with private answer keys.
-    // Mocks 50–100 are remotely switchable; when premiumEnabled=true, block
-    // their papers until server-verified purchases and entitlements are built.
-    // Rewarded ad unlocks remain UI-only until ad SSV is implemented.
+    // Launch model: 1–2 free, 3–100 rewarded ad unlock. NOTE: Firestore
+    // anonymous access cannot confirm whether a rewarded ad was completed;
+    // server-side verification is required for actual protected content.
     match /mock_papers/{mockId} {
       allow get: if request.auth != null &&
         get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.published == true &&
         get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId is int &&
         get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId >= 1 &&
-        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId <= 100 &&
-        (get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId < 50 ||
-         !premiumModeEnabled());
+        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId <= 100;
       allow list, write: if false;
     }
     // Firebase Console / Admin SDK controls what the app shows; no client writes.

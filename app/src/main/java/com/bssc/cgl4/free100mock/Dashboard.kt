@@ -32,8 +32,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 fun DashboardScreen(
     name: String, hindi: Boolean, attempts: List<Attempt>, session: ExamSession?,
     tests: List<MockTest>, catalogStatus: String?, loadingCatalog: Boolean,
-    unlocked: Set<Int>, accessMode: MockAccess.Mode,
-    adReady: Boolean, quickReady: Boolean, adAllowed: Boolean, ads: AdController,
+    unlocked: Set<Int>, adReady: Boolean, quickReady: Boolean, adAllowed: Boolean, ads: AdController,
     banners: List<PromoBanner>, examEvents: List<ExamEvent>,
     modifier: Modifier, onStart: (Int)->Unit, onUnlock: (Int)->Unit, onQuickUnlock: (Int)->Unit,
     onResume: ()->Unit, onViewResult: (Attempt)->Unit, onToggleLanguage: ()->Unit,
@@ -123,8 +122,7 @@ fun DashboardScreen(
         }
         items(tests.take(3), key={ it.id }) { test ->
             ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
-                MockAccess.tier(test.id, accessMode),
-                !MockAccess.isAccessible(test.id, unlocked, accessMode),adReady,quickReady,hindi,
+                !MockAccess.isAccessible(test.id, unlocked),adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
         }
         if(loadingCatalog) item { LinearProgressIndicator(modifier=Modifier.fillMaxWidth(),color=Violet) }
@@ -182,14 +180,14 @@ private fun ReferenceMetric(emoji:String,value:String,label:String,modifier:Modi
 /** Dedicated compact catalogue with real Firestore data, no fabricated 100-paper listing. */
 @Composable
 fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set<Int>,
-    accessMode:MockAccess.Mode,adReady:Boolean,quickReady:Boolean,loading:Boolean,status:String?,hindi:Boolean,
+    adReady:Boolean,quickReady:Boolean,loading:Boolean,status:String?,hindi:Boolean,
     adAllowed:Boolean,ads:AdController,onStart:(Int)->Unit,onUnlock:(Int)->Unit,
     onQuickUnlock:(Int)->Unit,onRefresh:()->Unit) {
     var filter by remember { mutableStateOf("all") }
-    val filtered=remember(tests,unlocked,accessMode,filter) {
+    val filtered=remember(tests,unlocked,filter) {
         when(filter) {
             "free" -> tests.filter { MockAccess.isFree(it.id) }
-            "unlocked" -> tests.filter { MockAccess.isAccessible(it.id, unlocked, accessMode) }
+            "unlocked" -> tests.filter { MockAccess.isAccessible(it.id, unlocked) }
             else -> tests
         }
     }
@@ -223,8 +221,7 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
             t(hindi,"Refresh to check for new published papers.","नए प्रकाशित पेपर के लिए रिफ़्रेश करें।"))}
         itemsIndexed(filtered,key={_,test->test.id}) {index,test ->
             ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
-                MockAccess.tier(test.id, accessMode),
-                !MockAccess.isAccessible(test.id, unlocked, accessMode),adReady,quickReady,hindi,
+                !MockAccess.isAccessible(test.id, unlocked),adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
             if(index==4 && adAllowed && BuildConfig.ADMOB_NATIVE_ID.isNotBlank()) {
                 Spacer(Modifier.height(12.dp))
@@ -243,10 +240,8 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
 }
 
 @Composable
-private fun ReferenceMockRow(test:MockTest,previous:Attempt?,tier:MockAccess.Tier,locked:Boolean,
+private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,
     adReady:Boolean,quickReady:Boolean,hindi:Boolean,onStart:()->Unit,onUnlock:()->Unit,onQuickUnlock:()->Unit) {
-    val premiumLocked = locked && tier == MockAccess.Tier.PREMIUM
-    val checkingMode = locked && tier == MockAccess.Tier.CHECKING
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(19.dp)).background(Color.White)
         .border(1.dp,Color(0xFFECDFF5),RoundedCornerShape(19.dp)).animateContentSize().padding(13.dp)) {
         Row(verticalAlignment=Alignment.CenterVertically) {
@@ -260,9 +255,7 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,tier:MockAccess.Tie
                     color=SoftWhite,fontSize=14.sp,fontWeight=FontWeight.Black)
                 Text("150 Q  •  600 " + t(hindi,"marks","अंक") + "  •  2h 15m",color=Muted,fontSize=10.sp)
             }
-            Tag(if(premiumLocked)t(hindi,"PREMIUM ₹25","प्रीमियम ₹25")
-                else if(checkingMode)t(hindi,"CHECKING","जाँच जारी")
-                else if(locked)t(hindi,"AD UNLOCK","विज्ञापन")
+            Tag(if(locked)t(hindi,"AD UNLOCK","विज्ञापन")
                 else if(MockAccess.isFree(test.id))t(hindi,"FREE","मुफ़्त")
                 else t(hindi,"READY","तैयार"),if(locked) Amber else Aqua)
         }
@@ -272,23 +265,7 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,tier:MockAccess.Tie
                 color=Violet,fontWeight=FontWeight.Bold,fontSize=10.sp)
         }
         Spacer(Modifier.height(11.dp))
-        if(premiumLocked) {
-            Button(onClick={},enabled=false,shape=RoundedCornerShape(14.dp),
-                modifier=Modifier.fillMaxWidth().height(43.dp)) {
-                Icon(Icons.Rounded.Lock,null,modifier=Modifier.size(17.dp))
-                Spacer(Modifier.width(6.dp))
-                Text(t(hindi,"₹25 pack · Coming soon","₹25 पैक · जल्द आएगा"),
-                    fontSize=12.sp,fontWeight=FontWeight.Bold)
-            }
-        } else if(checkingMode) {
-            Button(onClick={},enabled=false,shape=RoundedCornerShape(14.dp),
-                modifier=Modifier.fillMaxWidth().height(43.dp)) {
-                Icon(Icons.Rounded.WifiOff,null,modifier=Modifier.size(17.dp))
-                Spacer(Modifier.width(6.dp))
-                Text(t(hindi,"Checking online access…","ऑनलाइन एक्सेस जाँच रहे हैं…"),
-                    fontSize=12.sp,fontWeight=FontWeight.Bold)
-            }
-        } else if(locked) {
+        if(locked) {
             Button(onClick=onUnlock,enabled=adReady,shape=RoundedCornerShape(14.dp),
                 modifier=Modifier.fillMaxWidth().height(43.dp),
                 colors=ButtonDefaults.buttonColors(containerColor=Violet)) {
