@@ -58,8 +58,8 @@ android {
         applicationId = "com.bssc.cgl4.free100mock" // Finalize before first Play Store upload.
         minSdk = 24
         targetSdk = 36
-        versionCode = 21
-        versionName = "0.21.0"
+        versionCode = 22
+        versionName = "0.22.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Debug APKs use ONLY Google's demo units, even if production IDs are configured.
         // This prevents accidental invalid-traffic clicks during testing.
@@ -78,6 +78,7 @@ android {
         buildConfigField("String", "FIREBASE_APP_ID", quoted(p("FIREBASE_APP_ID")))
         buildConfigField("String", "FIREBASE_PROJECT_ID", quoted(p("FIREBASE_PROJECT_ID")))
         buildConfigField("String", "FIREBASE_SENDER_ID", quoted(p("FIREBASE_SENDER_ID")))
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", quoted(p("GOOGLE_WEB_CLIENT_ID")))
     }
     buildTypes {
         release {
@@ -110,6 +111,9 @@ dependencies {
     implementation("com.google.android.ump:user-messaging-platform:3.2.0")
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-auth")
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-messaging")
     implementation("io.coil-kt:coil-compose:2.7.0")
