@@ -5,7 +5,7 @@ badge). Splash and app header show both **बीएसएससी सीजी�
 and **BSSC CGL 4 Free Mock**, with OneShotGS attribution.
 
 The large number is clearly stated as a goal in Hindi:
-**“लक्ष्य: १५,००० प्रश्न”** (100 planned mocks × 150 questions).
+**“लक्ष्य: 15,000 प्रश्न”** (100 planned mocks × 150 questions).
 It is not a representation of presently available or validated inventory.
 Source repository currently bundles four starter papers, with repeated
 questions noted in the [V16 audit](V16_QUESTION_BANK_AUDIT.md).

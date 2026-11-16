@@ -63,7 +63,7 @@ fun DashboardScreen(
                 }
                 Spacer(Modifier.height(5.dp))
                 Text(t(hindi,"Goal: 15,000 questions · 100 planned mocks",
-                    "लक्ष्य: १५,००० प्रश्न · १०० मॉक टेस्ट"),
+                    "लक्ष्य: 15,000 प्रश्न · 100 मॉक टेस्ट"),
                     color=Muted,fontWeight=FontWeight.Bold,fontSize=11.sp)
             }
         }
