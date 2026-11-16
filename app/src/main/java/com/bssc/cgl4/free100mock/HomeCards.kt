@@ -51,7 +51,7 @@ object HomeCardPolicy {
     fun validCard(type:String,layout:String,placement:String,theme:String,
                   actionType:String,actionValue:String,claim:String,
                   sourceUrl:String,titleEn:String,titleHi:String,
-                  imageUrl:String):Boolean {
+                  imageUrl:String,value:String):Boolean {
         if(type !in types || layout !in layouts || placement !in placements ||
             theme !in themes || actionType !in setOf("none","internal","external")) return false
         if(actionType=="internal" && actionValue !in routes) return false
@@ -59,7 +59,8 @@ object HomeCardPolicy {
         if(imageUrl.isNotBlank() && !safeHttps(imageUrl)) return false
         if(titleEn.isBlank() && titleHi.isBlank() && imageUrl.isBlank()) return false
         if(type=="image" && !safeHttps(imageUrl)) return false
-        if(type=="cutoff" && (claim !in claims || (claim=="official" &&
+        if(type=="cutoff" && (value.isBlank() || claim !in claims ||
+            (claim=="official" &&
             (!safeHttps(sourceUrl) || !sourceUrl.startsWith("https://bssc.bihar.gov.in/"))))
             return false
         return sourceUrl.isBlank() || safeHttps(sourceUrl)
@@ -103,7 +104,7 @@ class HomeCardsRepository(private val context:Context) {
                                         val imageUrl=field("imageUrl",2048)
                                         if(!HomeCardPolicy.validCard(type,layout,placement,theme,
                                             actionType,actionValue,claim,sourceUrl,
-                                            titleEn,titleHi,imageUrl)) null
+                                            titleEn,titleHi,imageUrl,field("value",40))) null
                                         else HomeCard(
                                             d.id,sectionId,field("sectionTitleEn",90),
                                             field("sectionTitleHi",90),
