@@ -95,12 +95,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          TAG="phone-test-v22-${GITHUB_RUN_NUMBER}"
+          TAG="phone-test-v23-${GITHUB_RUN_NUMBER}"
           gh release create "$TAG" \
             "app/build/outputs/apk/debug/app-debug.apk#BSSC-CGL4-Free-100-Mock-TEST.apk" \
             --target "$GITHUB_SHA" \
-            --title "BSSC CGL 4 Free Mock V22 Student Registration - Phone Test APK (Run ${GITHUB_RUN_NUMBER})" \
-            --notes "Unofficial V22: Google login and secure student email/mobile collection. Firebase OAuth + SHA + rules still require project owner setup. Flexible Firebase cards and OneShotGS remain. DEBUG uses demo ads only. For testing only. Install on your Android phone; not a Play Store release." \
+            --title "BSSC CGL 4 Free Mock V23 Motivational Login - Phone Test APK (Run ${GITHUB_RUN_NUMBER})" \
+            --notes "Unofficial V23: refreshed aspirational OneShotGS Google sign-in and phone registration screens. Firebase OAuth configuration and rules still require project owner activation. Flexible Firebase cards and OneShotGS remain. DEBUG uses demo ads only. For testing only. Install on your Android phone; not a Play Store release." \
             --prerelease
           echo "Direct APK link: https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/BSSC-CGL4-Free-100-Mock-TEST.apk" >> "$GITHUB_STEP_SUMMARY"
 

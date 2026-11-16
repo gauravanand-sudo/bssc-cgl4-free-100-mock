@@ -422,6 +422,7 @@ class MainActivity : ComponentActivity() {
                         } else signupState
                         StudentRegistrationGate(
                             state=form,hindi=hindi,editing=editingContact,
+                            onLanguage={hindi=!hindi;store.setHindi(hindi)},
                             onGoogle={ callback ->
                                 studentRegistration.signInWithGoogle(this@MainActivity,callback)
                             },

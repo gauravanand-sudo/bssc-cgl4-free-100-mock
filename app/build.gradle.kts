@@ -58,8 +58,8 @@ android {
         applicationId = "com.bssc.cgl4.free100mock" // Finalize before first Play Store upload.
         minSdk = 24
         targetSdk = 36
-        versionCode = 22
-        versionName = "0.22.0"
+        versionCode = 23
+        versionName = "0.23.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Debug APKs use ONLY Google's demo units, even if production IDs are configured.
         // This prevents accidental invalid-traffic clicks during testing.
