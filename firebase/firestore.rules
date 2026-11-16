@@ -1,16 +1,15 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Privately stored student registrations. Client can only access own profile.
-    // Admin SDK/Console can count and export users, bypassing client rules.
+    // Private registrations: only the owning Google account may access its own record.
     match /student_profiles/{uid} {
-      function isStudentOwner() {
+      function isOwner() {
         return request.auth != null && request.auth.uid == uid &&
           request.auth.token.email is string &&
           request.auth.token.firebase.sign_in_provider == 'google.com';
       }
       function validProfile() {
-        return isStudentOwner() &&
+        return isOwner() &&
           request.resource.data.keys().hasAll([
             'email','displayName','phoneE164','phoneVerified','whatsappOptIn',
             'consentVersion','provider','createdAt','updatedAt'
@@ -24,70 +23,7 @@ service cloud.firestore {
           request.resource.data.displayName is string &&
           request.resource.data.displayName.size() <= 100 &&
           request.resource.data.phoneE164 is string &&
-          request.resource.data.phoneE164.matches('^\+91[6-9][0-9]{9} via published == true; only administrators publish.
-    match /mock_catalog/{mockId} {
-      allow read: if request.auth != null && resource.data.published == true;
-      allow write: if false;
-    }
-    // The old premium monetization switch is retired. Clients cannot read or
-    // write app_config from the student app. Administrators may still keep
-    // historical documents in Firebase Console.
-    match /app_config/{configId} {
-      allow read, write: if false;
-    }
-    // Every paper is a document with questionsJson string (up to Firestore 1 MiB limit).
-    // Anonymous authentication is silent; no signup page is required.
-    // IMPORTANT: this protects against public anonymous requests, NOT against answer scraping.
-    // For verified contests use Cloud Functions with private answer keys.
-    // Launch model: 1–2 free, 3–100 rewarded ad unlock. NOTE: Firestore
-    // anonymous access cannot confirm whether a rewarded ad was completed;
-    // server-side verification is required for actual protected content.
-    match /mock_papers/{mockId} {
-      allow get: if request.auth != null &&
-        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.published == true &&
-        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId is int &&
-        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId >= 1 &&
-        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId <= 100 &&
-        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.get('status','available') == 'available';
-      allow list, write: if false;
-    }
-    // Firebase Console / Admin SDK controls what the app shows; no client writes.
-    match /promo_banners/{bannerId} {
-      allow get, list: if request.auth != null && resource.data.active == true;
-      allow write: if false;
-    }
-    match /exam_events/{eventId} {
-      allow get, list: if request.auth != null && resource.data.published == true;
-      allow write: if false;
-    }
-    // Flexible public Home cards: only administrators (Console/Admin SDK) edit.
-    // Students' anonymous-auth queries MUST filter active == true.
-    match /home_cards/{cardId} {
-      allow get, list: if request.auth != null && resource.data.active == true;
-      allow write: if false;
-    }
-    // Prototype leaderboard: client-submitted results are NOT anti-cheat verified.
-    match /{collection}/{userId} {
-      allow read: if request.auth != null && collection.matches('leaderboard_mock_([1-9]|[1-9][0-9]|100)');
-      allow create, update: if request.auth != null &&
-        collection.matches('leaderboard_mock_([1-9]|[1-9][0-9]|100)') &&
-        request.auth.uid == userId &&
-        request.resource.data.keys().hasOnly(['uid','name','score','correct','submittedAt']) &&
-        request.resource.data.uid == userId &&
-        request.resource.data.name is string && request.resource.data.name.size() <= 28 &&
-        request.resource.data.score is int &&
-        request.resource.data.score >= -150 && request.resource.data.score <= 600 &&
-        request.resource.data.correct is int &&
-        request.resource.data.correct >= 0 && request.resource.data.correct <= 150 &&
-        request.resource.data.submittedAt is int &&
-        (!exists(/databases/$(database)/documents/$(collection)/$(userId)) ||
-        request.resource.data.score >= resource.data.score);
-      allow delete: if request.auth != null && request.auth.uid == userId &&
-        collection.matches('leaderboard_mock_([1-9]|[1-9][0-9]|100)');
-    }
-  }
-}
-) &&
+          request.resource.data.phoneE164.matches('^\\+91[6-9][0-9]{9}$') &&
           request.resource.data.phoneVerified == false &&
           request.resource.data.whatsappOptIn is bool &&
           request.resource.data.consentVersion == 1 &&
@@ -101,6 +37,7 @@ service cloud.firestore {
         request.resource.data.createdAt == resource.data.createdAt;
       allow delete: if request.auth != null && request.auth.uid == uid;
     }
+
     // Published catalogue is queryable via published == true; only administrators publish.
     match /mock_catalog/{mockId} {
       allow read: if request.auth != null && resource.data.published == true;
