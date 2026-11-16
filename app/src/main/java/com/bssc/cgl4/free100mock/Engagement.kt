@@ -257,7 +257,7 @@ fun ExamCountdown(events:List<ExamEvent>,hindi:Boolean) {
                 Text(if (confirmed == null) t(hindi,"PREPARATION COUNTDOWN","तैयारी की उलटी गिनती")
                     else t(hindi,"OFFICIAL EXAM COUNTDOWN","आधिकारिक परीक्षा काउंटडाउन"),
                     color=Gold,fontWeight=FontWeight.Black,fontSize=10.sp)
-                Text(if (confirmed == null) t(hindi,"OneShotGS study target","OneShotGS तैयारी लक्ष्य")
+                Text(if (confirmed == null) t(hindi,"BSSC CGL 4 Prelims","बीएसएससी सीजीएल 4 प्रारंभिक परीक्षा")
                     else t(hindi,confirmed.nameEn,confirmed.nameHi),
                     color=Color.White,fontWeight=FontWeight.Black,fontSize=14.sp)
             }
