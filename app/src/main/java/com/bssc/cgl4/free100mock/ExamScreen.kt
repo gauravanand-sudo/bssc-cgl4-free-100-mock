@@ -1,5 +1,12 @@
 package com.bssc.cgl4.free100mock
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,6 +25,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -48,15 +56,21 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
     val attempted=session.answers.count { it>=0 }
     Scaffold(containerColor=Ink,
         topBar={
-            Column(Modifier.background(CardInk).padding(horizontal=20.dp,vertical=16.dp)) {
+            Column(Modifier.background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF6C27B5))))
+                .padding(horizontal=15.dp,vertical=10.dp)) {
                 Row(verticalAlignment=Alignment.CenterVertically) {
-                    IconButton(onClick=onExit,modifier=Modifier.size(34.dp)) { Icon(Icons.Rounded.ArrowBack,null,tint=SoftWhite) }
+                    IconButton(onClick=onExit,modifier=Modifier.size(40.dp)) {
+                        Icon(Icons.Rounded.ArrowBack,
+                            t(hindi,"Leave exam","परीक्षा छोड़ें"),tint=Color.White)
+                    }
                     Spacer(Modifier.width(9.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(ExamConfig.title(session.testId),color=SoftWhite,fontSize=15.sp,fontWeight=FontWeight.ExtraBold)
-                        Text(t(hindi,"BSSC CGL 4 · FOCUS MODE","BSSC CGL 4 · एकाग्रता मोड"),color=Muted,fontSize=10.sp)
+                        Text("📝 "+ExamConfig.title(session.testId),color=Color.White,fontSize=15.sp,
+                            fontWeight=FontWeight.Black)
+                        Text(t(hindi,"BSSC CGL 4 · FOCUS MODE","BSSC CGL 4 · एकाग्रता मोड"),color=Color.White.copy(alpha=.86f),fontSize=10.sp)
                     }
-                    Surface(shape=RoundedCornerShape(12.dp),color=if(timeLeft<600) Red.copy(alpha=.12f) else Violet.copy(alpha=.12f)) {
+                    Surface(shape=RoundedCornerShape(12.dp),
+                        color=if(timeLeft<600) Color(0xFFFFECEA) else Color.White) {
                         Row(Modifier.padding(horizontal=11.dp,vertical=8.dp),verticalAlignment=Alignment.CenterVertically) {
                             Icon(Icons.Rounded.Timer,null,tint=if(timeLeft<600) Red else Violet,modifier=Modifier.size(15.dp))
                             Spacer(Modifier.width(5.dp))
@@ -67,16 +81,28 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
                 }
                 Spacer(Modifier.height(12.dp))
                 Row(verticalAlignment=Alignment.CenterVertically) {
-                    Text("Q ${i+1} / ${questions.size}",color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=12.sp)
+                    Text("🎯 Q ${i+1} / ${questions.size}",color=Color.White,
+                        fontWeight=FontWeight.Black,fontSize=12.sp)
                     Spacer(Modifier.weight(1f))
-                    Text(t(hindi,"$attempted answered","$attempted हल किए"),color=Muted,fontSize=11.sp)
+                    Text(t(hindi,"✅ $attempted answered","✅ $attempted हल किए"),
+                        color=Gold,fontWeight=FontWeight.Bold,fontSize=11.sp)
                 }
                 Spacer(Modifier.height(8.dp))
-                ProgressTrack(attempted.toFloat()/questions.size,Aqua)
+                LinearProgressIndicator(progress={attempted.toFloat()/questions.size},
+                    modifier=Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(6.dp)),
+                    color=Gold,trackColor=Color.White.copy(alpha=.23f),gapSize=0.dp,
+                    drawStopIndicator={})
+                AnimatedVisibility(visible=timeLeft in 1..599) {
+                    Text(t(hindi,"⚠ Less than 10 minutes remaining",
+                        "⚠ 10 मिनट से कम समय बचा है"),
+                        color=Gold,fontSize=10.sp,fontWeight=FontWeight.Black,
+                        modifier=Modifier.padding(top=5.dp))
+                }
             }
         },
         bottomBar={
-            Column(Modifier.background(CardInk).padding(horizontal=19.dp,vertical=13.dp)) {
+            Column(Modifier.background(CardInk)
+                .padding(horizontal=12.dp,vertical=8.dp)) {
                 Row(horizontalArrangement=Arrangement.spacedBy(10.dp),verticalAlignment=Alignment.CenterVertically) {
                     OutlinedButton(onClick={showPalette=true},shape=RoundedCornerShape(14.dp),
                         border=androidx.compose.foundation.BorderStroke(1.dp,Color(0xFFE2E5EE))) {
@@ -98,7 +124,7 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
             }
         }) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())
-            .padding(horizontal=20.dp,vertical=22.dp)) {
+            .padding(horizontal=16.dp,vertical=16.dp)) {
             Row(verticalAlignment=Alignment.CenterVertically) {
                 Tag(q.section,Blue)
                 Spacer(Modifier.width(7.dp))
@@ -109,31 +135,52 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
                         BrandCopy.screen("exam","mark_review",hindi,t(hindi,"Mark for Review","समीक्षा के लिए चिन्हित करें")),tint=if(i in session.marked) Amber else Muted)
                 }
             }
-            Spacer(Modifier.height(18.dp))
-            Text(if(hindi) q.questionHi else q.questionEn,color=SoftWhite,fontSize=19.sp,
-                lineHeight=28.sp,fontWeight=FontWeight.ExtraBold)
-            Spacer(Modifier.height(16.dp))
-            Text(if(hindi) "सही उत्तर चुनें" else "Choose the correct answer",color=Muted,fontSize=12.sp)
+            Spacer(Modifier.height(10.dp))
+            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(21.dp))
+                .background(Brush.linearGradient(listOf(Color.White,Color(0xFFF1E7FF))))
+                .border(1.dp,Violet.copy(alpha=.19f),RoundedCornerShape(21.dp))
+                .padding(17.dp)) {
+                Text(t(hindi,"QUESTION ${i+1}","प्रश्न ${i+1}"),
+                    color=Violet,fontSize=10.sp,fontWeight=FontWeight.Black,letterSpacing=1.sp)
+                Spacer(Modifier.height(9.dp))
+                AnimatedContent(targetState=i,
+                    transitionSpec={fadeIn(tween(180)) togetherWith fadeOut(tween(110))},
+                    label="question change") { idx ->
+                    Text(if(hindi)questions[idx].questionHi else questions[idx].questionEn,
+                        color=SoftWhite,fontSize=18.sp,lineHeight=27.sp,
+                        fontWeight=FontWeight.ExtraBold)
+                }
+            }
+            Spacer(Modifier.height(14.dp))
+            Text(t(hindi,"👇 Choose your answer","👇 अपना उत्तर चुनें"),
+                color=Violet,fontWeight=FontWeight.Bold,fontSize=12.sp)
             Spacer(Modifier.height(13.dp))
             val options=if(hindi) q.optionsHi else q.optionsEn
             options.forEachIndexed { index, opt ->
                 val selected=choice==index
-                Row(Modifier.fillMaxWidth().padding(bottom=11.dp)
+                val tile by animateColorAsState(if(selected) SoftMint else CardInk,
+                    animationSpec=tween(170),label="answer background")
+                val outline by animateColorAsState(if(selected) Aqua else Color(0xFFDDCBEF),
+                    animationSpec=tween(170),label="answer outline")
+                Row(Modifier.fillMaxWidth().padding(bottom=10.dp)
                     .clip(RoundedCornerShape(18.dp))
-                    .background(if(selected) SoftMint else CardInk)
-                    .border(1.dp,if(selected) Aqua else Color(0xFFE9DDF2),RoundedCornerShape(18.dp))
+                    .background(tile)
+                    .border(if(selected) 2.dp else 1.dp,outline,RoundedCornerShape(18.dp))
                     .clickable {
                         val new=session.answers.toMutableList().apply { set(i,index) }
                         update(session.copy(answers=new))
                     }.padding(16.dp),verticalAlignment=Alignment.CenterVertically) {
-                    Box(Modifier.size(35.dp).clip(CircleShape).background(if(selected) Aqua else Color(0xFFE9DDF2)),
+                    Box(Modifier.size(37.dp).clip(CircleShape)
+                        .background(if(selected) Aqua else SoftLavender),
                         contentAlignment=Alignment.Center) {
-                        Text(('A'+index).toString(),fontSize=13.sp,fontWeight=FontWeight.Black,
-                            color=if(selected) Color.White else Muted)
+                        if(selected) Icon(Icons.Rounded.Check,null,
+                            tint=Color.White,modifier=Modifier.size(21.dp))
+                        else Text(('A'+index).toString(),fontSize=13.sp,fontWeight=FontWeight.Black,
+                            color=Royal)
                     }
                     Spacer(Modifier.width(12.dp))
                     Text(opt,color=if(selected) SoftWhite else SoftWhite,
-                        fontSize=15.sp,lineHeight=22.sp,fontWeight=if(selected) FontWeight.Bold else FontWeight.Normal)
+                        fontSize=15.sp,lineHeight=22.sp,fontWeight=if(selected) FontWeight.Black else FontWeight.Medium)
                 }
             }
             Spacer(Modifier.height(12.dp))
@@ -149,14 +196,15 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
         }
     }
     if(showPalette) AlertDialog(onDismissRequest={showPalette=false},containerColor=CardInk,
-        title={Text("Question navigator",color=SoftWhite,fontWeight=FontWeight.Bold)},
+        title={Text(t(hindi,"🧭 Question navigator","🧭 प्रश्न सूची"),
+            color=SoftWhite,fontWeight=FontWeight.Black)},
         text={
             Column {
                 Row(horizontalArrangement=Arrangement.spacedBy(12.dp)) {
                     Tag("● Answered",Aqua);Tag("● Review",Amber);Tag("● Unseen",Muted)
                 }
                 Spacer(Modifier.height(15.dp))
-                LazyVerticalGrid(GridCells.Fixed(6),Modifier.height(330.dp),
+                LazyVerticalGrid(GridCells.Adaptive(42.dp),Modifier.height(330.dp),
                     horizontalArrangement=Arrangement.spacedBy(7.dp),verticalArrangement=Arrangement.spacedBy(7.dp)) {
                     items((0 until questions.size).toList()) { idx ->
                         val color=if(idx in session.marked) Amber else if(session.answers[idx]>=0) Aqua else Muted
@@ -172,7 +220,8 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
         },confirmButton={TextButton(onClick={showPalette=false}) {Text("Close",color=Violet)}},
         dismissButton={TextButton(onClick={showPalette=false;confirmSubmit=true}) {Text("Submit",color=Amber)}})
     if(confirmSubmit) AlertDialog(onDismissRequest={confirmSubmit=false},containerColor=CardInk,
-        title={Text("Submit this mock?",color=SoftWhite,fontWeight=FontWeight.ExtraBold)},
+        title={Text(t(hindi,"🏁 Submit this mock?","🏁 टेस्ट जमा करें?"),
+            color=SoftWhite,fontWeight=FontWeight.Black)},
         text={Text("Answered: $attempted   •   Unanswered: ${questions.size-attempted}\n\nYour paper will be graded using +4 for correct answers and −1 for wrong answers.",color=Muted)},
         confirmButton={TextButton(onClick={confirmSubmit=false;finish()}) {Text("Submit now",color=Aqua,fontWeight=FontWeight.Bold)}},
         dismissButton={TextButton(onClick={confirmSubmit=false}) {Text("Keep solving",color=Violet)}})
