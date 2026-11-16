@@ -67,6 +67,7 @@ class MainActivity : ComponentActivity() {
         val store = AppStore(this)
         val questions = QuestionRepository(this)
         val catalog = CatalogRepository(this)
+        val monetization = MonetizationRepository(this)
         adController = AdController(this)
         val ads = adController
         val board = LeaderboardRepository(this)
@@ -80,6 +81,7 @@ class MainActivity : ComponentActivity() {
                 var attempts by remember { mutableStateOf(store.attempts()) }
                 var activeSession by remember { mutableStateOf(store.session()) }
                 var unlocked by remember { mutableStateOf(store.unlocked()) }
+                var accessMode by remember { mutableStateOf(MockAccess.Mode()) }
                 var hindi by remember { mutableStateOf(store.hindi()) }
                 var name by remember { mutableStateOf(store.name()) }
                 var tests by remember { mutableStateOf(catalog.cached()) }
@@ -114,6 +116,10 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 val notifyAd: () -> Unit = { adReady = ads.ready; quickReady = ads.quickRewardReady }
+                DisposableEffect(Unit) {
+                    val unsubscribe = monetization.observe { accessMode = it }
+                    onDispose { unsubscribe() }
+                }
                 fun refreshCatalogue() {
                     loadingCatalog = true
                     engagement.banners { remoteBanners=it }
@@ -137,10 +143,12 @@ class MainActivity : ComponentActivity() {
                     val test = tests.firstOrNull { it.id == id }
                         ?: MockTest(id,ExamConfig.title(id),"Saved mock","Balanced",false)
                     // Direct resume must obey the same access gates as the catalogue.
-                    if (!MockAccess.isAccessible(id, unlocked)) {
-                        paperError = if (MockAccess.isPremium(id))
-                            t(hindi,"Premium pack (₹25) is not available yet.","₹25 का प्रीमियम पैक अभी उपलब्ध नहीं है।")
-                        else t(hindi,"Unlock this mock with a rewarded ad first.","पहले विज्ञापन देखकर इस मॉक को अनलॉक करें।")
+                    if (!MockAccess.isAccessible(id, unlocked, accessMode)) {
+                        paperError = when(MockAccess.tier(id, accessMode)) {
+                            MockAccess.Tier.PREMIUM -> t(hindi,"₹25 Premium Pack checkout coming soon.","₹25 प्रीमियम पैक का पेमेंट जल्द उपलब्ध होगा।")
+                            MockAccess.Tier.CHECKING -> t(hindi,"Connect to the internet to check access.","एक्सेस जाँचने के लिए इंटरनेट से कनेक्ट करें।")
+                            else -> t(hindi,"Watch a rewarded ad to unlock this mock.","विज्ञापन देखकर मॉक खोलें।")
+                        }
                         return
                     }
                     val existing = activeSession
@@ -152,26 +160,31 @@ class MainActivity : ComponentActivity() {
                     paperError = null
                     questions.load(test) { available, error ->
                         busyPaper = false
-                        if (available) {
+                        if (available && MockAccess.isAccessible(id, unlocked, accessMode)) {
                             val session = existing ?: ExamSession(id,System.currentTimeMillis())
                             activeSession = session
                             store.saveSession(session)
                             route = Route.Exam(id)
-                        } else paperError = error ?: "This paper could not be loaded."
+                        } else paperError = if (!MockAccess.isAccessible(id, unlocked, accessMode))
+                            t(hindi,"This mock's access mode changed. Check the Tests tab.","इस मॉक का एक्सेस मोड बदल गया है। टेस्ट टैब देखें।")
+                            else error ?: "This paper could not be loaded."
                     }
                 }
                 val startTest: (Int) -> Unit = { id ->
                     val test = tests.firstOrNull { it.id == id }
                     if (test == null) paperError = "This mock isn't in the current catalogue."
-                    else if (MockAccess.isAccessible(id, unlocked)) startPaper(id)
-                    else if (MockAccess.isPremium(id))
+                    else if (MockAccess.isAccessible(id, unlocked, accessMode)) startPaper(id)
+                    else if (MockAccess.isPremium(id, accessMode))
                         Toast.makeText(this@MainActivity,
                             t(hindi,"₹25 Premium Pack coming soon","₹25 प्रीमियम पैक जल्द आएगा"),Toast.LENGTH_LONG).show()
+                    else if (MockAccess.tier(id, accessMode) == MockAccess.Tier.CHECKING)
+                        Toast.makeText(this@MainActivity,
+                            t(hindi,"Connect to internet to verify access","इंटरनेट से कनेक्ट करके एक्सेस जाँचें"),Toast.LENGTH_LONG).show()
                     else Toast.makeText(this@MainActivity,
                         t(hindi,"Watch a rewarded ad to unlock","विज्ञापन देखकर अनलॉक करें"),Toast.LENGTH_SHORT).show()
                 }
                 val earnedUnlock: (Int) -> Unit = { id ->
-                    if (MockAccess.isRewarded(id)) {
+                    if (MockAccess.isRewarded(id, accessMode)) {
                         store.unlock(id); unlocked = store.unlocked()
                         Toast.makeText(this@MainActivity,"Mock %03d unlocked!".format(id),Toast.LENGTH_LONG).show()
                     }
@@ -180,12 +193,12 @@ class MainActivity : ComponentActivity() {
                     Toast.makeText(this,"No ad available. Please try again shortly.",Toast.LENGTH_LONG).show()
                 }
                 val unlock: (Int) -> Unit = { id ->
-                    if (MockAccess.isRewarded(id) && id !in unlocked) {
+                    if (MockAccess.isRewarded(id, accessMode) && id !in unlocked) {
                         ads.showRewarded(onEarned={earnedUnlock(id)},onUnavailable=unavailable,onChange=notifyAd)
                     }
                 }
                 val quickUnlock: (Int) -> Unit = { id ->
-                    if (MockAccess.isRewarded(id) && id !in unlocked) quickIntroId = id
+                    if (MockAccess.isRewarded(id, accessMode) && id !in unlocked) quickIntroId = id
                 }
                 // The system Back button must not leave an ongoing exam without confirmation.
                 BackHandler(enabled = route is Route.Exam) { confirmExitTest = true }
@@ -282,7 +295,7 @@ class MainActivity : ComponentActivity() {
                             },label="nav-flow") { currentTab ->
                             when(currentTab) {
                                 Tab.HOME -> DashboardScreen(name,hindi,attempts,activeSession,tests,
-                                    catalogStatus,loadingCatalog,unlocked,adReady,quickReady,
+                                    catalogStatus,loadingCatalog,unlocked,accessMode,adReady,quickReady,
                                     ads.canShowBanner(),ads,remoteBanners,examEvents,Modifier,startTest,unlock,quickUnlock,
                                     onResume={ activeSession?.let { startPaper(it.testId) } },
                                     onViewResult={newlyFinished=false;route=Route.Result(it)},
@@ -297,7 +310,7 @@ class MainActivity : ComponentActivity() {
                                             "home", "mock_list" -> tab=Tab.HOME
                                         }
                                     })
-                                Tab.TESTS -> TestCatalogueScreen(tests,attempts,unlocked,adReady,quickReady,
+                                Tab.TESTS -> TestCatalogueScreen(tests,attempts,unlocked,accessMode,adReady,quickReady,
                                     loadingCatalog,catalogStatus,hindi,ads.canShowBanner(),ads,
                                     onStart=startTest,onUnlock=unlock,onQuickUnlock=quickUnlock,
                                     onRefresh={refreshCatalogue()})
@@ -352,7 +365,7 @@ class MainActivity : ComponentActivity() {
                     AlertDialog(onDismissRequest={paperError=null},title={Text(t(hindi,"Mock unavailable","मॉक उपलब्ध नहीं है"))},
                         text={Text(message)},confirmButton={TextButton(onClick={paperError=null}) {Text("OK")} })
                 }
-                quickIntroId?.takeIf { MockAccess.isRewarded(it) }?.let { id ->
+                quickIntroId?.takeIf { MockAccess.isRewarded(it, accessMode) }?.let { id ->
                     AlertDialog(onDismissRequest={quickIntroId=null},
                         title={Text("Unlock Mock %03d".format(id))},
                         text={Text("Watch a rewarded quick ad to unlock this mock permanently. You can skip and stay on this screen without losing anything.")},

@@ -6,19 +6,30 @@ service cloud.firestore {
       allow read: if request.auth != null && resource.data.published == true;
       allow write: if false;
     }
+    // Firebase administrator-only access switch. A missing doc means rewarded mode.
+    match /app_config/{configId} {
+      allow get: if request.auth != null && configId == 'monetization';
+      allow list, write: if false;
+    }
+    function premiumModeEnabled() {
+      return exists(/databases/$(database)/documents/app_config/monetization) &&
+        get(/databases/$(database)/documents/app_config/monetization).data.premiumEnabled == true;
+    }
     // Every paper is a document with questionsJson string (up to Firestore 1 MiB limit).
     // Anonymous authentication is silent; no signup page is required.
     // IMPORTANT: this protects against public anonymous requests, NOT against answer scraping.
     // For verified contests use Cloud Functions with private answer keys.
-    // IMPORTANT: 51–100 are premium. Do not expose premium answer keys to
-    // anonymous clients until a verified purchase entitlement can be checked.
-    // The 3–50 rewarded-ad gate is UI-only until server-side ad reward verification.
+    // Mocks 50–100 are remotely switchable; when premiumEnabled=true, block
+    // their papers until server-verified purchases and entitlements are built.
+    // Rewarded ad unlocks remain UI-only until ad SSV is implemented.
     match /mock_papers/{mockId} {
       allow get: if request.auth != null &&
         get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.published == true &&
         get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId is int &&
         get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId >= 1 &&
-        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId <= 50;
+        get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId <= 100 &&
+        (get(/databases/$(database)/documents/mock_catalog/$(mockId)).data.testId < 50 ||
+         !premiumModeEnabled());
       allow list, write: if false;
     }
     // Firebase Console / Admin SDK controls what the app shows; no client writes.
