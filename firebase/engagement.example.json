@@ -83,6 +83,24 @@
       "imageUrl": "",
       "startsAt": null,
       "endsAt": null
+    },
+    {
+      "id": "custom_image_link",
+      "active": false,
+      "priority": 40,
+      "imageOnly": true,
+      "titleEn": "My featured link",
+      "titleHi": "मेरा खास लिंक",
+      "descriptionEn": "",
+      "descriptionHi": "",
+      "buttonEn": "Visit website",
+      "buttonHi": "वेबसाइट देखें",
+      "action_type": "external",
+      "action_value": "",
+      "targetUrl": "https://example.com",
+      "imageUrl": "https://example.com/banner.jpg",
+      "startsAt": null,
+      "endsAt": null
     }
   ],
   "events": [

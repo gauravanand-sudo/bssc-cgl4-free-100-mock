@@ -51,7 +51,8 @@ data class PromoBanner(
     val url: String,
     val imageUrl: String,
     val priority: Int,
-    val internalTarget: String = ""
+    val internalTarget: String = "",
+    val imageOnly: Boolean = false
 )
 data class ExamEvent(
     val id: String,
@@ -86,13 +87,16 @@ class EngagementRepository(private val context: Context) {
                         val type=(actionMap?.get("type") as? String ?: d.getString("action_type")).orEmpty()
                         val value=(actionMap?.get("value") as? String ?: d.getString("action_value")).orEmpty()
                         val internal=if(type=="internal" && value in setOf("mock_list","insights","ranking","home")) value else ""
-                        if(now !in start..end || (internal.isBlank() && !safeHttps(targetUrl))) return@mapNotNull null
+                        val imageUrl=d.getString("imageUrl").orEmpty()
+                        val imageOnly=d.get("imageOnly") == true
+                        if(now !in start..end || (internal.isBlank() && !safeHttps(targetUrl)) ||
+                            (imageOnly && !safeHttps(imageUrl))) return@mapNotNull null
                         PromoBanner(d.id, localized("title","en","titleEn"),localized("title","hi","titleHi"),
                             localized("subtitle","en","descriptionEn"),localized("subtitle","hi","descriptionHi"),
                             localized("cta","en","buttonEn").ifBlank { "Explore" },
                             localized("cta","hi","buttonHi").ifBlank { "देखें" },
-                            targetUrl,d.getString("imageUrl").orEmpty(),(d.getLong("priority") ?: 0L).toInt(),internal)
-                    }.filter { it.titleEn.isNotBlank() || it.titleHi.isNotBlank() }
+                            targetUrl,imageUrl,(d.getLong("priority") ?: 0L).toInt(),internal,imageOnly)
+                    }.filter { it.imageOnly || it.titleEn.isNotBlank() || it.titleHi.isNotBlank() }
                         .sortedByDescending { it.priority }.take(5))
                 }.addOnFailureListener { callback(emptyList()) }
         }, { callback(emptyList()) })
@@ -125,23 +129,23 @@ fun safeHttps(value: String): Boolean = try {
 fun GlobalExamHeader(hindi: Boolean, onLanguage: () -> Unit, notificationsEnabled:Boolean,
                      showNotifications:Boolean, onNotifications:()->Unit) {
     Row(Modifier.fillMaxWidth().background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF641697))))
-        .padding(start=15.dp,end=14.dp,top=10.dp,bottom=10.dp),verticalAlignment=Alignment.CenterVertically) {
+        .padding(start=13.dp,end=13.dp,top=5.dp,bottom=5.dp),verticalAlignment=Alignment.CenterVertically) {
         Image(painterResource(R.drawable.brand_icon),"Independent Bihar exam-preparation logo",
-            Modifier.size(43.dp).clip(RoundedCornerShape(12.dp)))
+            Modifier.size(38.dp).clip(RoundedCornerShape(10.dp)))
         Spacer(Modifier.width(9.dp))
         Column(Modifier.weight(1f)) {
             Text("BSSC CGL 4",fontWeight=FontWeight.Black,color=Color.White,fontSize=16.sp, lineHeight=18.sp)
             Text("FREE 100 MOCK",color=Gold,fontSize=10.sp,fontWeight=FontWeight.Black,
                 letterSpacing=.3.sp,maxLines=1)
         }
-        if(showNotifications) IconButton(onClick=onNotifications,modifier=Modifier.size(48.dp)) {
+        if(showNotifications) IconButton(onClick=onNotifications,modifier=Modifier.size(44.dp)) {
             Icon(if(notificationsEnabled) Icons.Rounded.NotificationsActive else Icons.Rounded.NotificationsNone,
                 contentDescription=t(hindi,"Notification settings","नोटिफिकेशन सेटिंग"),
                 tint=Gold,modifier=Modifier.size(20.dp))
         }
-        Surface(onClick=onLanguage,modifier=Modifier.heightIn(min=44.dp),
+        Surface(onClick=onLanguage,modifier=Modifier.heightIn(min=42.dp),
             shape=RoundedCornerShape(100.dp),color=Color.White) {
-            Row(Modifier.padding(horizontal=11.dp,vertical=12.dp),verticalAlignment=Alignment.CenterVertically) {
+            Row(Modifier.padding(horizontal=10.dp,vertical=9.dp),verticalAlignment=Alignment.CenterVertically) {
                 Text(if(hindi) "हिंदी" else "HI",fontWeight=FontWeight.Black,color=if(hindi)Violet else Muted,fontSize=10.sp)
                 Text(" | ",color=Muted,fontSize=10.sp)
                 Text("EN",fontWeight=FontWeight.Black,color=if(hindi)Muted else Violet,fontSize=10.sp)
@@ -156,12 +160,12 @@ fun AnimatedStudyHero(hindi:Boolean,onStart:()->Unit) {
     val movement=rememberInfiniteTransition(label="officer journey")
     val drift by movement.animateFloat(initialValue=1f,targetValue=1.045f,
         animationSpec=infiniteRepeatable(tween(3500),RepeatMode.Reverse),label="subtle officer artwork movement")
-    Box(Modifier.fillMaxWidth().height(194.dp).clip(RoundedCornerShape(20.dp))
+    Box(Modifier.fillMaxWidth().height(186.dp).clip(RoundedCornerShape(20.dp))
         .background(Brush.horizontalGradient(listOf(RoyalDeep,Color(0xFF591596),Color(0xFFA95BD2))))) {
         Image(painterResource(R.drawable.officer_journey),"Aspirant studying and imagined future officer",
             Modifier.fillMaxSize().scale(drift),contentScale=ContentScale.Crop)
         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(
-            RoyalDeep.copy(alpha=.98f),Royal.copy(alpha=.89f),Royal.copy(alpha=.04f)))))
+            RoyalDeep.copy(alpha=.99f),Royal.copy(alpha=.93f),Royal.copy(alpha=.10f)))))
         Column(Modifier.fillMaxHeight().fillMaxWidth(.67f).padding(15.dp),
             verticalArrangement=Arrangement.SpaceBetween) {
             Column {
@@ -230,33 +234,116 @@ fun ExamCountdown(events: List<ExamEvent>,hindi:Boolean) {
     }
 }
 
+/** Up to five independently managed Firebase banners. Swipe to see other links. */
 @Composable
-fun FirebasePromotion(banner: PromoBanner,hindi:Boolean,onInternalAction:(String)->Unit={}) {
-    val context=LocalContext.current
-    Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp))
-        .background(Brush.linearGradient(listOf(Color(0xFFFFF1D8),Color(0xFFFFF8EB))))
-        .clickable {
-            if(banner.internalTarget.isNotBlank()) onInternalAction(banner.internalTarget)
-            else if(safeHttps(banner.url)) context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(banner.url)))
+fun FirebasePromotions(banners:List<PromoBanner>,hindi:Boolean,
+                       onInternalAction:(String)->Unit={}) {
+    if (banners.isEmpty()) return
+    val pager=androidx.compose.foundation.pager.rememberPagerState(pageCount={banners.size})
+    Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+            Text(t(hindi,"FEATURED FOR YOU","आपके लिए खास"),
+                color=Royal,fontSize=12.sp,fontWeight=FontWeight.Black,
+                modifier=Modifier.weight(1f))
+            if(banners.size>1) Text("${pager.currentPage+1} / ${banners.size}",
+                color=Muted,fontSize=11.sp,fontWeight=FontWeight.Bold)
         }
-        .padding(17.dp)) {
-        Row(verticalAlignment=Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text(t(hindi,"FEATURED · APP UPDATE","खास अपडेट"),color=Color(0xFFAF751B),
-                    fontSize=9.sp,letterSpacing=1.sp,fontWeight=FontWeight.Bold)
-                Spacer(Modifier.height(5.dp))
-                Text(t(hindi,banner.titleEn,banner.titleHi.ifBlank {banner.titleEn}),color=SoftWhite,
-                    fontSize=16.sp,fontWeight=FontWeight.Black,maxLines=2,overflow=TextOverflow.Ellipsis)
-                Text(t(hindi,banner.descriptionEn,banner.descriptionHi.ifBlank {banner.descriptionEn}),
-                    color=Muted,fontSize=11.sp,lineHeight=15.sp,maxLines=2)
-                Spacer(Modifier.height(9.dp))
-                Text(t(hindi,banner.buttonEn,banner.buttonHi)+"  ↗",color=Color(0xFF8A4F0B),
-                    fontSize=11.sp,fontWeight=FontWeight.ExtraBold)
+        BoxWithConstraints(Modifier.fillMaxWidth()) {
+            val bannerHeight=(maxWidth * (9f / 16f)).coerceIn(160.dp,220.dp)
+            androidx.compose.foundation.pager.HorizontalPager(
+                state=pager,modifier=Modifier.fillMaxWidth().height(bannerHeight),
+                key={index -> banners[index].id}
+            ) { index ->
+                FirebasePromotion(banners[index],hindi,onInternalAction)
             }
-            Spacer(Modifier.width(9.dp))
-            if (safeHttps(banner.imageUrl)) AsyncImage(model=banner.imageUrl,contentDescription=null,
-                modifier=Modifier.size(78.dp).clip(RoundedCornerShape(16.dp)),contentScale=ContentScale.Crop)
-            else Icon(Icons.Rounded.Campaign,null,tint=Amber,modifier=Modifier.size(53.dp))
+        }
+        if(banners.size>1) {
+            Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.Center,
+                verticalAlignment=Alignment.CenterVertically) {
+                banners.forEachIndexed {index,_ ->
+                    Box(Modifier.padding(horizontal=3.dp)
+                        .width(if(index==pager.currentPage) 22.dp else 7.dp)
+                        .height(7.dp).clip(RoundedCornerShape(99.dp))
+                        .background(if(index==pager.currentPage) Violet else Color(0xFFCEB5E9)))
+                }
+            }
+        }
+    }
+}
+
+/** Every part of a promotional image or text card opens the configured destination.
+ *  Arbitrary public HTTPS links are allowed; no implicit WebView execution.
+ */
+@Composable
+fun FirebasePromotion(banner:PromoBanner,hindi:Boolean,onInternalAction:(String)->Unit={}) {
+    val context=LocalContext.current
+    val title=t(hindi,banner.titleEn,banner.titleHi.ifBlank {banner.titleEn})
+    val description=t(hindi,banner.descriptionEn,
+        banner.descriptionHi.ifBlank {banner.descriptionEn})
+    val button=t(hindi,banner.buttonEn,banner.buttonHi)
+    val imageAvailable=safeHttps(banner.imageUrl)
+    val openBanner: () -> Unit = {
+        if(banner.internalTarget.isNotBlank()) {
+            onInternalAction(banner.internalTarget)
+        } else if(safeHttps(banner.url)) {
+            try {
+                context.startActivity(Intent(Intent.ACTION_VIEW,Uri.parse(banner.url)))
+            } catch (_:android.content.ActivityNotFoundException) {
+                android.widget.Toast.makeText(context,
+                    t(hindi,"No app can open this link","लिंक खोलने वाला ऐप नहीं मिला"),
+                    android.widget.Toast.LENGTH_SHORT).show()
+            } catch (_:SecurityException) {
+                android.widget.Toast.makeText(context,
+                    t(hindi,"Unable to open this link","लिंक नहीं खुल सकता"),
+                    android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    if(banner.imageOnly && imageAvailable) {
+        Box(Modifier.fillMaxSize().clip(RoundedCornerShape(20.dp))
+            .background(Royal).clickable(onClick=openBanner)) {
+            AsyncImage(model=banner.imageUrl,
+                contentDescription=title.ifBlank { t(hindi,"Open featured image link",
+                    "फीचर्ड तस्वीर का लिंक खोलें") },
+                modifier=Modifier.fillMaxSize(),contentScale=ContentScale.Crop)
+            Row(Modifier.align(Alignment.BottomEnd).padding(10.dp)
+                .clip(RoundedCornerShape(10.dp)).background(RoyalDeep.copy(alpha=.93f))
+                .padding(horizontal=11.dp,vertical=8.dp),
+                verticalAlignment=Alignment.CenterVertically) {
+                Text(button,color=Color.White,fontSize=11.sp,fontWeight=FontWeight.Bold)
+                Spacer(Modifier.width(6.dp))
+                Icon(Icons.Rounded.OpenInNew,null,tint=Gold,modifier=Modifier.size(14.dp))
+            }
+        }
+    } else {
+        Row(Modifier.fillMaxSize().clip(RoundedCornerShape(20.dp))
+            .background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF742CBA))))
+            .clickable(onClick=openBanner).padding(16.dp),
+            verticalAlignment=Alignment.CenterVertically) {
+            Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(7.dp)) {
+                Text(t(hindi,"FEATURED · OPEN LINK","खास अपडेट · लिंक खोलें"),
+                    color=Gold,fontSize=9.sp,fontWeight=FontWeight.Black,letterSpacing=.6.sp)
+                Text(title,color=Color.White,fontWeight=FontWeight.Black,
+                    fontSize=16.sp,lineHeight=20.sp,maxLines=2,
+                    overflow=TextOverflow.Ellipsis)
+                if(description.isNotBlank()) Text(description,color=Color.White.copy(alpha=.92f),
+                    fontSize=11.sp,lineHeight=15.sp,maxLines=2,overflow=TextOverflow.Ellipsis)
+                Row(verticalAlignment=Alignment.CenterVertically) {
+                    Text(button,color=Gold,fontSize=12.sp,fontWeight=FontWeight.Black)
+                    Spacer(Modifier.width(5.dp))
+                    Icon(Icons.Rounded.OpenInNew,null,tint=Gold,modifier=Modifier.size(15.dp))
+                }
+            }
+            Spacer(Modifier.width(11.dp))
+            if(imageAvailable) AsyncImage(model=banner.imageUrl,
+                contentDescription=title,
+                modifier=Modifier.size(108.dp).clip(RoundedCornerShape(15.dp)),
+                contentScale=ContentScale.Crop)
+            else Box(Modifier.size(76.dp).clip(RoundedCornerShape(16.dp))
+                .background(Color.White.copy(alpha=.16f)),
+                contentAlignment=Alignment.Center) {
+                Icon(Icons.Rounded.Campaign,null,tint=Gold,modifier=Modifier.size(39.dp))
+            }
         }
     }
 }

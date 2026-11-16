@@ -18,8 +18,10 @@ def https_url(value, required=False):
         if required:
             raise ValueError('targetUrl/sourceUrl is required')
         return None
+    if not isinstance(value,str) or len(value)>2048:
+        raise ValueError('URL must be a string at most 2048 characters')
     p = urlparse(value)
-    if p.scheme != 'https' or not p.netloc or p.username or p.password:
+    if p.scheme != 'https' or not p.hostname or p.username or p.password:
         raise ValueError(f'Only safe HTTPS URLs allowed: {value!r}')
     return value
 
@@ -44,6 +46,9 @@ def validate(payload):
             if not isinstance(obj.get(ids), bool):
                 raise ValueError(f'{ident}: {ids} must be true/false')
             if source=='banners':
+                image_only=obj.get('imageOnly',False)
+                if not isinstance(image_only,bool):
+                    raise ValueError(f'{ident}: imageOnly must be boolean')
                 action_type=obj.get('action_type','external')
                 action_value=obj.get('action_value','')
                 allowed_routes={'mock_list','insights','ranking','home'}
@@ -55,7 +60,7 @@ def validate(payload):
                     https_url(obj.get('targetUrl'),required=False)
                 else:
                     https_url(obj.get('targetUrl'),required=True)
-                https_url(obj.get('imageUrl'))
+                https_url(obj.get('imageUrl'),required=image_only)
                 # The legacy flat schema is still accepted for older banners.
                 if 'title' in obj or 'subtitle' in obj or 'cta' in obj:
                     for field in ('title','subtitle','cta'):
@@ -67,8 +72,14 @@ def validate(payload):
                     # Keep fields nested for Android; no need to duplicate legacy fields.
                 else:
                     for field in ('titleEn','titleHi','descriptionEn','descriptionHi','buttonEn','buttonHi'):
-                        if not isinstance(obj.get(field),str) or len(obj[field])>200:
+                        value=obj.get(field,'' if image_only else None)
+                        if not isinstance(value,str) or len(value)>200:
                             raise ValueError(f'{ident}: {field} must be a string (max 200)')
+                        obj[field]=value
+                if not image_only:
+                    title=obj.get('title')
+                    if title is None and not (obj.get('titleEn') or obj.get('titleHi')):
+                        raise ValueError(f'{ident}: text banner needs a title')
                 if not isinstance(obj.get('priority'),int):
                     raise ValueError(f'{ident}: priority must be an integer')
                 obj['startsAt']=as_time(obj.get('startsAt'))

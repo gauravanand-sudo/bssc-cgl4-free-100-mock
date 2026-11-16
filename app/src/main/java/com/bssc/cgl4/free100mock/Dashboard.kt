@@ -57,8 +57,8 @@ fun DashboardScreen(
             if(firstFree!=null) onStart(firstFree.id) else onOpenTests()
         } }
         item { ExamCountdown(examEvents,hindi) }
-        if(banners.isNotEmpty()) item {
-            FirebasePromotion(banners.first(),hindi) { destination ->
+        if(banners.isNotEmpty()) item(key="featured-promotions") {
+            FirebasePromotions(banners,hindi) { destination ->
                 if(destination=="mock_list") onOpenTests() else onBannerAction(destination)
             }
         }
