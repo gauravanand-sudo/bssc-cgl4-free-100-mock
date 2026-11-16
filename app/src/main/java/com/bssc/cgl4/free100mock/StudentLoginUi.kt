@@ -356,7 +356,6 @@ fun StudentRegistrationGate(
                     color=Color.White.copy(alpha=.73f),fontSize=10.sp,
                     lineHeight=15.sp,textAlign=TextAlign.Center)
             }
-        }
             }
         }
     }
