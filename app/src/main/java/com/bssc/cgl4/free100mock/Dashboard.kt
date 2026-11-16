@@ -226,7 +226,7 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
                 MockAccess.tier(test.id, accessMode),
                 !MockAccess.isAccessible(test.id, unlocked, accessMode),adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
-            if(index==4 && adAllowed) {
+            if(index==4 && adAllowed && BuildConfig.ADMOB_NATIVE_ID.isNotBlank()) {
                 Spacer(Modifier.height(12.dp))
                 Text("SPONSORED",color=Muted,fontSize=9.sp)
                 AndroidView(factory={ads.nativeContainer(it)},modifier=Modifier.fillMaxWidth().heightIn(min=24.dp),

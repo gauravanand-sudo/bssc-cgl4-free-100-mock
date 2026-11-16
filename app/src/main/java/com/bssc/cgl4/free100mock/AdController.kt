@@ -22,7 +22,10 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoa
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
 
-/** Six AdMob formats, separated from the timed exam. Production IDs are mandatory for release. */
+/** Consent-aware AdMob controller. Production supports four configured formats;
+ * Native and App Open remain optional until their own ad-unit IDs are issued.
+ * Debug builds always use Google's demo units.
+ */
 class AdController(private val activity: Activity) {
     private val consent = UserMessagingPlatform.getConsentInformation(activity)
     private var rewarded: RewardedAd? = null
@@ -146,7 +149,7 @@ class AdController(private val activity: Activity) {
         ad.show(activity)
     }
     private fun preloadAppOpen() {
-        if (!canShowBanner() || appOpen != null) return
+        if (!canShowBanner() || appOpen != null || BuildConfig.ADMOB_APP_OPEN_ID.isBlank()) return
         AppOpenAd.load(activity, BuildConfig.ADMOB_APP_OPEN_ID, AdRequest.Builder().build(),
             object : AppOpenAd.AppOpenAdLoadCallback() {
                 override fun onAdLoaded(ad: AppOpenAd) { appOpen = ad }
@@ -171,7 +174,7 @@ class AdController(private val activity: Activity) {
     }
     /** A real SDK native placement; clearly labelled and not disguised as exam content. */
     fun nativeContainer(context: Context): FrameLayout = FrameLayout(context).apply {
-        if (!canShowBanner()) return@apply
+        if (!canShowBanner() || BuildConfig.ADMOB_NATIVE_ID.isBlank()) return@apply
         val host = this
         val loader = AdLoader.Builder(context, BuildConfig.ADMOB_NATIVE_ID)
             .forNativeAd { native ->

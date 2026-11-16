@@ -16,23 +16,40 @@ val sampleUnits = mapOf(
     "ADMOB_NATIVE_ID" to "ca-app-pub-3940256099942544/2247696110",
     "ADMOB_APP_OPEN_ID" to "ca-app-pub-3940256099942544/9257395921"
 )
+val requiredProductionIds = listOf(
+    "ADMOB_BANNER_ID", "ADMOB_INTERSTITIAL_ID",
+    "ADMOB_REWARDED_ID", "ADMOB_REWARDED_INTERSTITIAL_ID"
+)
+val optionalProductionIds = listOf("ADMOB_NATIVE_ID", "ADMOB_APP_OPEN_ID")
+val productionAdIdRegex = Regex("^ca-app-pub-[0-9]{16}/[0-9]{10}$")
+val productionAppIdRegex = Regex("^ca-app-pub-[0-9]{16}~[0-9]{10}$")
 val isReleaseBuild = gradle.startParameter.taskNames.any { it.contains("Release", ignoreCase = true) }
 if (isReleaseBuild) {
-    require(p("ADMOB_APP_ID").startsWith("ca-app-pub-") && p("ADMOB_APP_ID") != testApp) {
-        "Release needs your real ADMOB_APP_ID. Configure it in ~/.gradle/gradle.properties"
+    require(productionAppIdRegex.matches(p("ADMOB_APP_ID")) && p("ADMOB_APP_ID") != testApp) {
+        "Production requires your real ADMOB_APP_ID (format ca-app-pub-XXXXXXXXXXXXXXXX~YYYYYYYYYY) from AdMob App settings."
     }
-    require(p("ADMOB_REWARDED_ID").startsWith("ca-app-pub-") && p("ADMOB_REWARDED_ID") != testRewarded) {
-        "Release needs your real ADMOB_REWARDED_ID."
+    val allDemoIds = (sampleUnits.values + testRewarded + testBanner).toSet()
+    requiredProductionIds.forEach { key ->
+        require(productionAdIdRegex.matches(p(key)) && p(key) !in allDemoIds) {
+            "Production requires a real AdMob ad-unit ID for $key."
+        }
     }
-    require(p("ADMOB_BANNER_ID").startsWith("ca-app-pub-") && p("ADMOB_BANNER_ID") != testBanner) {
-        "Release needs your real ADMOB_BANNER_ID."
+    optionalProductionIds.forEach { key ->
+        require(p(key).isBlank() ||
+            (productionAdIdRegex.matches(p(key)) && p(key) !in allDemoIds)) {
+            "Optional $key must be empty or a real non-demo ad-unit ID."
+        }
     }
-    sampleUnits.forEach { (name, sample) ->
-        require(p(name).startsWith("ca-app-pub-") && p(name) != sample) { "Release needs your real $name." }
+    val expectedPublisher = p("ADMOB_APP_ID").substringBefore("~")
+    (requiredProductionIds + optionalProductionIds).forEach { key ->
+        require(p(key).isBlank() || p(key).substringBefore("/") == expectedPublisher) {
+            "$key belongs to a different AdMob publisher from ADMOB_APP_ID."
+        }
     }
     require(p("FIREBASE_API_KEY").isNotBlank() && p("FIREBASE_APP_ID").isNotBlank() &&
-        p("FIREBASE_PROJECT_ID").isNotBlank() && p("FIREBASE_SENDER_ID").isNotBlank()) { "Release requires hosted Firestore configuration." }
-
+        p("FIREBASE_PROJECT_ID").isNotBlank() && p("FIREBASE_SENDER_ID").isNotBlank()) {
+        "Release requires hosted Firestore configuration."
+    }
 }
 android {
     namespace = "com.bssc.cgl4.free100mock"
@@ -41,8 +58,8 @@ android {
         applicationId = "com.bssc.cgl4.free100mock" // Finalize before first Play Store upload.
         minSdk = 24
         targetSdk = 36
-        versionCode = 9
-        versionName = "0.9.0"
+        versionCode = 10
+        versionName = "0.10.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Debug APKs use ONLY Google's demo units, even if production IDs are configured.
         // This prevents accidental invalid-traffic clicks during testing.
@@ -51,8 +68,11 @@ android {
             quoted(if(isReleaseBuild) p("ADMOB_REWARDED_ID") else testRewarded))
         buildConfigField("String", "ADMOB_BANNER_ID",
             quoted(if(isReleaseBuild) p("ADMOB_BANNER_ID") else testBanner))
+        // In production missing Native / App Open units are blank and disabled,
+        // never silently replaced by Google's demo IDs.
         sampleUnits.forEach { (name, sample) ->
-            buildConfigField("String", name, quoted(if(isReleaseBuild) p(name) else sample))
+            val value = if (isReleaseBuild) p(name) else sample
+            buildConfigField("String", name, quoted(value))
         }
         buildConfigField("String", "FIREBASE_API_KEY", quoted(p("FIREBASE_API_KEY")))
         buildConfigField("String", "FIREBASE_APP_ID", quoted(p("FIREBASE_APP_ID")))
