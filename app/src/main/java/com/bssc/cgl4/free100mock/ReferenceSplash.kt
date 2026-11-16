@@ -51,8 +51,19 @@ import kotlinx.coroutines.delay
             .clip(RoundedCornerShape(23.dp)).background(Color.White),
             contentAlignment=Alignment.Center) {
             Image(painterResource(R.drawable.bssc_bilingual_logo),
-                "बीएसएससी सीजीएल 4 फ्री मॉक · BSSC CGL 4 Free Mock · लक्ष्य: 15,000 प्रश्न",
+                "बीएसएससी सीजीएल 4 फ्री मॉक · BSSC CGL 4 Free Mock",
                 Modifier.fillMaxSize().scale(scale),contentScale=ContentScale.Fit)
+            // Native crisp text replaces legacy Devanagari-number raster lettering.
+            // The digit style stays consistent regardless of device locale or density.
+            Box(Modifier.align(Alignment.BottomCenter)
+                .fillMaxWidth(.93f).height(43.dp)
+                .clip(RoundedCornerShape(14.dp))
+                .background(Brush.horizontalGradient(
+                    listOf(Color(0xFF4D0879),Color(0xFF6E0A83)))),
+                contentAlignment=Alignment.Center) {
+                Text("लक्ष्य: 15,000 प्रश्न",color=Color.White,
+                    fontWeight=FontWeight.Black,fontSize=18.sp,maxLines=1)
+            }
         }
         Column(horizontalAlignment=Alignment.CenterHorizontally) {
             Text(t(hindi,"Preparing your officer journey…","अधिकारी बनने का सफर तैयार हो रहा है…"),
