@@ -1,4 +1,4 @@
-"""Safely upsert Firebase-controlled promotional banners and official countdown events.
+"""Safely upsert one selectable Firebase promo and confirmed exam date.
 
 Usage: python firebase/manage_engagement.py --file firebase/engagement.example.json
        python firebase/manage_engagement.py --file firebase/engagement.example.json --execute
@@ -97,37 +97,8 @@ def validate(payload):
                 if not isinstance(obj.get('officialConfirmed'),bool):
                     raise ValueError('officialConfirmed must be true/false')
 
-                # Cutoff scores can be published independently of the exam date.
-                obj.setdefault('cutoffPublished',False)
-                obj.setdefault('cutoffType','expected')
-                obj.setdefault('cutoffMarks',{})
-                obj.setdefault('cutoffSourceUrl','')
-                obj.setdefault('cutoffNoteEn','')
-                obj.setdefault('cutoffNoteHi','')
-                if not isinstance(obj['cutoffPublished'],bool):
-                    raise ValueError(f'{ident}: cutoffPublished must be true/false')
-                if obj['cutoffType'] not in {'expected','official'}:
-                    raise ValueError(f'{ident}: cutoffType must be expected or official')
-                if not isinstance(obj['cutoffMarks'],dict):
-                    raise ValueError(f'{ident}: cutoffMarks must be a category/marks map')
-                if len(obj['cutoffMarks'])>16:
-                    raise ValueError(f'{ident}: max 16 cutoff categories')
-                for category,score in obj['cutoffMarks'].items():
-                    if not isinstance(category,str) or not category.strip() or len(category)>30:
-                        raise ValueError(f'{ident}: cutoff category must be 1–30 characters')
-                    if type(score) not in (int,float) or not 0<=score<=600:
-                        raise ValueError(f'{ident}: cutoff {category!r} must be a number 0–600')
-                https_url(obj['cutoffSourceUrl'],required=False)
-                for field in ('cutoffNoteEn','cutoffNoteHi'):
-                    if not isinstance(obj[field],str) or len(obj[field])>200:
-                        raise ValueError(f'{ident}: {field} must be text under 200 characters')
-                if obj['cutoffPublished']:
-                    if not obj['cutoffMarks']:
-                        raise ValueError(f'{ident}: published cutoff requires category scores')
-                    if obj['cutoffType']=='official':
-                        https_url(obj['cutoffSourceUrl'],required=True)
-                        if not obj['cutoffSourceUrl'].startswith('https://bssc.bihar.gov.in/'):
-                            raise ValueError(f'{ident}: official cutoff requires BSSC source')
+                # Cutoff display has moved to independently editable home_cards.
+                # Do not write/overwrite legacy cutoff fields from this importer.
             patches.append((collection,ident,obj))
     return patches
 

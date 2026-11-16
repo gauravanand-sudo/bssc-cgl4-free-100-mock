@@ -1,3 +1,5 @@
+> **V19 NOTICE (November 2026):** This V18 setup guide is retained for history. The fixed cutoff panel has been retired. Configure cutoffs, notices and other Home cards using [FIREBASE_DYNAMIC_HOME_V19.md](FIREBASE_DYNAMIC_HOME_V19.md), collection `home_cards`. Do not use `exam_events.cutoffPublished/cutoffMarks` to control Home; those legacy fields are ignored by V19. The exam date still comes from `exam_events`, and the single promo banner still comes from `promo_banners`.
+
 # Firebase operations — BSSC CGL 4 / OneShotGS · V18
 
 Project: **bssc-cgl** · Android application ID: **com.bssc.cgl4.free100mock**
