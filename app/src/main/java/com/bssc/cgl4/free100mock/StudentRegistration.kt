@@ -71,8 +71,19 @@ sealed interface SignupState {
     data class Unavailable(val reason: String) : SignupState
 }
 
+/** A persisted profile is complete only when email, chosen name and mobile exist. */
+object RegistrationFlowPolicy {
+    fun profileComplete(exists:Boolean, savedEmail:String?, authenticatedEmail:String,
+                        savedName:String?, phone:String) =
+        exists && savedEmail == authenticatedEmail && savedName != null &&
+            IndianMobile.normalize(phone) == phone
+}
+
 /** Google account email + user supplied Indian number; no billed SMS/WhatsApp OTP. */
 class StudentRegistrationRepository(private val context: Context) {
+    private var requirePhoneConfirmation = false
+    private var enteredName: String? = null
+    private var authEpoch: Int = 0
     private val app = CloudBackend.app(context)
     private val auth: FirebaseAuth? = app?.let { FirebaseAuth.getInstance(it) }
     private val db: FirebaseFirestore? = app?.let { FirebaseFirestore.getInstance(it) }
@@ -90,6 +101,7 @@ class StudentRegistrationRepository(private val context: Context) {
             return {}
         }
         val listener = FirebaseAuth.AuthStateListener {
+            authEpoch += 1
             if (validGoogleUser() == null) onState(SignupState.NeedsGoogle)
             else loadProfile(onState)
         }
@@ -106,20 +118,26 @@ class StudentRegistrationRepository(private val context: Context) {
             onState(SignupState.Unavailable("Firestore is not configured."))
             return
         }
+        val epoch = ++authEpoch
+        val uid = user.uid
         onState(SignupState.Loading)
-        firestore.collection("student_profiles").document(user.uid).get()
+        firestore.collection("student_profiles").document(uid).get()
             .addOnSuccessListener { doc ->
+                if (epoch != authEpoch || validGoogleUser()?.uid != uid) return@addOnSuccessListener
                 val email = user.email.orEmpty()
-                val name = doc.getString("displayName").orEmpty()
-                    .ifBlank { user.displayName.orEmpty().take(28) }
+                val storedName = StudentName.normalize(doc.getString("displayName").orEmpty())
+                val name = enteredName ?: storedName ?: ""
                 val phone = doc.getString("phoneE164").orEmpty()
                 val optIn = doc.getBoolean("whatsappOptIn") == true
-                if (doc.exists() && IndianMobile.normalize(phone) == phone &&
-                    doc.getString("email") == email) {
-                    onState(SignupState.Ready(email, name, phone, optIn))
-                } else onState(SignupState.NeedsPhone(email, name))
+                val complete = RegistrationFlowPolicy.profileComplete(
+                    doc.exists(), doc.getString("email"), email, storedName, phone)
+                if (complete && !requirePhoneConfirmation)
+                    onState(SignupState.Ready(email, storedName!!, phone, optIn))
+                else
+                    onState(SignupState.NeedsPhone(email, name, phone, optIn))
             }
             .addOnFailureListener {
+                if (epoch != authEpoch || validGoogleUser()?.uid != uid) return@addOnFailureListener
                 onState(SignupState.Unavailable(
                     "Unable to read your registration. Check internet and deployed Firestore rules."))
             }
@@ -135,11 +153,17 @@ class StudentRegistrationRepository(private val context: Context) {
         return if (id != 0) context.getString(id) else ""
     }
 
-    fun signInWithGoogle(activity: ComponentActivity, complete: (String?) -> Unit) {
+    fun signInWithGoogle(activity: ComponentActivity, nameInput: String, complete: (String?) -> Unit) {
+        val chosenName = StudentName.normalize(nameInput) ?: run {
+            complete("Enter your name (2–28 characters).")
+            return
+        }
         val firebaseAuth = auth ?: run {
             complete("Firebase is not configured.")
             return
         }
+        enteredName = chosenName
+        requirePhoneConfirmation = true
         val clientId = googleWebClientId()
         if (clientId.endsWith(".apps.googleusercontent.com")) {
             launchGoogleFlow(activity, firebaseAuth, clientId, complete)
@@ -227,14 +251,16 @@ class StudentRegistrationRepository(private val context: Context) {
         }
         val email = user.email.orEmpty()
         val reference = firestore.collection("student_profiles").document(user.uid)
+        val epoch = authEpoch
         reference.get().addOnSuccessListener { existing ->
-            // createdAt is immutable; saved only on initial registration.
-            val savedName = StudentName.normalize(existing.getString("displayName").orEmpty())
-            // A registered student's name is kept on subsequent phone/consent edits.
-            val finalName = savedName ?: name
+            if (epoch != authEpoch || validGoogleUser()?.uid != user.uid) {
+                onResult(null, "Your login changed. Please sign in again.")
+                return@addOnSuccessListener
+            }
+            // Use the student-entered name, not an older Google display name.
             val values = mutableMapOf<String, Any>(
                 "email" to email,
-                "displayName" to finalName,
+                "displayName" to name,
                 "phoneE164" to phone,
                 "phoneVerified" to false,
                 "whatsappOptIn" to whatsappOptIn,
@@ -245,7 +271,13 @@ class StudentRegistrationRepository(private val context: Context) {
             if (!existing.exists()) values["createdAt"] = FieldValue.serverTimestamp()
             reference.set(values, SetOptions.merge())
                 .addOnSuccessListener {
-                    onResult(SignupState.Ready(email, finalName, phone, whatsappOptIn), null)
+                    if (epoch != authEpoch || validGoogleUser()?.uid != user.uid) {
+                        onResult(null, "Your login changed. Please sign in again.")
+                        return@addOnSuccessListener
+                    }
+                    requirePhoneConfirmation = false
+                    enteredName = null
+                    onResult(SignupState.Ready(email, name, phone, whatsappOptIn), null)
                 }
                 .addOnFailureListener {
                     onResult(null, "Could not save registration. Verify Firebase rules and internet.")
@@ -256,6 +288,9 @@ class StudentRegistrationRepository(private val context: Context) {
     }
 
     fun signOut(activity: ComponentActivity) {
+        authEpoch += 1
+        requirePhoneConfirmation = false
+        enteredName = null
         auth?.signOut()
         activity.lifecycleScope.launch {
             try {
