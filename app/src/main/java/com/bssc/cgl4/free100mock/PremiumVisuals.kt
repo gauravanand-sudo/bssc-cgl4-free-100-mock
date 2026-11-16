@@ -42,19 +42,27 @@ fun GlowingStat(emoji:String,label:String,number:Int?,fallback:String="—",
     LaunchedEffect(number) { reveal=true }
     val counter by animateIntAsState(if(reveal) (number ?: 0) else 0,
         animationSpec=tween(650),label="metric count up")
-    Column(modifier.shadow(3.dp,RoundedCornerShape(18.dp))
+    // Clean WHITE foundation replaces the old translucent/muddy gradients.
+    Column(modifier.shadow(2.dp,RoundedCornerShape(18.dp))
         .clip(RoundedCornerShape(18.dp))
-        .background(Brush.linearGradient(listOf(Color.White,accent.copy(alpha=.11f))))
-        .border(1.dp,accent.copy(alpha=.22f),RoundedCornerShape(18.dp))
-        .padding(horizontal=12.dp,vertical=11.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
+        .background(Color.White)
+        .border(1.dp,Color(0xFFDDD3EA),RoundedCornerShape(18.dp))
+        .padding(horizontal=12.dp,vertical=11.dp),
+        verticalArrangement=Arrangement.spacedBy(5.dp)) {
         Row(verticalAlignment=Alignment.CenterVertically) {
-            Text(emoji,fontSize=19.sp)
+            Box(Modifier.size(34.dp).clip(RoundedCornerShape(11.dp))
+                .background(accent.copy(alpha=.12f)),
+                contentAlignment=Alignment.Center) {
+                Text(emoji,fontSize=19.sp)
+            }
             Spacer(Modifier.weight(1f))
-            Box(Modifier.size(7.dp).clip(CircleShape).background(accent))
+            Box(Modifier.width(20.dp).height(4.dp)
+                .clip(RoundedCornerShape(99.dp)).background(accent))
         }
         Text(if(number==null) fallback else counter.toString(),
-            fontWeight=FontWeight.Black,color=SoftWhite,fontSize=23.sp)
-        Text(label,fontWeight=FontWeight.Bold,color=Muted,fontSize=10.sp,maxLines=2,lineHeight=12.sp)
+            fontWeight=FontWeight.Black,color=RoyalDeep,fontSize=25.sp)
+        Text(label,fontWeight=FontWeight.Bold,color=Color(0xFF514366),
+            fontSize=11.sp,maxLines=2,lineHeight=13.sp)
     }
 }
 

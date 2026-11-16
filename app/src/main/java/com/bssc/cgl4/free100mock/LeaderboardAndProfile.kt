@@ -2,6 +2,8 @@ package com.bssc.cgl4.free100mock
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -212,14 +216,76 @@ import androidx.compose.ui.unit.sp
             OutlinedButton(onClick=onPrivacy) { Text("Privacy / ad choices",color=Violet) }
         }
         Panel {
-            Text(t(hindi,"About BSSC CGL 4 Free 100 Mock","BSSC CGL 4 Free 100 Mock के बारे में"),color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=14.sp)
-            Spacer(Modifier.height(6.dp))
-            Text("Independent BSSC CGL 4 practice tool. No registration is required. Not affiliated with or endorsed by the Bihar Staff Selection Commission. Exam details should be verified at the official website.",
-                color=Muted,fontSize=12.sp,lineHeight=20.sp)
+            Text(t(hindi,"ℹ️ About the app","ℹ️ ऐप के बारे में"),
+                color=SoftWhite,fontWeight=FontWeight.Black,fontSize=17.sp)
             Spacer(Modifier.height(10.dp))
+            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(15.dp))
+                .background(Color.White).padding(12.dp),
+                horizontalAlignment=Alignment.CenterHorizontally) {
+                Image(painter=painterResource(R.drawable.oneshotgs_logo),
+                    contentDescription="OneShotGS official brand logo",
+                    modifier=Modifier.fillMaxWidth().height(83.dp),
+                    contentScale=ContentScale.Fit)
+                Spacer(Modifier.height(3.dp))
+                Text(t(hindi,"Part of OneShotGS Learning Apps",
+                    "OneShotGS लर्निंग ऐप्स का हिस्सा"),
+                    color=RoyalDeep,fontSize=13.sp,fontWeight=FontWeight.Black)
+            }
+            Spacer(Modifier.height(12.dp))
+            Text(t(hindi,"BSSC CGL 4 Free 100 Mock is an independent exam-preparation app within the OneShotGS coaching and learning brand.",
+                "BSSC CGL 4 Free 100 Mock, OneShotGS कोचिंग एवं लर्निंग ब्रांड का स्वतंत्र परीक्षा अभ्यास ऐप है।"),
+                color=Muted,fontSize=12.sp,lineHeight=19.sp)
+            Spacer(Modifier.height(13.dp))
+            Row(verticalAlignment=Alignment.CenterVertically) {
+                Icon(Icons.Rounded.SupportAgent,null,tint=Violet,modifier=Modifier.size(24.dp))
+                Spacer(Modifier.width(9.dp))
+                Text(t(hindi,"Contact & support","संपर्क और सहायता"),
+                    color=SoftWhite,fontWeight=FontWeight.Black,fontSize=14.sp)
+            }
+            Spacer(Modifier.height(8.dp))
+            Text("ruhionlabs@gmail.com",color=Violet,
+                fontSize=14.sp,fontWeight=FontWeight.Bold)
+            Spacer(Modifier.height(7.dp))
+            Text(t(hindi,"⏱ Resolution target: within 30 minutes",
+                "⏱ समाधान का लक्ष्य: 30 मिनट के भीतर"),
+                color=Aqua,fontSize=12.sp,fontWeight=FontWeight.Bold)
+            Text(t(hindi,
+                "Best-effort support target, not a guarantee. Complex issues may take longer.",
+                "यह हमारा प्रयास-आधारित लक्ष्य है, गारंटी नहीं। जटिल समस्याओं में अधिक समय लग सकता है।"),
+                color=Muted,fontSize=10.sp,lineHeight=15.sp)
+            Spacer(Modifier.height(10.dp))
+            OutlinedButton(onClick={
+                val message=Intent(Intent.ACTION_SENDTO).apply {
+                    data=Uri.parse("mailto:ruhionlabs@gmail.com")
+                    putExtra(Intent.EXTRA_SUBJECT,"BSSC CGL 4 App Support")
+                }
+                try { context.startActivity(message) }
+                catch (_:Exception) {
+                    Toast.makeText(context,
+                        t(hindi,"No email app found. Please use ruhionlabs@gmail.com.",
+                            "ईमेल ऐप नहीं मिला। ruhionlabs@gmail.com पर लिखें।"),
+                        Toast.LENGTH_LONG).show()
+                }
+            },modifier=Modifier.fillMaxWidth()) {
+                Icon(Icons.Rounded.Email,null,modifier=Modifier.size(18.dp))
+                Spacer(Modifier.width(8.dp))
+                Text(t(hindi,"Email OneShotGS Support","OneShotGS को ईमेल करें"),
+                    fontWeight=FontWeight.Bold)
+            }
+            Spacer(Modifier.height(12.dp))
+            HorizontalDivider(color=Color(0xFFE3DAEC))
+            Spacer(Modifier.height(10.dp))
+            Text(t(hindi,
+                "Independent practice app. Not affiliated with or endorsed by the Bihar Staff Selection Commission or Government of Bihar. Confirm official exam details at BSSC.",
+                "स्वतंत्र अभ्यास ऐप। बिहार कर्मचारी चयन आयोग या बिहार सरकार से संबद्ध या समर्थित नहीं। आधिकारिक परीक्षा विवरण BSSC से पुष्टि करें।"),
+                color=Muted,fontSize=11.sp,lineHeight=17.sp)
             TextButton(onClick={
-                context.startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("https://bssc.bihar.gov.in/NoticeBoard.htm")))
-            }) { Text("Official BSSC notice board ↗",color=Aqua) }
+                try {
+                    context.startActivity(Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://bssc.bihar.gov.in/NoticeBoard.htm")))
+                } catch (_:Exception) {}
+            }) { Text(t(hindi,"Official BSSC notice board ↗",
+                "आधिकारिक BSSC सूचना पटल ↗"),color=Aqua) }
         }
         Panel {
             Text("🗑️ "+t(hindi,"Delete my data","मेरा डेटा मिटाएँ"),

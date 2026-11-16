@@ -54,6 +54,17 @@ import kotlinx.coroutines.delay
                     fontSize=12.sp,lineHeight=18.sp)
             }
         }
-        Text(BrandCopy.footer(hindi),color=Color.White,fontWeight=FontWeight.Bold,fontSize=13.sp)
+        Column(horizontalAlignment=Alignment.CenterHorizontally) {
+            Text(t(hindi,"Part of OneShotGS Learning Apps",
+                "OneShotGS लर्निंग ऐप्स का हिस्सा"),
+                color=Gold,fontSize=12.sp,fontWeight=FontWeight.Black)
+            Spacer(Modifier.height(6.dp))
+            Box(Modifier.fillMaxWidth(.80f).height(76.dp)
+                .clip(RoundedCornerShape(15.dp)).background(Color.White)
+                .padding(9.dp),contentAlignment=Alignment.Center) {
+                Image(painterResource(R.drawable.oneshotgs_logo),
+                    "OneShotGS brand logo",Modifier.fillMaxSize(),contentScale=ContentScale.Fit)
+            }
+        }
     }
 }

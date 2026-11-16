@@ -216,7 +216,7 @@ fun GlobalExamHeader(hindi: Boolean, onLanguage: () -> Unit, notificationsEnable
         Spacer(Modifier.width(9.dp))
         Column(Modifier.weight(1f)) {
             Text("BSSC CGL 4",fontWeight=FontWeight.Black,color=Color.White,fontSize=16.sp, lineHeight=18.sp)
-            Text("FREE 100 MOCK",color=Gold,fontSize=10.sp,fontWeight=FontWeight.Black,
+            Text("FREE 100 MOCK · OneShotGS",color=Gold,fontSize=9.sp,fontWeight=FontWeight.Black,
                 letterSpacing=.3.sp,maxLines=1)
         }
         if(showNotifications) IconButton(onClick=onNotifications,modifier=Modifier.size(44.dp)) {
