@@ -6,6 +6,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -40,8 +42,10 @@ fun DashboardScreen(
     onRefresh: ()->Unit, onBannerAction: (String)->Unit,
     onOpenTests: ()->Unit={}, onOpenAnalytics: ()->Unit={}, onOpenRanks: ()->Unit={}
 ) {
-    val completed=attempts.map { it.testId }.distinct().size
-    val progress by animateFloatAsState(if(tests.isEmpty()) 0f else completed.toFloat()/tests.size,label="mock progress")
+    val available=tests.filterNot{it.isUpcoming}
+    val completed=attempts.map{it.testId}.distinct().count{id->available.any{it.id==id}}
+    val progress by animateFloatAsState(if(available.isEmpty()) 0f else
+        (completed.toFloat()/available.size).coerceIn(0f,1f),label="mock progress")
     LazyColumn(modifier.fillMaxSize().background(Ink),
         contentPadding=PaddingValues(start=14.dp,end=14.dp,top=12.dp,bottom=18.dp),
         verticalArrangement=Arrangement.spacedBy(12.dp)) {
@@ -110,12 +114,15 @@ fun DashboardScreen(
             }
             ProgressTrack(progress,Violet)
             Spacer(Modifier.height(4.dp))
-            Text(t(hindi,"$completed of ${tests.size} available mocks completed","${tests.size} में से $completed मॉक पूरे किए"),
+            Text(t(hindi,"$completed of ${available.size} available mocks completed",
+                "${available.size} उपलब्ध मॉक में से $completed पूरे किए") +
+                if(tests.any{it.isUpcoming}) t(hindi," · ${tests.count{it.isUpcoming}} upcoming",
+                    " · ${tests.count{it.isUpcoming}} आगामी") else "",
                 color=Muted,fontSize=10.sp)
         }
         items(tests.take(3), key={ it.id }) { test ->
             ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
-                !MockAccess.isAccessible(test.id, unlocked),rewardCredits[test.id] ?: 0,
+                !MockAvailability.canStart(test, unlocked),rewardCredits[test.id] ?: 0,
                 adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
         }
@@ -177,8 +184,9 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
     var filter by remember { mutableStateOf("all") }
     val filtered=remember(tests,unlocked,filter) {
         when(filter) {
-            "free" -> tests.filter { MockAccess.isFree(it.id) }
-            "unlocked" -> tests.filter { MockAccess.isAccessible(it.id, unlocked) }
+            "free" -> tests.filter{MockAccess.isFree(it.id) && !it.isUpcoming}
+            "unlocked" -> tests.filter{MockAvailability.canStart(it,unlocked)}
+            "upcoming" -> tests.filter{it.isUpcoming}
             else -> tests
         }
     }
@@ -202,10 +210,13 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
             }
         }
         item {
-            Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+                    horizontalArrangement=Arrangement.spacedBy(8.dp)) {
                 listOf(Triple("all",t(hindi,"All (${tests.size})","सभी (${tests.size})"),Violet),
                     Triple("free",t(hindi,"Free","मुफ़्त"),Aqua),
-                    Triple("unlocked",t(hindi,"Unlocked","अनलॉक"),Violet)).forEach { (key,label,accent) ->
+                    Triple("unlocked",t(hindi,"Unlocked","अनलॉक"),Violet),
+                    Triple("upcoming",t(hindi,"⏳ Upcoming","⏳ आगामी"),Blue)).forEach { (key,label,accent) ->
                     Surface(onClick={filter=key},shape=RoundedCornerShape(16.dp),
                         color=if(filter==key) accent else Color.White,
                         border=BorderStroke(1.dp,if(filter==key)accent else Color(0xFFE9DCF5))) {
@@ -213,7 +224,10 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
                             color=if(filter==key) Color.White else SoftWhite,fontSize=11.sp,fontWeight=FontWeight.Bold)
                     }
                 }
-                IconButton(onClick=onRefresh) {Icon(Icons.Rounded.Refresh,"Refresh tests",tint=Violet)}
+                }
+                IconButton(onClick=onRefresh) {
+                    Icon(Icons.Rounded.Refresh,t(hindi,"Refresh mocks","मॉक अपडेट करें"),tint=Violet)
+                }
             }
         }
         if(loading) item { LinearProgressIndicator(modifier=Modifier.fillMaxWidth(),color=Violet) }
@@ -222,12 +236,13 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
             t(hindi,"Refresh to check for new published papers.","नए प्रकाशित पेपर के लिए रिफ़्रेश करें।"))}
         itemsIndexed(filtered,key={_,test->test.id}) {index,test ->
             ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
-                !MockAccess.isAccessible(test.id, unlocked),rewardCredits[test.id] ?: 0,
+                !MockAvailability.canStart(test, unlocked),rewardCredits[test.id] ?: 0,
                 adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
         }
-        item {Text(t(hindi,"Only published mocks are shown. More papers will appear when uploaded.",
-            "केवल प्रकाशित मॉक दिखते हैं। नए प्रश्नपत्र अपलोड होने पर दिखेंगे।"),fontSize=10.sp,color=Muted)}
+        item {Text(t(hindi,"Published mocks are listed, including Firebase Upcoming cards. Coming Soon papers cannot be opened.",
+            "Firebase से प्रकाशित आगामी मॉक भी दिखेंगे, पर जारी होने तक नहीं खुलेंगे।"),
+            fontSize=10.sp,color=Muted)}
     }
 }
 
@@ -235,6 +250,7 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
 private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,earnedAds:Int,
     adReady:Boolean,quickReady:Boolean,hindi:Boolean,onStart:()->Unit,onUnlock:()->Unit,onQuickUnlock:()->Unit) {
     val requiredAds = MockAccess.requiredAds(test.id)
+    val upcoming=test.isUpcoming
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(21.dp))
         .background(Brush.verticalGradient(listOf(Color.White,Color(0xFFF8F2FF))))
         .border(1.dp,Violet.copy(alpha=.20f),RoundedCornerShape(21.dp))
@@ -245,7 +261,8 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,earn
                     listOf(Color(0xFFFFD79F),Color(0xFFFFF0D8))
                     else listOf(Violet.copy(alpha=.17f),Color(0xFFDFD3FF)))),
                 contentAlignment=Alignment.Center) {
-                Text(if(locked)"🎁" else if(previous!=null)"🏅" else "🚀",fontSize=24.sp)
+                Text(if(upcoming)"⏳" else if(locked)"🎁" else if(previous!=null)"🏅" else "🚀",
+                    fontSize=24.sp)
             }
             Spacer(Modifier.width(10.dp))
             Column(Modifier.weight(1f)) {
@@ -253,7 +270,8 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,earn
                     color=SoftWhite,fontSize=14.sp,fontWeight=FontWeight.Black)
                 Text("📝 150 Q  •  ⏱ 135m  •  ✨ +4 / −1",color=Muted,fontSize=10.sp)
             }
-            Tag(if(locked && requiredAds==2)t(hindi,"2 ADS","2 विज्ञापन")
+            Tag(if(upcoming)t(hindi,"UPCOMING","जल्द आएगा")
+                else if(locked && requiredAds==2)t(hindi,"2 ADS","2 विज्ञापन")
                 else if(locked)t(hindi,"AD UNLOCK","विज्ञापन")
                 else if(MockAccess.isFree(test.id))t(hindi,"FREE","मुफ़्त")
                 else t(hindi,"READY","तैयार"),if(locked) Amber else Aqua)
@@ -264,7 +282,7 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,earn
             Tag("🎯 "+test.difficulty.take(18),Blue)
             if(previous!=null) Tag("🏆 ${previous.score}/600",Violet)
         }
-        if(locked && requiredAds==2) {
+        if(locked && !upcoming && requiredAds==2) {
             Spacer(Modifier.height(9.dp))
             Text(t(hindi,"Unlock progress","अनलॉक प्रगति"),
                 color=Muted,fontSize=10.sp,fontWeight=FontWeight.Bold)
@@ -272,7 +290,31 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,earn
             ProgressTrack(earnedAds.coerceIn(0,2)/2f,Aqua)
         }
         Spacer(Modifier.height(11.dp))
-        if(locked) {
+        if(upcoming) {
+            val coming=t(hindi,test.comingSoonTextEn,
+                test.comingSoonTextHi.ifBlank{test.comingSoonTextEn})
+            Text(if(coming.isNotBlank()) coming else
+                t(hindi,"This mock will be released soon.","यह मॉक जल्द उपलब्ध होगा।"),
+                color=Muted,fontSize=11.sp,lineHeight=16.sp)
+            test.availableAtMs?.takeIf{it>0L}?.let{ms->
+                val date=remember(ms){
+                    java.text.SimpleDateFormat("dd MMM yyyy",java.util.Locale.ENGLISH).apply{
+                        timeZone=java.util.TimeZone.getTimeZone("Asia/Kolkata")
+                    }.format(java.util.Date(ms))
+                }
+                Spacer(Modifier.height(6.dp))
+                Text(t(hindi,"📅 Expected: ","📅 संभावित: ")+date,
+                    color=Violet,fontSize=11.sp,fontWeight=FontWeight.Bold)
+            }
+            Spacer(Modifier.height(8.dp))
+            Button(onClick={},enabled=false,shape=RoundedCornerShape(14.dp),
+                modifier=Modifier.fillMaxWidth().height(43.dp)) {
+                Icon(Icons.Rounded.HourglassTop,null,modifier=Modifier.size(17.dp))
+                Spacer(Modifier.width(6.dp))
+                Text(t(hindi,"Coming Soon","जल्द उपलब्ध"),
+                    fontSize=12.sp,fontWeight=FontWeight.Black)
+            }
+        } else if(locked) {
             if(requiredAds==2) {
                 Text(t(hindi,
                     if(earnedAds==0) "Watch 2 rewarded ads to unlock this mock. Each completed ad earns one credit."
