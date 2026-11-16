@@ -72,7 +72,6 @@ import androidx.compose.ui.unit.sp
                 }
             }
         }
-        item(key="ranks-top-ad") { SponsoredBanner(ads) }
         if(loading) item { CircularProgressIndicator(color=Violet) }
         else if(rows==null) item {
             EmptyNotice(t(hindi,"Live ranks are not connected","लाइव रैंकिंग कनेक्ट नहीं है"),message ?: t(hindi,"Connect Firebase to enable live rankings.","लाइव रैंकिंग के लिए Firebase जोड़ें।"))
@@ -203,7 +202,6 @@ import androidx.compose.ui.unit.sp
                 }
             }
         }
-        SponsoredBanner(ads)
         Panel {
             Text("🛡️ "+t(hindi,"ADS & PRIVACY","विज्ञापन और गोपनीयता"),
                 color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=14.sp)

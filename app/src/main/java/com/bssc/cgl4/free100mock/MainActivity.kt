@@ -105,7 +105,7 @@ class MainActivity : ComponentActivity() {
                 var quickReady by remember { mutableStateOf(false) }
                 var newlyFinished by remember { mutableStateOf(false) }
                 var confirmExitTest by remember { mutableStateOf(false) }
-                var remoteBanners by remember { mutableStateOf<List<PromoBanner>>(emptyList()) }
+                var remoteBanner by remember { mutableStateOf<PromoBanner?>(null) }
                 var examEvents by remember { mutableStateOf<List<ExamEvent>>(emptyList()) }
                 var notificationsEnabled by remember { mutableStateOf(notificationPrefs.enabled()) }
                 var splash by remember { mutableStateOf(true) }
@@ -129,14 +129,19 @@ class MainActivity : ComponentActivity() {
                 val notifyAd: () -> Unit = { adReady = ads.ready; quickReady = ads.quickRewardReady }
                 fun refreshCatalogue() {
                     loadingCatalog = true
-                    engagement.banners { remoteBanners=it }
-                    engagement.events { examEvents=it }
                     catalog.refresh { result, status ->
                         tests = result
                         ExamConfig.setTitles(result)
                         catalogStatus = status
                         loadingCatalog = false
                     }
+                }
+                // Live Firebase console edits update the single banner,
+                // official countdown and cutoff without reinstalling or reopening.
+                DisposableEffect(Unit) {
+                    val stopBanner=engagement.observeBanner {remoteBanner=it}
+                    val stopEvents=engagement.observeEvents {examEvents=it}
+                    onDispose {stopBanner();stopEvents()}
                 }
                 LaunchedEffect(Unit) {
                     ExamConfig.setTitles(tests)
@@ -317,7 +322,7 @@ class MainActivity : ComponentActivity() {
                             when(currentTab) {
                                 Tab.HOME -> DashboardScreen(name,hindi,attempts,activeSession,tests,
                                     catalogStatus,loadingCatalog,unlocked,rewardCredits,adReady,quickReady,
-                                    ads.canShowBanner(),ads,remoteBanners,examEvents,Modifier,startTest,unlock,quickUnlock,
+                                    ads.canShowBanner(),ads,remoteBanner,examEvents,Modifier,startTest,unlock,quickUnlock,
                                     onResume={ activeSession?.let { startPaper(it.testId) } },
                                     onViewResult={newlyFinished=false;route=Route.Result(it)},
                                     onToggleLanguage={hindi=!hindi;store.setHindi(hindi)},

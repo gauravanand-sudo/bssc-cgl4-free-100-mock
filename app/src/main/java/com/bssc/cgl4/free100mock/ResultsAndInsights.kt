@@ -122,7 +122,6 @@ fun ResultScreen(attempt: Attempt, questions: List<Question>, hindi: Boolean,
                 Text("${s.correct} correct · ${s.wrong} wrong · ${s.skipped} skipped",color=Muted,fontSize=11.sp)
             }
         } }
-        item(key="result-performance-ad") { SponsoredBanner(ads) }
         item {
             PrimaryAction(BrandCopy.screen("results","weak_areas",hindi,t(hindi,"Areas to Improve","सुधार के विषय")) + " →",
                 Modifier.fillMaxWidth(),onClick=onAnalytics)
@@ -137,11 +136,6 @@ fun ResultScreen(attempt: Attempt, questions: List<Question>, hindi: Boolean,
         }
         itemsIndexed(reviewIndices.toList()) { position,index ->
             ReviewQuestion(index,questions[index],attempt.answers[index],hindi)
-            if(position == 19 || position == 49) {
-                Spacer(Modifier.height(18.dp))
-                SponsoredBanner(ads)
-                Spacer(Modifier.height(18.dp))
-            }
         }
         item { Spacer(Modifier.height(28.dp)) }
     }
@@ -297,7 +291,6 @@ fun AnalyticsScreen(attempts:List<Attempt>, repo:QuestionRepository, modifier:Mo
                 }
             }
         }
-        item(key="analytics-bottom-ad") { SponsoredBanner(ads) }
         item {Spacer(Modifier.height(16.dp))}
     }
 }

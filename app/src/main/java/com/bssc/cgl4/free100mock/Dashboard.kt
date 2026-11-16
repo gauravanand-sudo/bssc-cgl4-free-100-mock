@@ -34,7 +34,7 @@ fun DashboardScreen(
     tests: List<MockTest>, catalogStatus: String?, loadingCatalog: Boolean,
     unlocked: Set<Int>, rewardCredits: Map<Int, Int>,
     adReady: Boolean, quickReady: Boolean, adAllowed: Boolean, ads: AdController,
-    banners: List<PromoBanner>, examEvents: List<ExamEvent>,
+    banner: PromoBanner?, examEvents: List<ExamEvent>,
     modifier: Modifier, onStart: (Int)->Unit, onUnlock: (Int)->Unit, onQuickUnlock: (Int)->Unit,
     onResume: ()->Unit, onViewResult: (Attempt)->Unit, onToggleLanguage: ()->Unit,
     onRefresh: ()->Unit, onBannerAction: (String)->Unit,
@@ -53,37 +53,25 @@ fun DashboardScreen(
                 Text(BrandCopy.tagline(hindi),color=Violet,fontSize=14.sp,fontWeight=FontWeight.ExtraBold)
             }
         }
-        item { AnimatedStudyHero(hindi) {
-            if(firstFree!=null) onStart(firstFree.id) else onOpenTests()
-        } }
-        if(banners.isNotEmpty()) item(key="featured-promotions") {
-            FirebasePromotions(banners,hindi) { destination ->
-                if(destination=="mock_list") onOpenTests() else onBannerAction(destination)
+        // Exactly ONE editable Firebase promotion on Home; no banner carousel,
+        // fixed officer hero, or duplicate paid display ads.
+        banner?.let { active ->
+            item(key="firebase-home-promotion") {
+                BoxWithConstraints(Modifier.fillMaxWidth()) {
+                    FirebasePromotion(active,hindi) { destination ->
+                        if(destination=="mock_list") onOpenTests()
+                        else onBannerAction(destination)
+                    }
+                }
             }
         }
         item(key="daily-mission"){ TodayMissionCard(attempts,hindi,onOpenTests) }
-        if(adAllowed) item(key="home-mid-ad") { SponsoredBanner(ads) }
-        item { ExamCountdown(examEvents,hindi) }
-        item {
-            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(17.dp))
-                .background(Brush.horizontalGradient(listOf(Color(0xFF630B62),Color(0xFF8C1666),Royal)))
-                .clickable {onOpenTests()}.padding(14.dp),verticalAlignment=Alignment.CenterVertically) {
-                Text("📋",fontSize=31.sp)
-                Spacer(Modifier.width(11.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(t(hindi,"BSSC CGL 4 Mock Series","बीएसएससी सीजीएल 4 मॉक सीरीज़"),
-                        color=Color.White,fontWeight=FontWeight.Black,fontSize=14.sp)
-                    Text(t(hindi,"Up to 100 tests · new papers added online","100 टेस्ट तक · नए पेपर ऑनलाइन जुड़ेंगे"),
-                        color=Color.White.copy(alpha=.80f),fontSize=10.sp)
-                }
-                Text("➜",color=Gold,fontSize=22.sp,fontWeight=FontWeight.Black)
-            }
-        }
+        item(key="official-countdown"){ ExamCountdown(examEvents,hindi) }
+        item(key="cutoff-tracker"){ ExamCutoffCard(examEvents,hindi) }
         item {
             Column(verticalArrangement=Arrangement.spacedBy(9.dp)) {
                 Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
                     ReferenceShortcut("📝",t(hindi,"Mock Tests","मॉक टेस्ट"),Color(0xFFDDC4FF),Modifier.weight(1f),onOpenTests)
-                    ReferenceShortcut("📚",t(hindi,"Previous Papers","पुराने पेपर"),Color(0xFFFFD8B8),Modifier.weight(1f),onOpenTests)
                     ReferenceShortcut("📊",t(hindi,"My Results","मेरे परिणाम"),Color(0xFFCDE8FF),Modifier.weight(1f),onOpenAnalytics)
                 }
                 Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
@@ -145,7 +133,6 @@ fun DashboardScreen(
                 }
             }
         }
-        if(adAllowed) item(key="home-bottom-ad") { SponsoredBanner(ads) }
         item { Text(t(hindi,"Unofficial practice app · Verify exam dates with BSSC","स्वतंत्र अभ्यास ऐप · आधिकारिक तिथि BSSC से जाँचें"),
             fontSize=10.sp,color=Muted) }
     }
@@ -236,20 +223,7 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
                 !MockAccess.isAccessible(test.id, unlocked),rewardCredits[test.id] ?: 0,
                 adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
-            // Additional placements on longer lists, never inside a button.
-            if(adAllowed && (index == 7 || index == 19 || index == 31)) {
-                Spacer(Modifier.height(16.dp))
-                SponsoredBanner(ads)
-                Spacer(Modifier.height(16.dp))
-            }
-            if(index==4 && adAllowed && BuildConfig.ADMOB_NATIVE_ID.isNotBlank()) {
-                Spacer(Modifier.height(12.dp))
-                Text("SPONSORED",color=Muted,fontSize=9.sp)
-                AndroidView(factory={ads.nativeContainer(it)},modifier=Modifier.fillMaxWidth().heightIn(min=24.dp),
-                    onRelease={ads.releaseNative(it)})
-            }
         }
-        if(adAllowed) item(key="catalog-bottom-ad") { SponsoredBanner(ads) }
         item {Text(t(hindi,"Only published mocks are shown. More papers will appear when uploaded.",
             "केवल प्रकाशित मॉक दिखते हैं। नए प्रश्नपत्र अपलोड होने पर दिखेंगे।"),fontSize=10.sp,color=Muted)}
     }
