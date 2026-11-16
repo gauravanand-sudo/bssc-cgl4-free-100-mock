@@ -13,6 +13,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -91,6 +94,13 @@ class MainActivity : ComponentActivity() {
                 var paperError by remember { mutableStateOf<String?>(null) }
                 var quickIntroId by remember { mutableStateOf<Int?>(null) }
                 var preflightId by remember { mutableStateOf<Int?>(null) }
+                var unlockEvent by remember { mutableStateOf<Triple<Int,Int,Int>?>(null) }
+                LaunchedEffect(unlockEvent) {
+                    if(unlockEvent!=null) {
+                        delay(3200L)
+                        unlockEvent=null
+                    }
+                }
                 var adReady by remember { mutableStateOf(false) }
                 var quickReady by remember { mutableStateOf(false) }
                 var newlyFinished by remember { mutableStateOf(false) }
@@ -132,7 +142,7 @@ class MainActivity : ComponentActivity() {
                     ExamConfig.setTitles(tests)
                     ads.initialize(notifyAd)
                     refreshCatalogue()
-                    delay(1300L)
+                    delay(800L)
                     splash=false
                 }
                 SideEffect { safeHome = route == Route.Tabs && tab == Tab.HOME }
@@ -184,14 +194,7 @@ class MainActivity : ComponentActivity() {
                         rewardCredits = store.rewardCredits()
                         unlocked = store.unlocked()
                         val required = MockAccess.requiredAds(id)
-                        val notice = if (earned >= required) {
-                            t(hindi,"Mock %03d unlocked on this device!".format(id),
-                                "मॉक %03d इस डिवाइस पर अनलॉक हुआ!".format(id))
-                        } else {
-                            t(hindi,"Ad $earned of $required completed. Watch one more to unlock.",
-                                "$required में से $earned विज्ञापन पूरे। अनलॉक के लिए एक और देखें।")
-                        }
-                        Toast.makeText(this@MainActivity, notice, Toast.LENGTH_LONG).show()
+                        unlockEvent=Triple(id,earned,required)
                     }
                 }
                 val unavailable = {
@@ -254,7 +257,11 @@ class MainActivity : ComponentActivity() {
                                     route=Route.Tabs;tab=Tab.ANALYTICS;newlyFinished=false
                                 }
                                 if(newlyFinished) ads.afterResult(goAnalytics) else goAnalytics()
-                            },ads=ads)
+                            },ads=ads,
+                                previousScore=attempts.filter {
+                                    it.testId==page.attempt.testId &&
+                                        it.completedAt < page.attempt.completedAt
+                                }.maxByOrNull {it.completedAt}?.score)
                     }
                     Route.Tabs -> Scaffold(containerColor=Ink,
                         bottomBar={
@@ -341,7 +348,7 @@ class MainActivity : ComponentActivity() {
                                             store.clearAll();questions.clearPaperCache();catalog.clearCache()
                                             tests=catalog.cached();ExamConfig.setTitles(tests)
                                             attempts=emptyList();activeSession=null
-                                            unlocked=emptySet();rewardCredits=emptyMap();name="Aspirant";hindi=false;tab=Tab.HOME
+                                            unlocked=emptySet();rewardCredits=emptyMap();unlockEvent=null;name="Aspirant";hindi=false;tab=Tab.HOME
                                             Toast.makeText(this@MainActivity,"Saved and online data deleted",Toast.LENGTH_LONG).show()
                                         } else Toast.makeText(this@MainActivity,"Cloud deletion failed. Connect and retry.",Toast.LENGTH_LONG).show()
                                     }})
@@ -349,6 +356,15 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+                        }
+                    }
+                    AnimatedVisibility(visible=unlockEvent!=null,
+                        enter=slideInVertically(initialOffsetY={-it})+fadeIn(),
+                        exit=slideOutVertically(targetOffsetY={-it})+fadeOut(),
+                        modifier=Modifier.align(Alignment.TopCenter)
+                            .padding(horizontal=14.dp,vertical=8.dp)) {
+                        unlockEvent?.let { event ->
+                            UnlockProgressCard(event.first,event.second,event.third,hindi)
                         }
                     }
                     if(splash) ReferenceSplash(hindi)

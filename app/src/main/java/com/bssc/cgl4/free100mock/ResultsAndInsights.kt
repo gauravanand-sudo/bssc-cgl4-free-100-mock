@@ -23,7 +23,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ResultScreen(attempt: Attempt, questions: List<Question>, hindi: Boolean,
-                 onDone: ()->Unit, onAnalytics: ()->Unit, ads: AdController) {
+                 onDone: ()->Unit, onAnalytics: ()->Unit, ads: AdController,
+                 previousScore:Int?=null) {
     var wrongOnly by remember { mutableStateOf(true) }
     val subjectScores=ExamConfig.subjects.map { section ->
         val indices=questions.indices.filter { questions[it].section==section }
@@ -62,6 +63,21 @@ fun ResultScreen(attempt: Attempt, questions: List<Question>, hindi: Boolean,
                     "हर ईमानदार प्रयास आपको आगे बढ़ाता है।"),
                     color=Color.White.copy(alpha=.9f),fontSize=11.sp)
                 ScoreMedallion(attempt.score,size=148.dp)
+                if(previousScore!=null) {
+                    val delta=attempt.score-previousScore
+                    Text(if(delta>0)t(hindi,"📈 +$delta marks vs your previous attempt",
+                        "📈 पिछले प्रयास से $delta अंक ज़्यादा")
+                        else if(delta==0)t(hindi,"🤝 Matched your previous score",
+                            "🤝 पिछले प्रयास के बराबर स्कोर")
+                        else t(hindi,"🎯 Keep growing · ${-delta} marks below previous",
+                            "🎯 अभ्यास करें · पिछले से ${-delta} अंक कम"),
+                        color=Gold,fontWeight=FontWeight.Black,fontSize=11.sp)
+                } else {
+                    Text(t(hindi,"✨ First recorded attempt on this mock",
+                        "✨ इस मॉक में आपका पहला सुरक्षित प्रयास"),
+                        color=Color.White.copy(alpha=.9f),
+                        fontWeight=FontWeight.SemiBold,fontSize=10.sp)
+                }
                 Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
                     Surface(shape=RoundedCornerShape(20.dp),color=Color.White.copy(alpha=.15f)) {
                         Text("🎯 $accuracy% "+t(hindi,"accuracy","सटीकता"),

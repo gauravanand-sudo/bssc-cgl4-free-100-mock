@@ -231,6 +231,36 @@ fun SubjectDonut(name:String,accuracy:Float,modifier:Modifier=Modifier) {
     }
 }
 
+/** Non-blocking in-app celebration of one legitimately earned ad reward. */
+@Composable
+fun UnlockProgressCard(id:Int,earned:Int,required:Int,hindi:Boolean,modifier:Modifier=Modifier) {
+    val finished=earned>=required
+    Row(modifier.fillMaxWidth().shadow(12.dp,RoundedCornerShape(22.dp))
+        .clip(RoundedCornerShape(22.dp))
+        .background(Brush.horizontalGradient(
+            if(finished) listOf(Color(0xFF086B51),Aqua)
+            else listOf(RoyalDeep,Violet)))
+        .padding(horizontal=15.dp,vertical=12.dp),
+        verticalAlignment=Alignment.CenterVertically) {
+        Text(if(finished)"🎉" else "🎁",fontSize=27.sp)
+        Spacer(Modifier.width(12.dp))
+        Column(Modifier.weight(1f)) {
+            Text(if(finished)t(hindi,"Mock %03d unlocked!".format(id),
+                "मॉक %03d अनलॉक हुआ!".format(id))
+                else t(hindi,"Great! Ad $earned of $required complete",
+                    "शानदार! $required में से $earned विज्ञापन पूरे"),
+                color=Color.White,fontSize=14.sp,fontWeight=FontWeight.Black)
+            Text(if(finished)t(hindi,"You're ready to practice. 🚀",
+                "अब अभ्यास शुरू करें! 🚀")
+                else t(hindi,"Progress saved on this device.",
+                    "प्रगति इसी डिवाइस पर सहेजी गई।"),
+                color=Color.White.copy(alpha=.92f),fontSize=11.sp)
+        }
+        Icon(if(finished)Icons.Rounded.CheckCircle else Icons.Rounded.PlayCircleOutline,
+            null,tint=Gold,modifier=Modifier.size(26.dp))
+    }
+}
+
 @Composable
 fun MockPreflightDialog(id:Int,hindi:Boolean,onStart:()->Unit,onDismiss:()->Unit) {
     AlertDialog(
