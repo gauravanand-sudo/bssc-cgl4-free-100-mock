@@ -80,6 +80,7 @@ class MainActivity : ComponentActivity() {
                 var attempts by remember { mutableStateOf(store.attempts()) }
                 var activeSession by remember { mutableStateOf(store.session()) }
                 var unlocked by remember { mutableStateOf(store.unlocked()) }
+                var rewardCredits by remember { mutableStateOf(store.rewardCredits()) }
                 var hindi by remember { mutableStateOf(store.hindi()) }
                 var name by remember { mutableStateOf(store.name()) }
                 var tests by remember { mutableStateOf(catalog.cached()) }
@@ -168,9 +169,19 @@ class MainActivity : ComponentActivity() {
                         t(hindi,"Watch a rewarded ad to unlock","विज्ञापन देखकर अनलॉक करें"),Toast.LENGTH_SHORT).show()
                 }
                 val earnedUnlock: (Int) -> Unit = { id ->
-                    if (MockAccess.isRewarded(id)) {
-                        store.unlock(id); unlocked = store.unlocked()
-                        Toast.makeText(this@MainActivity,"Mock %03d unlocked!".format(id),Toast.LENGTH_LONG).show()
+                    if (MockAccess.isRewarded(id) && id !in unlocked) {
+                        val earned = store.recordEarnedReward(id)
+                        rewardCredits = store.rewardCredits()
+                        unlocked = store.unlocked()
+                        val required = MockAccess.requiredAds(id)
+                        val notice = if (earned >= required) {
+                            t(hindi,"Mock %03d unlocked on this device!".format(id),
+                                "मॉक %03d इस डिवाइस पर अनलॉक हुआ!".format(id))
+                        } else {
+                            t(hindi,"Ad $earned of $required completed. Watch one more to unlock.",
+                                "$required में से $earned विज्ञापन पूरे। अनलॉक के लिए एक और देखें।")
+                        }
+                        Toast.makeText(this@MainActivity, notice, Toast.LENGTH_LONG).show()
                     }
                 }
                 val unavailable = {
@@ -284,7 +295,7 @@ class MainActivity : ComponentActivity() {
                             },label="nav-flow") { currentTab ->
                             when(currentTab) {
                                 Tab.HOME -> DashboardScreen(name,hindi,attempts,activeSession,tests,
-                                    catalogStatus,loadingCatalog,unlocked,adReady,quickReady,
+                                    catalogStatus,loadingCatalog,unlocked,rewardCredits,adReady,quickReady,
                                     ads.canShowBanner(),ads,remoteBanners,examEvents,Modifier,startTest,unlock,quickUnlock,
                                     onResume={ activeSession?.let { startPaper(it.testId) } },
                                     onViewResult={newlyFinished=false;route=Route.Result(it)},
@@ -299,7 +310,7 @@ class MainActivity : ComponentActivity() {
                                             "home", "mock_list" -> tab=Tab.HOME
                                         }
                                     })
-                                Tab.TESTS -> TestCatalogueScreen(tests,attempts,unlocked,adReady,quickReady,
+                                Tab.TESTS -> TestCatalogueScreen(tests,attempts,unlocked,rewardCredits,adReady,quickReady,
                                     loadingCatalog,catalogStatus,hindi,ads.canShowBanner(),ads,
                                     onStart=startTest,onUnlock=unlock,onQuickUnlock=quickUnlock,
                                     onRefresh={refreshCatalogue()})
@@ -316,7 +327,7 @@ class MainActivity : ComponentActivity() {
                                             store.clearAll();questions.clearPaperCache();catalog.clearCache()
                                             tests=catalog.cached();ExamConfig.setTitles(tests)
                                             attempts=emptyList();activeSession=null
-                                            unlocked=emptySet();name="Aspirant";hindi=false;tab=Tab.HOME
+                                            unlocked=emptySet();rewardCredits=emptyMap();name="Aspirant";hindi=false;tab=Tab.HOME
                                             Toast.makeText(this@MainActivity,"Saved and online data deleted",Toast.LENGTH_LONG).show()
                                         } else Toast.makeText(this@MainActivity,"Cloud deletion failed. Connect and retry.",Toast.LENGTH_LONG).show()
                                     }})
@@ -354,16 +365,21 @@ class MainActivity : ComponentActivity() {
                     AlertDialog(onDismissRequest={paperError=null},title={Text(t(hindi,"Mock unavailable","मॉक उपलब्ध नहीं है"))},
                         text={Text(message)},confirmButton={TextButton(onClick={paperError=null}) {Text("OK")} })
                 }
-                quickIntroId?.takeIf { MockAccess.isRewarded(it) }?.let { id ->
+                quickIntroId?.takeIf { MockAccess.isRewarded(it) && it !in unlocked }?.let { id ->
+                    val needed = MockAccess.requiredAds(id)
+                    val completed = rewardCredits[id] ?: 0
                     AlertDialog(onDismissRequest={quickIntroId=null},
-                        title={Text("Unlock Mock %03d".format(id))},
-                        text={Text("Watch a rewarded quick ad to unlock this mock permanently. You can skip and stay on this screen without losing anything.")},
-                        dismissButton={TextButton(onClick={quickIntroId=null}) {Text("Skip ad")}},
+                        title={Text(t(hindi,"Unlock Mock %03d".format(id),
+                            "मॉक %03d अनलॉक करें".format(id)))},
+                        text={Text(t(hindi,
+                            "This mock requires $needed completed rewarded ad(s). Watch ad ${completed+1} of $needed now to earn one credit. Each completed ad saves your progress on this device. Skip without losing previously earned credits.",
+                            "इस मॉक के लिए $needed विज्ञापन पूरे करने होंगे। एक क्रेडिट पाने के लिए ${completed+1}/$needed विज्ञापन देखें। क्रेडिट इसी डिवाइस पर सहेजे जाएंगे। छोड़ने पर पहले के क्रेडिट नहीं मिटेंगे।"))},
+                        dismissButton={TextButton(onClick={quickIntroId=null}) {Text(t(hindi,"Skip ad","छोड़ें"))}},
                         confirmButton={TextButton(onClick={
                             quickIntroId=null
                             ads.showQuickReward(onEarned={earnedUnlock(id)},
                                 onUnavailable=unavailable,onChange=notifyAd)
-                        }) {Text("Watch & unlock")} })
+                        }) {Text(t(hindi,"Watch ad ${completed+1}/$needed","विज्ञापन ${completed+1}/$needed देखें"))} })
                 }
             }
         }

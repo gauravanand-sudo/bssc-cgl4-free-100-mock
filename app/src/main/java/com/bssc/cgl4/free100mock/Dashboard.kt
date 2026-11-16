@@ -32,7 +32,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 fun DashboardScreen(
     name: String, hindi: Boolean, attempts: List<Attempt>, session: ExamSession?,
     tests: List<MockTest>, catalogStatus: String?, loadingCatalog: Boolean,
-    unlocked: Set<Int>, adReady: Boolean, quickReady: Boolean, adAllowed: Boolean, ads: AdController,
+    unlocked: Set<Int>, rewardCredits: Map<Int, Int>,
+    adReady: Boolean, quickReady: Boolean, adAllowed: Boolean, ads: AdController,
     banners: List<PromoBanner>, examEvents: List<ExamEvent>,
     modifier: Modifier, onStart: (Int)->Unit, onUnlock: (Int)->Unit, onQuickUnlock: (Int)->Unit,
     onResume: ()->Unit, onViewResult: (Attempt)->Unit, onToggleLanguage: ()->Unit,
@@ -124,7 +125,8 @@ fun DashboardScreen(
         }
         items(tests.take(3), key={ it.id }) { test ->
             ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
-                !MockAccess.isAccessible(test.id, unlocked),adReady,quickReady,hindi,
+                !MockAccess.isAccessible(test.id, unlocked),rewardCredits[test.id] ?: 0,
+                adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
         }
         if(loadingCatalog) item { LinearProgressIndicator(modifier=Modifier.fillMaxWidth(),color=Violet) }
@@ -178,7 +180,7 @@ private fun ReferenceMetric(emoji:String,value:String,label:String,modifier:Modi
 /** Dedicated compact catalogue with real Firestore data, no fabricated 100-paper listing. */
 @Composable
 fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set<Int>,
-    adReady:Boolean,quickReady:Boolean,loading:Boolean,status:String?,hindi:Boolean,
+    rewardCredits:Map<Int,Int>,adReady:Boolean,quickReady:Boolean,loading:Boolean,status:String?,hindi:Boolean,
     adAllowed:Boolean,ads:AdController,onStart:(Int)->Unit,onUnlock:(Int)->Unit,
     onQuickUnlock:(Int)->Unit,onRefresh:()->Unit) {
     var filter by remember { mutableStateOf("all") }
@@ -219,7 +221,8 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
             t(hindi,"Refresh to check for new published papers.","नए प्रकाशित पेपर के लिए रिफ़्रेश करें।"))}
         itemsIndexed(filtered,key={_,test->test.id}) {index,test ->
             ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
-                !MockAccess.isAccessible(test.id, unlocked),adReady,quickReady,hindi,
+                !MockAccess.isAccessible(test.id, unlocked),rewardCredits[test.id] ?: 0,
+                adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
             // Additional placements on longer lists, never inside a button.
             if(adAllowed && (index == 7 || index == 19 || index == 31)) {
@@ -241,8 +244,9 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
 }
 
 @Composable
-private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,
+private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,earnedAds:Int,
     adReady:Boolean,quickReady:Boolean,hindi:Boolean,onStart:()->Unit,onUnlock:()->Unit,onQuickUnlock:()->Unit) {
+    val requiredAds = MockAccess.requiredAds(test.id)
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(19.dp)).background(Color.White)
         .border(1.dp,Color(0xFFECDFF5),RoundedCornerShape(19.dp)).animateContentSize().padding(13.dp)) {
         Row(verticalAlignment=Alignment.CenterVertically) {
@@ -256,7 +260,8 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,
                     color=SoftWhite,fontSize=14.sp,fontWeight=FontWeight.Black)
                 Text("150 Q  •  600 " + t(hindi,"marks","अंक") + "  •  2h 15m",color=Muted,fontSize=10.sp)
             }
-            Tag(if(locked)t(hindi,"AD UNLOCK","विज्ञापन")
+            Tag(if(locked && requiredAds==2)t(hindi,"2 ADS","2 विज्ञापन")
+                else if(locked)t(hindi,"AD UNLOCK","विज्ञापन")
                 else if(MockAccess.isFree(test.id))t(hindi,"FREE","मुफ़्त")
                 else t(hindi,"READY","तैयार"),if(locked) Amber else Aqua)
         }
@@ -267,13 +272,25 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,
         }
         Spacer(Modifier.height(11.dp))
         if(locked) {
+            if(requiredAds==2) {
+                Text(t(hindi,
+                    if(earnedAds==0) "Watch 2 rewarded ads to unlock this mock. Each completed ad earns one credit."
+                    else "$earnedAds of 2 ads completed. Watch one more to unlock.",
+                    if(earnedAds==0) "यह मॉक खोलने के लिए 2 विज्ञापन पूरे देखें। हर विज्ञापन पर एक क्रेडिट मिलेगा।"
+                    else "2 में से $earnedAds विज्ञापन पूरे। एक और विज्ञापन देखें।"),
+                    color=Muted,fontSize=11.sp)
+                Spacer(Modifier.height(8.dp))
+            }
             Button(onClick=onUnlock,enabled=adReady,shape=RoundedCornerShape(14.dp),
                 modifier=Modifier.fillMaxWidth().height(43.dp),
                 colors=ButtonDefaults.buttonColors(containerColor=Violet)) {
                 Icon(Icons.Rounded.PlayCircleOutline,null,modifier=Modifier.size(17.dp))
                 Spacer(Modifier.width(6.dp))
-                Text(if(adReady)t(hindi,"Watch Ad to Unlock","विज्ञापन देखकर खोलें")
-                    else t(hindi,"Ad loading…","विज्ञापन लोड हो रहा है…"),fontSize=12.sp,fontWeight=FontWeight.Bold)
+                Text(if(adReady) {
+                    if(requiredAds==2)t(hindi,"Watch Ad ${earnedAds+1} of 2","विज्ञापन ${earnedAds+1}/2 देखें")
+                    else t(hindi,"Watch Ad to Unlock","विज्ञापन देखकर खोलें")
+                } else t(hindi,"Ad loading…","विज्ञापन लोड हो रहा है…"),
+                    fontSize=12.sp,fontWeight=FontWeight.Bold)
             }
             if(quickReady) TextButton(onClick=onQuickUnlock,modifier=Modifier.fillMaxWidth()) {
                 Text(t(hindi,"Quick rewarded ad option","दूसरा विज्ञापन विकल्प"),fontSize=10.sp,color=Violet)

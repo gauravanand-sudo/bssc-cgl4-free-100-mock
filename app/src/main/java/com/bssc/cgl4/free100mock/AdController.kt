@@ -95,7 +95,13 @@ class AdController(private val activity: Activity) {
                 showing = false; onUnavailable(); preload(onChange)
             }
         }
-        ad.show(activity) { onEarned() }
+        var rewardDelivered = false
+        ad.show(activity) {
+            if (!rewardDelivered) {
+                rewardDelivered = true
+                onEarned()
+            }
+        }
     }
     private fun preloadQuick(onChange: () -> Unit) {
         if (!canShowBanner() || loadRewardedInterstitial || rewardedInterstitial != null) return
@@ -121,7 +127,13 @@ class AdController(private val activity: Activity) {
                 showing = false; onUnavailable(); preloadQuick(onChange)
             }
         }
-        ad.show(activity) { onEarned() }
+        var rewardDelivered = false
+        ad.show(activity) {
+            if (!rewardDelivered) {
+                rewardDelivered = true
+                onEarned()
+            }
+        }
     }
     private fun preloadInterstitial() {
         if (!canShowBanner() || interstitial != null) return

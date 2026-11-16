@@ -181,7 +181,7 @@ import androidx.compose.ui.unit.sp
         Panel {
             Text("ADS & PRIVACY",color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=14.sp)
             Spacer(Modifier.height(8.dp))
-            Text("Rewarded ads are optional and unlock a selected mock permanently. Consent choices may be changed here where applicable.",
+            Text("Rewarded ads are optional: mocks 3–50 need 1 completed ad, and mocks 51–100 need 2 completed ads. Each credit and unlock is saved on this device. Consent choices can be changed here where applicable.",
                 color=Muted,fontSize=12.sp,lineHeight=19.sp)
             Spacer(Modifier.height(10.dp))
             OutlinedButton(onClick=onPrivacy) { Text("Privacy / ad choices",color=Violet) }

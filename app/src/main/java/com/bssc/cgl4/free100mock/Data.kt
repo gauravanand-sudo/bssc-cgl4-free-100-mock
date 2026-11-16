@@ -153,7 +153,32 @@ class AppStore(context: Context) {
     fun hindi() = prefs.getBoolean("hindi", false)
     fun setHindi(value: Boolean) = prefs.edit().putBoolean("hindi", value).apply()
     fun unlocked() = prefs.getStringSet("unlocked", emptySet())?.mapNotNull { it.toIntOrNull() }?.toSet() ?: emptySet()
-    fun unlock(testId: Int) { prefs.edit().putStringSet("unlocked", (unlocked() + testId).map(Int::toString).toSet()).apply() }
+
+    /** Earned ads already watched for each mock, persisted across app restarts.
+     *  Do not grant these credits for a dismissed/failed ad: call ONLY from
+     *  the Google onUserEarnedReward callback.
+     */
+    fun rewardCredits(): Map<Int, Int> = (3..100).mapNotNull { id ->
+        val credit = prefs.getInt("ad_credit_$id", 0)
+            .coerceIn(0, MockAccess.requiredAds(id))
+        if (credit > 0 && id !in unlocked()) id to credit else null
+    }.toMap()
+
+    @Synchronized fun recordEarnedReward(testId: Int): Int {
+        val needed = MockAccess.requiredAds(testId)
+        if (needed == 0) return 0
+        // Existing unlocks, including those earned in previous versions, remain valid.
+        val priorUnlocks = unlocked()
+        if (testId in priorUnlocks) return needed
+        val credit = prefs.getInt("ad_credit_$testId", 0)
+        val next = MockAccess.nextCredit(testId, credit)
+        val editor = prefs.edit().putInt("ad_credit_$testId", next)
+        if (next >= needed) {
+            editor.putStringSet("unlocked", (priorUnlocks + testId).map(Int::toString).toSet())
+        }
+        editor.apply()
+        return next
+    }
     fun session(): ExamSession? { return try {
         val raw = prefs.getString("session", null) ?: return null
         val j = JSONObject(raw)
