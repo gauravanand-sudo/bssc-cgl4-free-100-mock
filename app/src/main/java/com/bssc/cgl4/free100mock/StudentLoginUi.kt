@@ -95,18 +95,16 @@ fun StudentRegistrationGate(
 
     val phoneStep = state is SignupState.NeedsPhone
     val cleanName = StudentName.normalize(studentName)
-    Box(Modifier.fillMaxSize()
-        .background(Brush.verticalGradient(listOf(Night, RoyalPurple, Color(0xFF6D41AF)))),
-        contentAlignment=Alignment.Center) {
-        // With fillMaxSize OUTSIDE verticalScroll, short forms center vertically;
-        // on small phones / with the keyboard the form scrolls safely.
-        Column(
-            modifier=Modifier.fillMaxSize().imePadding()
-                .verticalScroll(rememberScrollState())
+    BoxWithConstraints(Modifier.fillMaxSize().imePadding()
+        .background(Brush.verticalGradient(listOf(Night,RoyalPurple,Color(0xFF6D41AF))))) {
+        // Scroll container measures content at natural height. The inner Box has
+        // at least viewport height so short forms are vertically CENTERED;
+        // larger forms scroll naturally on short phones and with the keyboard.
+        val viewportHeight = maxHeight
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+            Box(Modifier.fillMaxWidth().heightIn(min=viewportHeight)
                 .padding(horizontal=20.dp,vertical=16.dp),
-            horizontalAlignment=Alignment.CenterHorizontally,
-            verticalArrangement=Arrangement.Center
-        ) {
+                contentAlignment=Alignment.Center) {
             Column(
                 modifier=Modifier.widthIn(max=430.dp).fillMaxWidth(),
                 horizontalAlignment=Alignment.CenterHorizontally,
@@ -357,6 +355,8 @@ fun StudentRegistrationGate(
                     "आपका डेटा निजी रहेगा। मोबाइल OTP सत्यापित नहीं है। WhatsApp अपडेट के लिए अलग सहमति चाहिए।"),
                     color=Color.White.copy(alpha=.73f),fontSize=10.sp,
                     lineHeight=15.sp,textAlign=TextAlign.Center)
+            }
+        }
             }
         }
     }
