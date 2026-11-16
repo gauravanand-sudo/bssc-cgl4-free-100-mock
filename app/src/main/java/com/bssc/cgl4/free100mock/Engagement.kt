@@ -185,7 +185,7 @@ fun GlobalExamHeader(hindi:Boolean,onLanguage:()->Unit,notificationsEnabled:Bool
         .background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF641697))))
         .padding(start=9.dp,end=9.dp,top=5.dp,bottom=5.dp),
         verticalAlignment=Alignment.CenterVertically) {
-        Image(painterResource(R.drawable.brand_icon),
+        Image(painterResource(R.drawable.bssc_bilingual_logo),
             t(hindi,"BSSC CGL 4 learning app","बीएसएससी सीजीएल 4 अभ्यास ऐप"),
             Modifier.size(38.dp).clip(RoundedCornerShape(10.dp)))
         Spacer(Modifier.width(7.dp))

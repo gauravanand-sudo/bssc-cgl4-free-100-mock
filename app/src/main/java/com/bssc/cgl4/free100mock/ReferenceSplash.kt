@@ -21,49 +21,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 
+/**
+ * The single approved BSSC CGL 4 / OneShotGS badge appears as supplied,
+ * without a second goal caption, an overlay, or an old competing app icon.
+ */
 @Composable fun ReferenceSplash(hindi:Boolean) {
     val pulse=rememberInfiniteTransition(label="aspirant loading")
-    val scale by pulse.animateFloat(1f,1.045f,infiniteRepeatable(tween(2100),RepeatMode.Reverse),label="splash image pulse")
+    val scale by pulse.animateFloat(1f,1.025f,infiniteRepeatable(tween(2100),RepeatMode.Reverse),label="approved logo pulse")
     var quote by remember { mutableIntStateOf(0) }
     LaunchedEffect(Unit) { while(true) { delay(2100);quote=(quote+1)%5 } }
     Column(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(RoyalDeep,Royal,Color(0xFF4A147A))))
-        .padding(horizontal=28.dp,vertical=30.dp),horizontalAlignment=Alignment.CenterHorizontally,
-        verticalArrangement=Arrangement.SpaceBetween) {
-        Spacer(Modifier.height(4.dp))
-        Column(horizontalAlignment=Alignment.CenterHorizontally) {
-            Image(painterResource(R.drawable.brand_icon),
-                "BSSC CGL 4 target and exam-book symbol",
-                Modifier.size(100.dp).clip(RoundedCornerShape(22.dp)))
-            Spacer(Modifier.height(10.dp))
-            Text("बीएसएससी सीजीएल 4",color=Color.White,
-                fontSize=22.sp,fontWeight=FontWeight.Black)
-            Text("फ्री मॉक",color=Gold,
-                fontSize=21.sp,fontWeight=FontWeight.Black)
-            Text("BSSC CGL 4 Free Mock",color=Color.White,
-                fontSize=17.sp,fontWeight=FontWeight.Black)
-            Spacer(Modifier.height(8.dp))
-            Text("लक्ष्य: 15,000 प्रश्न",color=Gold,
-                fontSize=15.sp,fontWeight=FontWeight.Black)
-            Text(t(hindi,"100 planned mock tests","100 नियोजित मॉक टेस्ट"),
-                color=Color.White.copy(alpha=.86f),fontSize=11.sp)
-        }
-        Box(Modifier.fillMaxWidth().height(244.dp)
-            .clip(RoundedCornerShape(23.dp)).background(Color.White),
-            contentAlignment=Alignment.Center) {
+        .padding(horizontal=22.dp,vertical=28.dp),
+        horizontalAlignment=Alignment.CenterHorizontally,
+        verticalArrangement=Arrangement.spacedBy(16.dp)) {
+        Text("OneShotGS Learning Apps",color=Gold,
+            fontSize=16.sp,fontWeight=FontWeight.Black)
+        Box(Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(23.dp))
+            .background(Color.White).padding(5.dp),contentAlignment=Alignment.Center) {
             Image(painterResource(R.drawable.bssc_bilingual_logo),
-                "बीएसएससी सीजीएल 4 फ्री मॉक · BSSC CGL 4 Free Mock",
+                "OneShotGS BSSC CGL 4 Free Mock approved bilingual logo",
                 Modifier.fillMaxSize().scale(scale),contentScale=ContentScale.Fit)
-            // Native crisp text replaces legacy Devanagari-number raster lettering.
-            // The digit style stays consistent regardless of device locale or density.
-            Box(Modifier.align(Alignment.BottomCenter)
-                .fillMaxWidth(.93f).height(43.dp)
-                .clip(RoundedCornerShape(14.dp))
-                .background(Brush.horizontalGradient(
-                    listOf(Color(0xFF4D0879),Color(0xFF6E0A83)))),
-                contentAlignment=Alignment.Center) {
-                Text("लक्ष्य: 15,000 प्रश्न",color=Color.White,
-                    fontWeight=FontWeight.Black,fontSize=18.sp,maxLines=1)
-            }
         }
         Column(horizontalAlignment=Alignment.CenterHorizontally) {
             Text(t(hindi,"Preparing your officer journey…","अधिकारी बनने का सफर तैयार हो रहा है…"),
@@ -77,17 +54,8 @@ import kotlinx.coroutines.delay
                     fontSize=12.sp,lineHeight=18.sp)
             }
         }
-        Column(horizontalAlignment=Alignment.CenterHorizontally) {
-            Text(t(hindi,"Part of OneShotGS Learning Apps",
-                "OneShotGS लर्निंग ऐप्स का हिस्सा"),
-                color=Gold,fontSize=12.sp,fontWeight=FontWeight.Black)
-            Spacer(Modifier.height(6.dp))
-            Box(Modifier.fillMaxWidth(.80f).height(76.dp)
-                .clip(RoundedCornerShape(15.dp)).background(Color.White)
-                .padding(9.dp),contentAlignment=Alignment.Center) {
-                Image(painterResource(R.drawable.oneshotgs_logo),
-                    "OneShotGS brand logo",Modifier.fillMaxSize(),contentScale=ContentScale.Fit)
-            }
-        }
+        Text(t(hindi,"Part of OneShotGS Learning Apps",
+            "OneShotGS लर्निंग ऐप्स का हिस्सा"),
+            color=Gold,fontSize=12.sp,fontWeight=FontWeight.Black)
     }
 }

@@ -224,9 +224,9 @@ import androidx.compose.ui.unit.sp
             Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(15.dp))
                 .background(Color.White).padding(12.dp),
                 horizontalAlignment=Alignment.CenterHorizontally) {
-                Image(painter=painterResource(R.drawable.oneshotgs_logo),
-                    contentDescription="OneShotGS official brand logo",
-                    modifier=Modifier.fillMaxWidth().height(83.dp),
+                Image(painter=painterResource(R.drawable.bssc_bilingual_logo),
+                    contentDescription="Approved OneShotGS BSSC CGL 4 bilingual logo",
+                    modifier=Modifier.fillMaxWidth().height(176.dp),
                     contentScale=ContentScale.Fit)
                 Spacer(Modifier.height(3.dp))
                 Text(t(hindi,"Part of OneShotGS Learning Apps",

@@ -61,10 +61,6 @@ fun DashboardScreen(
                         modifier=Modifier.padding(horizontal=12.dp,vertical=8.dp),
                         color=RoyalDeep,fontWeight=FontWeight.Black,fontSize=11.sp)
                 }
-                Spacer(Modifier.height(5.dp))
-                Text(t(hindi,"Goal: 15,000 questions · 100 planned mocks",
-                    "लक्ष्य: 15,000 प्रश्न · 100 मॉक टेस्ट"),
-                    color=Muted,fontWeight=FontWeight.Bold,fontSize=11.sp)
             }
         }
         // Exactly ONE editable Firebase promotion on Home; no banner carousel,

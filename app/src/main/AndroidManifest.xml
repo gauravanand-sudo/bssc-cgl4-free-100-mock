@@ -6,8 +6,8 @@
     <application
         android:allowBackup="false"
         android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:icon="@drawable/bssc_bilingual_logo"
+        android:roundIcon="@drawable/bssc_bilingual_logo"
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
