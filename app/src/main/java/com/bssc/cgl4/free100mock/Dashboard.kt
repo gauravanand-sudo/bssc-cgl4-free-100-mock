@@ -38,7 +38,7 @@ fun DashboardScreen(
     banner: PromoBanner?, examEvents: List<ExamEvent>, homeCards:List<HomeCard>,
     modifier: Modifier, onStart: (Int)->Unit, onUnlock: (Int)->Unit, onQuickUnlock: (Int)->Unit,
     onResume: ()->Unit, onViewResult: (Attempt)->Unit,
-    onBannerAction: (String)->Unit,
+    onToggleLanguage:()->Unit, onBannerAction: (String)->Unit,
     onOpenTests: ()->Unit={}, onOpenAnalytics: ()->Unit={}, onOpenRanks: ()->Unit={}
 ) {
     val available=tests.filterNot{it.isUpcoming}
@@ -53,6 +53,18 @@ fun DashboardScreen(
                 Text(t(hindi,"Ready to rise, Future Officer? ✨","आज की तैयारी, कल की सफलता ✨"),
                     color=SoftWhite,fontSize=18.sp,fontWeight=FontWeight.Black)
                 Text(BrandCopy.tagline(hindi),color=Violet,fontSize=14.sp,fontWeight=FontWeight.ExtraBold)
+                Spacer(Modifier.height(8.dp))
+                Surface(onClick=onToggleLanguage,shape=RoundedCornerShape(13.dp),
+                    color=SoftLavender) {
+                    Text(t(hindi,"🌐 Switch language · English ⇄ हिंदी",
+                        "🌐 भाषा बदलें · हिंदी ⇄ English"),
+                        modifier=Modifier.padding(horizontal=12.dp,vertical=8.dp),
+                        color=RoyalDeep,fontWeight=FontWeight.Black,fontSize=11.sp)
+                }
+                Spacer(Modifier.height(5.dp))
+                Text(t(hindi,"Goal: 15,000 questions · 100 planned mocks",
+                    "लक्ष्य: १५,००० प्रश्न · १०० मॉक टेस्ट"),
+                    color=Muted,fontWeight=FontWeight.Bold,fontSize=11.sp)
             }
         }
         // Exactly ONE editable Firebase promotion on Home; no banner carousel,
@@ -275,11 +287,9 @@ private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,earn
                 else if(MockAccess.isFree(test.id))t(hindi,"FREE","मुफ़्त")
                 else t(hindi,"READY","तैयार"),if(locked) Amber else Aqua)
         }
-        Spacer(Modifier.height(10.dp))
-        Row(verticalAlignment=Alignment.CenterVertically,
-            horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-            Tag("🎯 "+test.difficulty.take(18),Blue)
-            if(previous!=null) Tag("🏆 ${previous.score}/600",Violet)
+        if(previous!=null) {
+            Spacer(Modifier.height(8.dp))
+            Tag("🏆 ${previous.score}/600",Violet)
         }
         if(locked && !upcoming && requiredAds==2) {
             Spacer(Modifier.height(9.dp))

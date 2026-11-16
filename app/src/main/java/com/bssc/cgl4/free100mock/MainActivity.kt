@@ -345,6 +345,7 @@ class MainActivity : ComponentActivity() {
                                     remoteBanner,examEvents,homeCards,Modifier,startTest,unlock,quickUnlock,
                                     onResume={ activeSession?.let { startPaper(it.testId) } },
                                     onViewResult={newlyFinished=false;route=Route.Result(it)},
+                                    onToggleLanguage={hindi=!hindi;store.setHindi(hindi)},
                                     onOpenTests={tab=Tab.TESTS},onOpenAnalytics={tab=Tab.ANALYTICS},
                                     onOpenRanks={tab=Tab.RANKS},
                                     onBannerAction={ destination ->
