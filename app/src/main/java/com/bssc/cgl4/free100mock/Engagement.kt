@@ -65,7 +65,8 @@ data class ExamEvent(
     val nameHi: String,
     val scheduledAtMs: Long?,
     val confirmed: Boolean,
-    val sourceUrl: String
+    val sourceUrl: String,
+    val preparationTargetMs: Long? = null
 )
 
 class EngagementRepository(private val context: Context) {
@@ -158,7 +159,8 @@ class EngagementRepository(private val context: Context) {
                                     d.getString("nameEn")?:"BSSC CGL 4 Prelims",
                                     d.getString("nameHi")?:"बीएसएससी सीजीएल 4 प्रारंभिक",
                                     if(confirmed)examDate else null,
-                                    confirmed,source)
+                                    confirmed,source,
+                                    if (d.id == "preparation_goal") d.getLong("targetEpochMillis") else null)
                             }.sortedWith(compareBy<ExamEvent>{
                                 it.scheduledAtMs?:Long.MAX_VALUE
                             }.thenBy{it.id}))
@@ -212,19 +214,20 @@ fun ExamCountdown(events:List<ExamEvent>,hindi:Boolean) {
     val confirmed=events.filter {
         it.confirmed && it.scheduledAtMs!=null && it.scheduledAtMs>now
     }.minByOrNull{it.scheduledAtMs?:Long.MAX_VALUE}
-    // No placeholder countdown and no guessed date. Firebase alone activates it.
-    if(confirmed==null) return
-    LaunchedEffect(confirmed.id,confirmed.scheduledAtMs) {
+    val preparationTarget = events.firstOrNull { it.id == "preparation_goal" }
+        ?.preparationTargetMs?.takeIf { it > now }
+    val target = confirmed?.scheduledAtMs ?: preparationTarget ?: return
+    LaunchedEffect(target) {
         while(true) {delay(30_000L);now=System.currentTimeMillis()}
     }
-    val remaining=(confirmed.scheduledAtMs?:now)-now
+    val remaining=target-now
     val days=TimeUnit.MILLISECONDS.toDays(remaining).coerceAtLeast(0)
     val hours=TimeUnit.MILLISECONDS.toHours(remaining)%24
     val minutes=TimeUnit.MILLISECONDS.toMinutes(remaining)%60
-    val dateText=remember(confirmed.scheduledAtMs) {
+    val dateText=remember(target) {
         SimpleDateFormat("dd MMM yyyy · hh:mm a",Locale.ENGLISH).apply {
             timeZone=TimeZone.getTimeZone("Asia/Kolkata")
-        }.format(Date(confirmed.scheduledAtMs!!))+" IST"
+        }.format(Date(target))+" IST"
     }
     val context=LocalContext.current
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp))
@@ -234,9 +237,11 @@ fun ExamCountdown(events:List<ExamEvent>,hindi:Boolean) {
             Text("⏳",fontSize=25.sp)
             Spacer(Modifier.width(9.dp))
             Column(Modifier.weight(1f)) {
-                Text(t(hindi,"OFFICIAL EXAM COUNTDOWN","आधिकारिक परीक्षा काउंटडाउन"),
+                Text(if (confirmed == null) t(hindi,"PREPARATION COUNTDOWN","तैयारी की उलटी गिनती")
+                    else t(hindi,"OFFICIAL EXAM COUNTDOWN","आधिकारिक परीक्षा काउंटडाउन"),
                     color=Gold,fontWeight=FontWeight.Black,fontSize=10.sp)
-                Text(t(hindi,confirmed.nameEn,confirmed.nameHi),
+                Text(if (confirmed == null) t(hindi,"OneShotGS study target","OneShotGS तैयारी लक्ष्य")
+                    else t(hindi,confirmed.nameEn,confirmed.nameHi),
                     color=Color.White,fontWeight=FontWeight.Black,fontSize=14.sp)
             }
         }
@@ -256,7 +261,7 @@ fun ExamCountdown(events:List<ExamEvent>,hindi:Boolean) {
         Row(verticalAlignment=Alignment.CenterVertically) {
             Text("📅 $dateText",color=Color.White,fontSize=11.sp,
                 fontWeight=FontWeight.Bold,modifier=Modifier.weight(1f))
-            TextButton(onClick={
+            if (confirmed != null) TextButton(onClick={
                 if(safeHttps(confirmed.sourceUrl)) {
                     try { context.startActivity(
                         Intent(Intent.ACTION_VIEW,Uri.parse(confirmed.sourceUrl))) }
