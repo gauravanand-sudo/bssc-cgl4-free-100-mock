@@ -37,6 +37,12 @@ service cloud.firestore {
       allow get, list: if request.auth != null && resource.data.published == true;
       allow write: if false;
     }
+    // Flexible public Home cards: only administrators (Console/Admin SDK) edit.
+    // Students' anonymous-auth queries MUST filter active == true.
+    match /home_cards/{cardId} {
+      allow get, list: if request.auth != null && resource.data.active == true;
+      allow write: if false;
+    }
     // Prototype leaderboard: client-submitted results are NOT anti-cheat verified.
     match /{collection}/{userId} {
       allow read: if request.auth != null && collection.matches('leaderboard_mock_([1-9]|[1-9][0-9]|100)');
