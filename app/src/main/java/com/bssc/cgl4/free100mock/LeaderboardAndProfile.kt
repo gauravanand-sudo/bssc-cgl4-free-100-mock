@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Composable fun LeaderboardScreen(board: LeaderboardRepository, tests: List<MockTest>, modifier: Modifier, hindi: Boolean) {
+@Composable fun LeaderboardScreen(board: LeaderboardRepository, tests: List<MockTest>, modifier: Modifier, hindi: Boolean, ads: AdController) {
     var selected by remember { mutableIntStateOf(tests.firstOrNull()?.id ?: 1) }
     var rows by remember { mutableStateOf<List<LeaderRow>?>(null) }
     var message by remember { mutableStateOf<String?>(null) }
@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.sp
                 }
             }
         }
+        item(key="ranks-top-ad") { SponsoredBanner(ads) }
         if(loading) item { CircularProgressIndicator(color=Violet) }
         else if(rows==null) item {
             EmptyNotice(t(hindi,"Live ranks are not connected","लाइव रैंकिंग कनेक्ट नहीं है"),message ?: t(hindi,"Connect Firebase to enable live rankings.","लाइव रैंकिंग के लिए Firebase जोड़ें।"))
@@ -123,7 +124,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable fun ProfileScreen(name:String, hindi:Boolean, attempts:Int, modifier:Modifier,
                                notificationsEnabled:Boolean,onNotifications:()->Unit,
-                               onSetName:(String)->Unit,onSetHindi:(Boolean)->Unit,onPrivacy:()->Unit, onDelete:()->Unit) {
+                               onSetName:(String)->Unit,onSetHindi:(Boolean)->Unit,onPrivacy:()->Unit, onDelete:()->Unit, ads:AdController) {
     var draft by remember(name) {mutableStateOf(name)}
     var confirmDelete by remember { mutableStateOf(false) }
     val context= LocalContext.current
@@ -176,6 +177,7 @@ import androidx.compose.ui.unit.sp
                 }
             }
         }
+        SponsoredBanner(ads)
         Panel {
             Text("ADS & PRIVACY",color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=14.sp)
             Spacer(Modifier.height(8.dp))

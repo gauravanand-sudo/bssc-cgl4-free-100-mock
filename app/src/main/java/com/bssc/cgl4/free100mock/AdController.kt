@@ -37,7 +37,6 @@ class AdController(private val activity: Activity) {
     private var loadRewarded = false
     private var loadRewardedInterstitial = false
     private var lastInterstitial = 0L
-    private var completedSinceInterstitial = 0
     private var lastAppOpen = 0L
     val ready: Boolean get() = rewarded != null
     val quickRewardReady: Boolean get() = rewardedInterstitial != null
@@ -132,18 +131,22 @@ class AdController(private val activity: Activity) {
                 override fun onAdFailedToLoad(error: LoadAdError) { interstitial = null }
             })
     }
-    /** Only after the RESULT screen, max one per 2 completed mocks and >= 4 minutes apart. */
-    fun afterResult(continueToHome: () -> Unit) {
-        completedSinceInterstitial++
+    /** User-initiated completed-result exit only; never in an exam.
+     * One interstitial per completed mock if available and >= 3 minutes apart.
+     */
+    fun afterResult(onContinue: () -> Unit) {
         val now = System.currentTimeMillis()
         val ad = interstitial
-        if (ad == null || showing || completedSinceInterstitial < 2 ||
-            now - lastInterstitial < 240_000L) { continueToHome(); preloadInterstitial(); return }
-        interstitial = null; showing = true; completedSinceInterstitial = 0; lastInterstitial = now
+        if (ad == null || showing || now - lastInterstitial < 180_000L) {
+            onContinue()
+            if (!showing) preloadInterstitial()
+            return
+        }
+        interstitial = null; showing = true; lastInterstitial = now
         ad.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() { showing = false; continueToHome(); preloadInterstitial() }
+            override fun onAdDismissedFullScreenContent() { showing = false; onContinue(); preloadInterstitial() }
             override fun onAdFailedToShowFullScreenContent(error: AdError) {
-                showing = false; continueToHome(); preloadInterstitial()
+                showing = false; onContinue(); preloadInterstitial()
             }
         }
         ad.show(activity)

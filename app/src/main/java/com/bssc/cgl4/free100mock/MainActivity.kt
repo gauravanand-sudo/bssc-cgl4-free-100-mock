@@ -226,7 +226,12 @@ class MainActivity : ComponentActivity() {
                                 val goHome = { route=Route.Tabs;tab=Tab.HOME; newlyFinished=false }
                                 if(newlyFinished) ads.afterResult(goHome) else goHome()
                             },
-                            onAnalytics={route=Route.Tabs;tab=Tab.ANALYTICS;newlyFinished=false})
+                            onAnalytics={
+                                val goAnalytics = {
+                                    route=Route.Tabs;tab=Tab.ANALYTICS;newlyFinished=false
+                                }
+                                if(newlyFinished) ads.afterResult(goAnalytics) else goAnalytics()
+                            },ads=ads)
                     }
                     Route.Tabs -> Scaffold(containerColor=Ink,
                         bottomBar={
@@ -299,13 +304,13 @@ class MainActivity : ComponentActivity() {
                                     onStart=startTest,onUnlock=unlock,onQuickUnlock=quickUnlock,
                                     onRefresh={refreshCatalogue()})
                                 Tab.ANALYTICS -> AnalyticsScreen(attempts,questions,Modifier,hindi,
-                                    onViewResult={newlyFinished=false;route=Route.Result(it)})
-                                Tab.RANKS -> LeaderboardScreen(board,tests,Modifier,hindi)
+                                    onViewResult={newlyFinished=false;route=Route.Result(it)},ads=ads)
+                                Tab.RANKS -> LeaderboardScreen(board,tests,Modifier,hindi,ads=ads)
                                 Tab.PROFILE -> ProfileScreen(name,hindi,attempts.size,Modifier,
                                     notificationsEnabled=notificationsEnabled,onNotifications=toggleNotifications,
                                     onSetName={name=it;store.setName(it)},
                                     onSetHindi={hindi=it;store.setHindi(it)},
-                                    onPrivacy={ads.showPrivacyOptions({})},
+                                    onPrivacy={ads.showPrivacyOptions({})},ads=ads,
                                     onDelete={board.deleteMyData { ok ->
                                         if(ok) {
                                             store.clearAll();questions.clearPaperCache();catalog.clearCache()

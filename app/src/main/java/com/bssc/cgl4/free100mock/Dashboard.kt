@@ -89,6 +89,8 @@ fun DashboardScreen(
                 }
             }
         }
+        // Sponsored content is separated from the navigation shortcuts.
+        if(adAllowed) item(key="home-mid-ad") { SponsoredBanner(ads) }
         if(session!=null) item {
             Panel(Modifier.clickable(onClick=onResume)) {
                 Row(verticalAlignment=Alignment.CenterVertically) {
@@ -141,11 +143,7 @@ fun DashboardScreen(
                 }
             }
         }
-        if(adAllowed) item {
-            Text("SPONSORED",color=Muted,fontSize=9.sp)
-            AndroidView(factory={ads.banner(it)},modifier=Modifier.fillMaxWidth().heightIn(min=55.dp),
-                onRelease={it.destroy()})
-        }
+        if(adAllowed) item(key="home-bottom-ad") { SponsoredBanner(ads) }
         item { Text(t(hindi,"Unofficial practice app · Verify exam dates with BSSC","स्वतंत्र अभ्यास ऐप · आधिकारिक तिथि BSSC से जाँचें"),
             fontSize=10.sp,color=Muted) }
     }
@@ -223,6 +221,12 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
             ReferenceMockRow(test,attempts.firstOrNull {it.testId==test.id},
                 !MockAccess.isAccessible(test.id, unlocked),adReady,quickReady,hindi,
                 onStart={onStart(test.id)},onUnlock={onUnlock(test.id)},onQuickUnlock={onQuickUnlock(test.id)})
+            // Additional placements on longer lists, never inside a button.
+            if(adAllowed && (index == 7 || index == 19 || index == 31)) {
+                Spacer(Modifier.height(16.dp))
+                SponsoredBanner(ads)
+                Spacer(Modifier.height(16.dp))
+            }
             if(index==4 && adAllowed && BuildConfig.ADMOB_NATIVE_ID.isNotBlank()) {
                 Spacer(Modifier.height(12.dp))
                 Text("SPONSORED",color=Muted,fontSize=9.sp)
@@ -230,10 +234,7 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
                     onRelease={ads.releaseNative(it)})
             }
         }
-        if(adAllowed) item {
-            AndroidView(factory={ads.banner(it)},modifier=Modifier.fillMaxWidth().heightIn(min=55.dp),
-                onRelease={it.destroy()})
-        }
+        if(adAllowed) item(key="catalog-bottom-ad") { SponsoredBanner(ads) }
         item {Text(t(hindi,"Only published mocks are shown. More papers will appear when uploaded.",
             "केवल प्रकाशित मॉक दिखते हैं। नए प्रश्नपत्र अपलोड होने पर दिखेंगे।"),fontSize=10.sp,color=Muted)}
     }
