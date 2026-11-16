@@ -56,6 +56,7 @@ fun DashboardScreen(
         item { AnimatedStudyHero(hindi) {
             if(firstFree!=null) onStart(firstFree.id) else onOpenTests()
         } }
+        item(key="daily-mission"){ TodayMissionCard(attempts,hindi,onOpenTests) }
         item { ExamCountdown(examEvents,hindi) }
         if(banners.isNotEmpty()) item(key="featured-promotions") {
             FirebasePromotions(banners,hindi) { destination ->
@@ -105,12 +106,11 @@ fun DashboardScreen(
                 }
             }
         }
-        item {
-            Row(horizontalArrangement=Arrangement.spacedBy(10.dp)) {
-                ReferenceMetric("🏅",attempts.maxOfOrNull {it.score}?.toString() ?: "—",
-                    t(hindi,"Best / 600","सर्वश्रेष्ठ / 600"),Modifier.weight(1f))
-                ReferenceMetric("📈","$completed",t(hindi,"Mocks done","मॉक पूर्ण"),Modifier.weight(1f))
-            }
+        item(key="animated-momentum") {
+            SectionTitle(t(hindi,"📈 Your momentum","📈 आपकी प्रगति"),
+                t(hindi,"Real progress from completed mocks","पूरे किए मॉक से असली प्रगति"))
+            Spacer(Modifier.height(10.dp))
+            HomeMomentum(attempts,hindi)
         }
         item {
             Row(verticalAlignment=Alignment.CenterVertically) {
@@ -197,10 +197,20 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
         contentPadding=PaddingValues(horizontal=14.dp,vertical=15.dp),
         verticalArrangement=Arrangement.spacedBy(12.dp)) {
         item {
-            Text(t(hindi,"Mock Tests","मॉक टेस्ट")+"  (${tests.size})",fontWeight=FontWeight.Black,
-                fontSize=22.sp,color=SoftWhite)
-            Text(t(hindi,"150 questions · 600 marks · 2h 15m · +4 / −1","150 प्रश्न · 600 अंक · 2 घं 15 मि · +4 / −1"),
-                color=Muted,fontSize=11.sp)
+            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp))
+                .background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Violet)))
+                .padding(17.dp),verticalAlignment=Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(t(hindi,"📚 YOUR PRACTICE ARENA","📚 आपका अभ्यास क्षेत्र"),
+                        color=Gold,fontWeight=FontWeight.Black,fontSize=11.sp)
+                    Text(t(hindi,"Mock Tests","मॉक टेस्ट")+"  (${tests.size})",
+                        fontWeight=FontWeight.Black,fontSize=23.sp,color=Color.White)
+                    Text(t(hindi,"150 questions · 600 marks · 135 mins",
+                        "150 प्रश्न · 600 अंक · 135 मिनट"),
+                        color=Color.White.copy(alpha=.91f),fontSize=11.sp)
+                }
+                Text("🏆",fontSize=37.sp)
+            }
         }
         item {
             Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
@@ -249,28 +259,41 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
 private fun ReferenceMockRow(test:MockTest,previous:Attempt?,locked:Boolean,earnedAds:Int,
     adReady:Boolean,quickReady:Boolean,hindi:Boolean,onStart:()->Unit,onUnlock:()->Unit,onQuickUnlock:()->Unit) {
     val requiredAds = MockAccess.requiredAds(test.id)
-    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(19.dp)).background(Color.White)
-        .border(1.dp,Color(0xFFECDFF5),RoundedCornerShape(19.dp)).animateContentSize().padding(13.dp)) {
+    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(21.dp))
+        .background(Brush.verticalGradient(listOf(Color.White,Color(0xFFF8F2FF))))
+        .border(1.dp,Violet.copy(alpha=.20f),RoundedCornerShape(21.dp))
+        .animateContentSize().padding(14.dp)) {
         Row(verticalAlignment=Alignment.CenterVertically) {
-            Box(Modifier.size(38.dp).clip(RoundedCornerShape(12.dp))
-                .background(if(locked) Color(0xFFFFE9D9) else SoftLavender),contentAlignment=Alignment.Center) {
-                Text(if(locked)"🔒" else "📝",fontSize=20.sp)
+            Box(Modifier.size(45.dp).clip(RoundedCornerShape(15.dp))
+                .background(Brush.linearGradient(if(locked)
+                    listOf(Color(0xFFFFD79F),Color(0xFFFFF0D8))
+                    else listOf(Violet.copy(alpha=.17f),Color(0xFFDFD3FF)))),
+                contentAlignment=Alignment.Center) {
+                Text(if(locked)"🎁" else if(previous!=null)"🏅" else "🚀",fontSize=24.sp)
             }
             Spacer(Modifier.width(10.dp))
             Column(Modifier.weight(1f)) {
                 Text(t(hindi,"Full Mock Test","पूर्ण मॉक टेस्ट")+" - %02d".format(test.id),
                     color=SoftWhite,fontSize=14.sp,fontWeight=FontWeight.Black)
-                Text("150 Q  •  600 " + t(hindi,"marks","अंक") + "  •  2h 15m",color=Muted,fontSize=10.sp)
+                Text("📝 150 Q  •  ⏱ 135m  •  ✨ +4 / −1",color=Muted,fontSize=10.sp)
             }
             Tag(if(locked && requiredAds==2)t(hindi,"2 ADS","2 विज्ञापन")
                 else if(locked)t(hindi,"AD UNLOCK","विज्ञापन")
                 else if(MockAccess.isFree(test.id))t(hindi,"FREE","मुफ़्त")
                 else t(hindi,"READY","तैयार"),if(locked) Amber else Aqua)
         }
-        if(previous!=null) {
-            Spacer(Modifier.height(7.dp))
-            Text(t(hindi,"Your last score: ","पिछला स्कोर: ")+"${previous.score}/600",
-                color=Violet,fontWeight=FontWeight.Bold,fontSize=10.sp)
+        Spacer(Modifier.height(10.dp))
+        Row(verticalAlignment=Alignment.CenterVertically,
+            horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+            Tag("🎯 "+test.difficulty.take(18),Blue)
+            if(previous!=null) Tag("🏆 ${previous.score}/600",Violet)
+        }
+        if(locked && requiredAds==2) {
+            Spacer(Modifier.height(9.dp))
+            Text(t(hindi,"Unlock progress","अनलॉक प्रगति"),
+                color=Muted,fontSize=10.sp,fontWeight=FontWeight.Bold)
+            Spacer(Modifier.height(5.dp))
+            ProgressTrack(earnedAds.coerceIn(0,2)/2f,Aqua)
         }
         Spacer(Modifier.height(11.dp))
         if(locked) {

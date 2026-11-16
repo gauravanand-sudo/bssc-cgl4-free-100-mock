@@ -32,6 +32,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.foundation.border
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.Role
@@ -89,6 +90,7 @@ class MainActivity : ComponentActivity() {
                 var busyPaper by remember { mutableStateOf(false) }
                 var paperError by remember { mutableStateOf<String?>(null) }
                 var quickIntroId by remember { mutableStateOf<Int?>(null) }
+                var preflightId by remember { mutableStateOf<Int?>(null) }
                 var adReady by remember { mutableStateOf(false) }
                 var quickReady by remember { mutableStateOf(false) }
                 var newlyFinished by remember { mutableStateOf(false) }
@@ -164,7 +166,15 @@ class MainActivity : ComponentActivity() {
                 val startTest: (Int) -> Unit = { id ->
                     val test = tests.firstOrNull { it.id == id }
                     if (test == null) paperError = "This mock isn't in the current catalogue."
-                    else if (MockAccess.isAccessible(id, unlocked)) startPaper(id)
+                    else if (MockAccess.isAccessible(id, unlocked)) {
+                        if(activeSession!=null && activeSession?.testId != id) {
+                            Toast.makeText(this@MainActivity,
+                                t(hindi,"Finish or resume your current exam first",
+                                    "पहले मौजूदा परीक्षा पूरी करें या जारी रखें"),
+                                Toast.LENGTH_LONG).show()
+                        } else if(activeSession?.testId == id) startPaper(id)
+                        else preflightId=id
+                    }
                     else Toast.makeText(this@MainActivity,
                         t(hindi,"Watch a rewarded ad to unlock","विज्ञापन देखकर अनलॉक करें"),Toast.LENGTH_SHORT).show()
                 }
@@ -201,10 +211,12 @@ class MainActivity : ComponentActivity() {
                 // Include cutouts, system status and gesture navigation insets on Android 15+.
                 Box(Modifier.fillMaxSize().background(RoyalDeep).safeDrawingPadding()) {
                     Column(Modifier.fillMaxSize().background(Ink)) {
-                        GlobalExamHeader(hindi,onLanguage={hindi=!hindi;store.setHindi(hindi)},
-                            notificationsEnabled=notificationsEnabled,
-                            showNotifications=route == Route.Tabs,
-                            onNotifications=toggleNotifications)
+                        if(route is Route.Tabs) {
+                            GlobalExamHeader(hindi,onLanguage={hindi=!hindi;store.setHindi(hindi)},
+                                notificationsEnabled=notificationsEnabled,
+                                showNotifications=true,
+                                onNotifications=toggleNotifications)
+                        }
                         Box(Modifier.weight(1f)) {
                 when (val page = route) {
                     is Route.Exam -> {
@@ -246,11 +258,14 @@ class MainActivity : ComponentActivity() {
                     }
                     Route.Tabs -> Scaffold(containerColor=Ink,
                         bottomBar={
-                            // Reclaimed screen space: 56dp tab bar with >=50dp touch targets.
-                            Row(Modifier.fillMaxWidth().height(56.dp).background(
-                                androidx.compose.ui.graphics.Brush.horizontalGradient(
+                            // Reclaimed screen space: compact floating navigation.
+                            Row(Modifier.fillMaxWidth().height(56.dp)
+                                .background(Ink).padding(horizontal=9.dp,vertical=3.dp)
+                                .shadow(5.dp,RoundedCornerShape(19.dp))
+                                .clip(RoundedCornerShape(19.dp))
+                                .background(androidx.compose.ui.graphics.Brush.horizontalGradient(
                                     listOf(RoyalDeep,Royal,Color(0xFF611998))))
-                                .padding(horizontal=6.dp,vertical=3.dp),
+                                .padding(horizontal=6.dp,vertical=2.dp),
                                 horizontalArrangement=Arrangement.spacedBy(4.dp),
                                 verticalAlignment=Alignment.CenterVertically) {
                                 listOf(
@@ -265,7 +280,7 @@ class MainActivity : ComponentActivity() {
                                         if(selected) Gold else Color.Transparent,
                                         animationSpec=tween(190),label="compact nav tile")
                                     Column(Modifier.weight(1f).fillMaxHeight()
-                                        .clip(RoundedCornerShape(12.dp))
+                                        .clip(RoundedCornerShape(14.dp))
                                         .background(tileColor)
                                         .clickable(role=Role.Tab,onClick={tab=item})
                                         .padding(vertical=3.dp,horizontal=1.dp),
@@ -274,10 +289,11 @@ class MainActivity : ComponentActivity() {
                                         Icon(icon,contentDescription=label,
                                             tint=if(selected) RoyalDeep else Color.White,
                                             modifier=Modifier.size(20.dp))
-                                        Spacer(Modifier.height(2.dp))
-                                        Text(label,color=if(selected) RoyalDeep else Color.White,
-                                            fontWeight=if(selected) FontWeight.Black else FontWeight.SemiBold,
-                                            fontSize=9.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+                                        if(selected) {
+                                            Spacer(Modifier.height(2.dp))
+                                            Text(label,color=RoyalDeep,fontWeight=FontWeight.Black,
+                                                fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
+                                        }
                                     }
                                 }
                             }
@@ -355,6 +371,11 @@ class MainActivity : ComponentActivity() {
                     dismissButton={TextButton(onClick={confirmExitTest=false}) {
                         Text(t(hindi,"Keep testing","टेस्ट जारी रखें"),color=Violet,fontWeight=FontWeight.Bold)
                     }})
+                preflightId?.let { id ->
+                    MockPreflightDialog(id,hindi,
+                        onStart={preflightId=null;startPaper(id)},
+                        onDismiss={preflightId=null})
+                }
                 if(busyPaper) AlertDialog(onDismissRequest={},title={Text(t(hindi,"Preparing your next step","आपका अगला कदम तैयार हो रहा है"))},
                     text={MotivationalLoading(hindi,
                         t(hindi,"Downloading and checking your paper…","आपका प्रश्नपत्र तैयार किया जा रहा है…"))},confirmButton={})
