@@ -105,6 +105,7 @@ class MainActivity : ComponentActivity() {
                 }
                 var adReady by remember { mutableStateOf(false) }
                 var quickReady by remember { mutableStateOf(false) }
+                var adAllowed by remember { mutableStateOf(false) }
                 var newlyFinished by remember { mutableStateOf(false) }
                 var confirmExitTest by remember { mutableStateOf(false) }
                 var remoteBanner by remember { mutableStateOf<PromoBanner?>(null) }
@@ -136,7 +137,12 @@ class MainActivity : ComponentActivity() {
                         if(!ok) Toast.makeText(this@MainActivity,"Set up Firebase first",Toast.LENGTH_LONG).show()
                     }
                 }
-                val notifyAd: () -> Unit = { adReady = ads.ready; quickReady = ads.quickRewardReady }
+                val notifyAd: () -> Unit = {
+                    adReady = ads.ready
+                    quickReady = ads.quickRewardReady
+                    // Observe consent + SDK readiness: prior banner visibility was non-reactive.
+                    adAllowed = ads.canShowBanner()
+                }
                 fun refreshCatalogue() {
                     loadingCatalog = true
                     catalog.refresh { result, status ->
@@ -350,7 +356,7 @@ class MainActivity : ComponentActivity() {
                             when(currentTab) {
                                 Tab.HOME -> DashboardScreen(hindi,attempts,activeSession,tests,
                                     catalogStatus,loadingCatalog,unlocked,rewardCredits,adReady,quickReady,
-                                    remoteBanner,examEvents,homeCards,Modifier,startTest,unlock,quickUnlock,
+                                    adAllowed,ads,remoteBanner,examEvents,homeCards,Modifier,startTest,unlock,quickUnlock,
                                     onResume={ activeSession?.let { startPaper(it.testId) } },
                                     onViewResult={newlyFinished=false;route=Route.Result(it)},
                                     onToggleLanguage={hindi=!hindi;store.setHindi(hindi)},
@@ -366,7 +372,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                     })
                                 Tab.TESTS -> TestCatalogueScreen(tests,attempts,unlocked,rewardCredits,adReady,quickReady,
-                                    loadingCatalog,catalogStatus,hindi,ads.canShowBanner(),ads,
+                                    loadingCatalog,catalogStatus,hindi,adAllowed,ads,
                                     onStart=startTest,onUnlock=unlock,onQuickUnlock=quickUnlock,
                                     onRefresh={refreshCatalogue()})
                                 Tab.ANALYTICS -> AnalyticsScreen(attempts,questions,Modifier,hindi,

@@ -64,7 +64,15 @@ class AdController(private val activity: Activity) {
         } }
     }
     fun canShowBanner() = initialized && consent.canRequestAds()
-    fun banner(context: Context): AdView = AdView(context).apply {
+    fun banner(context: Context, onLoaded: () -> Unit = {},
+               onFailed: (Int) -> Unit = {}): AdView = AdView(context).apply {
+        adListener = object : AdListener() {
+            override fun onAdLoaded() { onLoaded() }
+            override fun onAdFailedToLoad(error: LoadAdError) {
+                android.util.Log.w("OneShotGSAds", "Banner load error: " + error.code + ", " + error.message)
+                onFailed(error.code)
+            }
+        }
         val metrics = context.resources.displayMetrics
         val deviceWidthDp = (metrics.widthPixels / metrics.density).toInt().coerceAtLeast(280)
         setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, deviceWidthDp - 40))

@@ -34,7 +34,7 @@ fun DashboardScreen(
     hindi: Boolean, attempts: List<Attempt>, session: ExamSession?,
     tests: List<MockTest>, catalogStatus: String?, loadingCatalog: Boolean,
     unlocked: Set<Int>, rewardCredits: Map<Int, Int>,
-    adReady: Boolean, quickReady: Boolean,
+    adReady: Boolean, quickReady: Boolean, adAllowed:Boolean, ads:AdController,
     banner: PromoBanner?, examEvents: List<ExamEvent>, homeCards:List<HomeCard>,
     modifier: Modifier, onStart: (Int)->Unit, onUnlock: (Int)->Unit, onQuickUnlock: (Int)->Unit,
     onResume: ()->Unit, onViewResult: (Attempt)->Unit,
@@ -63,8 +63,7 @@ fun DashboardScreen(
                 }
             }
         }
-        // Exactly ONE editable Firebase promotion on Home; no banner carousel,
-        // fixed officer hero, or duplicate paid display ads.
+        // One Firebase-owned publisher promotion, separate from the labeled Google test banner.
         banner?.let { active ->
             item(key="firebase-home-promotion") {
                 BoxWithConstraints(Modifier.fillMaxWidth()) {
@@ -84,6 +83,7 @@ fun DashboardScreen(
             }
         }
         item(key="daily-mission"){ TodayMissionCard(attempts,hindi,onOpenTests) }
+        if (adAllowed) item(key="google-banner-home") { SponsoredBanner(ads) }
         item(key="official-countdown"){ ExamCountdown(examEvents,hindi) }
         if(homeCards.any{it.placement=="middle"}) item(key="firebase-cards-middle") {
             HomeCardSections(homeCards,"middle",hindi) {destination ->
@@ -236,6 +236,7 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
                 }
             }
         }
+        if(adAllowed) item(key="google-banner-test-list") { SponsoredBanner(ads) }
         if(loading) item { LinearProgressIndicator(modifier=Modifier.fillMaxWidth(),color=Violet) }
         if(status!=null) item {Text(status,color=Muted,fontSize=11.sp)}
         if(filtered.isEmpty()) item {EmptyNotice(t(hindi,"No mocks in this section","यहाँ कोई मॉक नहीं है"),
