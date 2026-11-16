@@ -39,6 +39,7 @@ import kotlinx.coroutines.launch
 /** A student chooses the name once at registration (also shown on leaderboards). */
 object StudentName {
     fun normalize(input: String): String? {
+        if (input.any { Character.isISOControl(it) }) return null
         val name = input.trim().replace(Regex("\\s+"), " ")
         return name.takeIf {
             it.length in 2..28 && it.none { char -> Character.isISOControl(char) }
