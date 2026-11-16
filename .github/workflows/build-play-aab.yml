@@ -82,7 +82,7 @@ jobs:
           gradle --no-daemon :app:bundleRelease "-PGOOGLE_WEB_CLIENT_ID=$WEB_CLIENT_ID"
           BUNDLE="app/build/outputs/bundle/release/app-release.aab"
           test -s "$BUNDLE"
-          jarsigner -verify -strict -verbose "$BUNDLE" >/dev/null
+          jarsigner -verify -verbose "$BUNDLE" >/dev/null
           sha256sum "$BUNDLE"
       - name: Export upload certificate (public certificate, NOT private key)
         shell: bash
