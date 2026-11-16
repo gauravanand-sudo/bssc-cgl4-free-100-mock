@@ -77,7 +77,7 @@ private fun LoginStep(number: String, label: String, selected: Boolean) {
 @Composable
 private fun LoginPrivacyLine(hindi: Boolean) {
     Row(verticalAlignment=Alignment.Top, horizontalArrangement=Arrangement.spacedBy(7.dp)) {
-        Icon(Icons.Rounded.LockOutline,contentDescription=null,
+        Icon(Icons.Rounded.Lock,contentDescription=null,
             tint=LoginSubtle, modifier=Modifier.size(14.dp))
         Text(t(hindi,
             "Google verifies your email. Mobile numbers are self-entered and not OTP-verified.",
