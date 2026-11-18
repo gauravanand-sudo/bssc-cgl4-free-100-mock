@@ -46,48 +46,49 @@ fun ResultScreen(attempt: Attempt, questions: List<Question>, hindi: Boolean,
                 Tag(t(hindi,"RESULT","परिणाम"),Aqua)
             }
         }
-        item(key="celebration-result-hero") {
+        item(key="result-summary") {
             val answered=attempt.correct+attempt.wrong
             val accuracy=if(answered==0) 0 else attempt.correct*100/answered
-            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(25.dp))
-                .background(Brush.verticalGradient(listOf(RoyalDeep,Royal,Color(0xFF8439CB))))
-                .padding(horizontal=16.dp,vertical=13.dp),
-                horizontalAlignment=Alignment.CenterHorizontally,
-                verticalArrangement=Arrangement.spacedBy(7.dp)) {
-                CelebrationParticles()
-                Text(if(attempt.score>=400)"🏆" else if(attempt.score>=250)"✨" else "🔥",
-                    fontSize=33.sp)
-                Text(t(hindi,"Your next level starts now!","आपकी अगली सफलता यहीं से शुरू!"),
-                    color=Gold,fontWeight=FontWeight.Black,fontSize=20.sp)
-                Text(t(hindi,"Every honest attempt moves you forward.",
-                    "हर ईमानदार प्रयास आपको आगे बढ़ाता है।"),
-                    color=Color.White.copy(alpha=.9f),fontSize=11.sp)
-                ScoreMedallion(attempt.score,size=148.dp)
+            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp))
+                .background(CardInk).border(1.dp,Hairline,RoundedCornerShape(24.dp))
+                .padding(18.dp),horizontalAlignment=Alignment.CenterHorizontally,
+                verticalArrangement=Arrangement.spacedBy(9.dp)) {
+                Text(t(hindi,"MOCK COMPLETE","मॉक पूरा हुआ"),
+                    color=Violet,fontSize=11.sp,fontWeight=FontWeight.Bold,
+                    letterSpacing=1.sp)
+                Text(t(hindi,"Good work. Keep building your score.",
+                    "बढ़िया प्रयास। हर दिन सुधार करें।"),
+                    color=SoftWhite,fontWeight=FontWeight.SemiBold,
+                    fontSize=17.sp,textAlign=androidx.compose.ui.text.style.TextAlign.Center,
+                    lineHeight=23.sp)
+                ScoreMedallion(attempt.score,size=142.dp)
                 if(previousScore!=null) {
                     val delta=attempt.score-previousScore
-                    Text(if(delta>0)t(hindi,"📈 +$delta marks vs your previous attempt",
-                        "📈 पिछले प्रयास से $delta अंक ज़्यादा")
-                        else if(delta==0)t(hindi,"🤝 Matched your previous score",
-                            "🤝 पिछले प्रयास के बराबर स्कोर")
-                        else t(hindi,"🎯 Keep growing · ${-delta} marks below previous",
-                            "🎯 अभ्यास करें · पिछले से ${-delta} अंक कम"),
-                        color=Gold,fontWeight=FontWeight.Black,fontSize=11.sp)
+                    val deltaText=when {
+                        delta>0 -> t(hindi,"+$delta marks since last attempt",
+                            "पिछले प्रयास से +$delta अंक")
+                        delta==0 -> t(hindi,"Same score as last attempt",
+                            "पिछले प्रयास के बराबर")
+                        else -> t(hindi,"$delta marks since last attempt",
+                            "पिछले प्रयास से $delta अंक")
+                    }
+                    Text(deltaText,color=if(delta>=0) Aqua else Muted,
+                        fontWeight=FontWeight.SemiBold,fontSize=12.sp)
                 } else {
-                    Text(t(hindi,"✨ First recorded attempt on this mock",
-                        "✨ इस मॉक में आपका पहला सुरक्षित प्रयास"),
-                        color=Color.White.copy(alpha=.9f),
-                        fontWeight=FontWeight.SemiBold,fontSize=10.sp)
+                    Text(t(hindi,"Your first saved attempt on this mock",
+                        "इस मॉक में आपका पहला प्रयास"),
+                        color=Muted,fontSize=11.sp)
                 }
                 Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-                    Surface(shape=RoundedCornerShape(20.dp),color=Color.White.copy(alpha=.15f)) {
-                        Text("🎯 $accuracy% "+t(hindi,"accuracy","सटीकता"),
-                            Modifier.padding(horizontal=12.dp,vertical=7.dp),
-                            color=Color.White,fontWeight=FontWeight.Black,fontSize=11.sp)
+                    Surface(color=SoftLavender,shape=RoundedCornerShape(20.dp)) {
+                        Text("$accuracy% "+t(hindi,"accuracy","सटीकता"),
+                            modifier=Modifier.padding(horizontal=12.dp,vertical=8.dp),
+                            color=RoyalDeep,fontWeight=FontWeight.SemiBold,fontSize=11.sp)
                     }
-                    Surface(shape=RoundedCornerShape(20.dp),color=Color.White.copy(alpha=.15f)) {
-                        Text("⏱ "+formatDuration(attempt.elapsedSeconds),
-                            Modifier.padding(horizontal=12.dp,vertical=7.dp),
-                            color=Color.White,fontWeight=FontWeight.Black,fontSize=11.sp)
+                    Surface(color=Ink,shape=RoundedCornerShape(20.dp)) {
+                        Text(formatDuration(attempt.elapsedSeconds),
+                            modifier=Modifier.padding(horizontal=12.dp,vertical=8.dp),
+                            color=SoftWhite,fontWeight=FontWeight.Medium,fontSize=11.sp)
                     }
                 }
             }
