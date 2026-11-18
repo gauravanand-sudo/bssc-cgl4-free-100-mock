@@ -87,36 +87,18 @@ fun HomeCardSections(cards:List<HomeCard>,placement:String,hindi:Boolean,
 private fun FlexibleHomeCard(card:HomeCard,hindi:Boolean,modifier:Modifier,
                              onInternalAction:(String)->Unit) {
     val context=LocalContext.current
-    val base:Color
-    val secondary:Color
-    val foreground:Color
-    val secondaryText:Color
-    val accent:Color
-    when(card.theme) {
-        "violet" -> {
-            base=RoyalDeep;secondary=Violet;foreground=Color.White
-            secondaryText=Color(0xFFF0E3FF);accent=Gold
-        }
-        "blue" -> {
-            base=Color(0xFF103C7D);secondary=Color(0xFF216FD4)
-            foreground=Color.White;secondaryText=Color(0xFFD8ECFF);accent=Color(0xFFB3F0FF)
-        }
-        "mint" -> {
-            base=Color(0xFFDDF8EC);secondary=Color(0xFFEFFDF5)
-            foreground=Color(0xFF07503A);secondaryText=Color(0xFF366454);accent=Aqua
-        }
-        "gold" -> {
-            base=Color(0xFFFFE9B8);secondary=Color(0xFFFFF7E5)
-            foreground=Color(0xFF583A06);secondaryText=Color(0xFF74581F);accent=Color(0xFF966008)
-        }
-        "sunset" -> {
-            base=Color(0xFF892C67);secondary=Color(0xFFE04C7C)
-            foreground=Color.White;secondaryText=Color(0xFFFFE0E9);accent=Color(0xFFFFD6A2)
-        }
-        else -> {
-            base=Color.White;secondary=Color(0xFFF9F6FF)
-            foreground=RoyalDeep;secondaryText=Muted;accent=Violet
-        }
+    // Firebase still controls the theme, but only as an accent; avoiding
+    // unrelated full-card gradients keeps the feed visually consistent.
+    val base=CardInk
+    val secondary=CardInk
+    val foreground=SoftWhite
+    val secondaryText=Muted
+    val accent=when(card.theme) {
+        "blue" -> Blue
+        "mint" -> Aqua
+        "gold" -> Amber
+        "sunset" -> Red
+        else -> Violet
     }
     val heading=t(hindi,card.titleEn,card.titleHi.ifBlank{card.titleEn})
     val body=t(hindi,card.bodyEn,card.bodyHi.ifBlank{card.bodyEn})
@@ -148,10 +130,10 @@ private fun FlexibleHomeCard(card:HomeCard,hindi:Boolean,modifier:Modifier,
             }
         }
     }
-    val shape=RoundedCornerShape(19.dp)
+    val shape=RoundedCornerShape(22.dp)
     Column(modifier.clip(shape)
-        .background(Brush.linearGradient(listOf(base,secondary)))
-        .border(1.dp,accent.copy(alpha=.27f),shape)
+        .background(base)
+        .border(1.dp,Hairline,shape)
         .then(if(canOpen) Modifier.clickable(onClick=openAction) else Modifier)
         .padding(13.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
         if(card.type=="image" && safeHttps(card.imageUrl)) {
@@ -193,10 +175,10 @@ private fun FlexibleHomeCard(card:HomeCard,hindi:Boolean,modifier:Modifier,
                 fontSize=9.sp,maxLines=2)
         }
         if(heading.isNotBlank()) Text(heading,color=foreground,
-            fontSize=15.sp,fontWeight=FontWeight.Black,lineHeight=19.sp,
+            fontSize=15.sp,fontWeight=FontWeight.SemiBold,lineHeight=21.sp,
             maxLines=2,overflow=TextOverflow.Ellipsis)
         if(card.value.isNotBlank()) Text(card.value,color=accent,
-            fontWeight=FontWeight.Black,fontSize=25.sp,maxLines=1)
+            fontWeight=FontWeight.Bold,fontSize=25.sp,maxLines=1)
         if(body.isNotBlank()) Text(body,color=secondaryText,
             fontSize=11.sp,lineHeight=16.sp,
             maxLines=if(card.layout=="stacked")5 else 3,
