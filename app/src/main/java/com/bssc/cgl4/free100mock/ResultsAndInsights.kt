@@ -174,23 +174,24 @@ fun AnalyticsScreen(attempts:List<Attempt>, repo:QuestionRepository, modifier:Mo
     val subject=remember(attempts) { Grading.subjectBreakdown(attempts,repo) }
     LazyColumn(modifier.fillMaxSize().background(Ink),contentPadding=PaddingValues(20.dp),
         verticalArrangement=Arrangement.spacedBy(18.dp)) {
-        item(key="analytics-premium-hero") {
-            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(23.dp))
-                .background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Violet)))
-                .padding(17.dp),verticalAlignment=Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text("🧠 "+t(hindi,"SMART INSIGHTS","स्मार्ट विश्लेषण"),
-                        color=Gold,fontSize=10.sp,fontWeight=FontWeight.Black)
-                    Text(BrandCopy.screen("insights","title",hindi,
-                        t(hindi,"Grow Stronger Every Day","हर दिन और बेहतर बनें")),
-                        color=Color.White,fontSize=22.sp,lineHeight=27.sp,
-                        fontWeight=FontWeight.Black)
-                    Text(BrandCopy.screen("insights","subtitle",hindi,
-                        t(hindi,"Find the topics that need more practice.",
-                            "कमजोर विषयों पर अधिक अभ्यास करें।")),
-                        color=Color.White.copy(alpha=.91f),fontSize=11.sp)
+        item(key="analytics-header") {
+            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                Column(Modifier.weight(1f),
+                    verticalArrangement=Arrangement.spacedBy(4.dp)) {
+                    Text(t(hindi,"YOUR PERFORMANCE","आपका प्रदर्शन"),
+                        color=Violet,fontSize=10.sp,fontWeight=FontWeight.Bold,
+                        letterSpacing=1.sp)
+                    Text(t(hindi,"Insights","विश्लेषण"),
+                        color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=26.sp)
+                    Text(t(hindi,"See how your practice is improving.",
+                        "अपनी तैयारी में हर बदलाव देखें।"),
+                        color=Muted,fontSize=12.sp)
                 }
-                Text("📊",fontSize=38.sp)
+                Box(Modifier.size(54.dp).clip(RoundedCornerShape(17.dp))
+                    .background(SoftLavender),contentAlignment=Alignment.Center) {
+                    Icon(Icons.Rounded.Insights,contentDescription=null,tint=Violet,
+                        modifier=Modifier.size(26.dp))
+                }
             }
         }
         if(ads.canShowNative()) item(key="native-analytics") { SponsoredNative(ads) }
