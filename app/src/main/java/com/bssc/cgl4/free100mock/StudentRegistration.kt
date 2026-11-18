@@ -173,9 +173,8 @@ class StudentRegistrationRepository(private val context: Context) {
         }
         // Public configuration can be enabled in Firebase after APK distribution.
         // No secret or downloaded credentials are stored in this document.
-        // After logout currentUser is null. The Firestore login configuration
-        // requires an authenticated identity, so restore anonymous Firebase Auth
-        // before reading it. The explicit Web Client ID path above is unchanged.
+        // Logout clears currentUser. Restore the anonymous identity before reading
+        // the protected login config, just as the catalogue does on cold start.
         CloudBackend.withIdentity(context, ready = { firestore ->
             firestore.collection("auth_public").document("google").get()
                 .addOnSuccessListener { snapshot ->
