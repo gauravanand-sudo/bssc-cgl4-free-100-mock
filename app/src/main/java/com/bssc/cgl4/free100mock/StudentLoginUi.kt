@@ -30,13 +30,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val Night = Color(0xFF21094B)
-private val RoyalPurple = Color(0xFF57249A)
+private val Night = Color(0xFFF8F8FC)
+private val RoyalPurple = Color(0xFF6846CE)
 private val WarmGold = Color(0xFFFFD67A)
-private val CardWhite = Color(0xFFFFFDFF)
-private val InkPurple = Color(0xFF27143E)
-private val SecondaryInk = Color(0xFF6D6082)
-private val SubtleBorder = Color(0xFFE5DCF1)
+private val CardWhite = Color.White
+private val InkPurple = Color(0xFF211A30)
+private val SecondaryInk = Color(0xFF716A7D)
+private val SubtleBorder = Color(0xFFEAE6F0)
 
 @Composable
 private fun RegistrationProgress(hindi:Boolean, phoneStep:Boolean) {
@@ -94,8 +94,7 @@ fun StudentRegistrationGate(
 
     val phoneStep = state is SignupState.NeedsPhone
     val cleanName = StudentName.normalize(studentName)
-    BoxWithConstraints(Modifier.fillMaxSize().imePadding()
-        .background(Brush.verticalGradient(listOf(Night,RoyalPurple,Color(0xFF6D41AF))))) {
+    BoxWithConstraints(Modifier.fillMaxSize().imePadding().background(Night)) {
         // Scroll container measures content at natural height. The inner Box has
         // at least viewport height so short forms are vertically CENTERED;
         // larger forms scroll naturally on short phones and with the keyboard.
@@ -114,44 +113,47 @@ fun StudentRegistrationGate(
                 Box(Modifier.fillMaxWidth().height(33.dp)) {
                     Surface(onClick=onLanguage,
                         modifier=Modifier.align(Alignment.CenterEnd),
-                        shape=RoundedCornerShape(11.dp),
-                        color=Color.White.copy(alpha=.13f),
-                        border=androidx.compose.foundation.BorderStroke(
-                            1.dp,Color.White.copy(alpha=.26f))) {
+                        shape=RoundedCornerShape(12.dp),color=Color.White,
+                        border=androidx.compose.foundation.BorderStroke(1.dp,SubtleBorder)) {
                         Text(if(hindi)"EN" else "हिंदी",
-                            modifier=Modifier.padding(horizontal=12.dp,vertical=8.dp),
-                            color=Color.White,fontWeight=FontWeight.Black,fontSize=11.sp)
+                            modifier=Modifier.padding(horizontal=13.dp,vertical=8.dp),
+                            color=RoyalPurple,fontWeight=FontWeight.Bold,fontSize=12.sp)
                     }
                 }
-                Image(painterResource(R.drawable.bssc_bilingual_logo),
-                    contentDescription="Approved OneShotGS BSSC CGL 4 logo",
-                    modifier=Modifier.size(105.dp).align(Alignment.CenterHorizontally),
-                    contentScale=ContentScale.Fit)
-                Text("OneShotGS",color=Color.White,fontSize=21.sp,
-                    fontWeight=FontWeight.Black,textAlign=TextAlign.Center,
+                Surface(shape=RoundedCornerShape(24.dp),color=Color.White,
+                    shadowElevation=3.dp,
+                    border=androidx.compose.foundation.BorderStroke(1.dp,SubtleBorder)) {
+                    Image(painterResource(R.drawable.bssc_bilingual_logo),
+                        contentDescription="OneShotGS BSSC CGL 4 logo",
+                        modifier=Modifier.size(106.dp).padding(8.dp),
+                        contentScale=ContentScale.Fit)
+                }
+                Text("OneShotGS",color=InkPurple,fontSize=21.sp,
+                    fontWeight=FontWeight.Bold,textAlign=TextAlign.Center,
                     modifier=Modifier.fillMaxWidth())
-                Text("BSSC CGL 4 • FREE MOCK",color=WarmGold,fontSize=10.sp,
-                    fontWeight=FontWeight.Black,textAlign=TextAlign.Center,
+                Text("BSSC CGL 4 • FREE MOCK",color=RoyalPurple,fontSize=10.sp,
+                    fontWeight=FontWeight.Bold,textAlign=TextAlign.Center,
                     modifier=Modifier.fillMaxWidth())
                 Column(Modifier.fillMaxWidth(),
                     horizontalAlignment=Alignment.CenterHorizontally,
                     verticalArrangement=Arrangement.spacedBy(5.dp)) {
                     Text(t(hindi,"YOUR JOURNEY STARTS HERE","आपकी तैयारी की शुरुआत"),
-                        color=WarmGold,fontWeight=FontWeight.Black,
+                        color=RoyalPurple,fontWeight=FontWeight.Bold,
                         letterSpacing=1.0.sp,fontSize=10.sp)
-                    Text(t(hindi,"Prepare with purpose.\nRise with confidence.",
-                        "संकल्प के साथ तैयारी।\nविश्वास के साथ सफलता।"),
-                        color=Color.White,fontSize=24.sp,lineHeight=30.sp,
-                        fontWeight=FontWeight.Black,textAlign=TextAlign.Center)
-                    Text(t(hindi,"One mock at a time. One step closer to your goal.",
-                        "हर मॉक के साथ लक्ष्य के एक कदम और करीब।"),
-                        color=Color.White.copy(alpha=.83f),fontSize=11.sp,
-                        lineHeight=16.sp,textAlign=TextAlign.Center)
+                    Text(t(hindi,"Practice with purpose.\nGrow with every mock.",
+                        "लक्ष्य के साथ तैयारी।\nहर मॉक से और बेहतर।"),
+                        color=InkPurple,fontSize=23.sp,lineHeight=28.sp,
+                        fontWeight=FontWeight.Bold,textAlign=TextAlign.Center)
+                    Text(t(hindi,"One secure account. Your preparation, all in one place.",
+                        "एक सुरक्षित खाता। आपकी पूरी तैयारी, एक ही जगह।"),
+                        color=SecondaryInk,fontSize=12.sp,
+                        lineHeight=18.sp,textAlign=TextAlign.Center)
                 }
                 Surface(
                     modifier=Modifier.fillMaxWidth(),
                     color=CardWhite,shape=RoundedCornerShape(24.dp),
-                    shadowElevation=12.dp
+                    border=androidx.compose.foundation.BorderStroke(1.dp,SubtleBorder),
+                    shadowElevation=2.dp
                 ) {
                     Column(Modifier.fillMaxWidth().padding(18.dp),
                         verticalArrangement=Arrangement.spacedBy(11.dp)) {
@@ -348,14 +350,14 @@ fun StudentRegistrationGate(
                         }
                     }
                 }
-                Text(t(hindi,"Today's effort. Tomorrow's success.",
-                    "आज की मेहनत, कल की सफलता।"),
-                    color=WarmGold,fontWeight=FontWeight.Bold,fontSize=12.sp,
+                Text(t(hindi,"Made for focused aspirants · OneShotGS",
+                    "अभ्यर्थियों की तैयारी के लिए · OneShotGS"),
+                    color=RoyalPurple,fontWeight=FontWeight.SemiBold,fontSize=11.sp,
                     textAlign=TextAlign.Center)
                 Text(t(hindi,
                     "Your details are stored privately. Mobile numbers are not verified. WhatsApp updates require separate consent.",
                     "आपका डेटा निजी रहेगा। मोबाइल OTP सत्यापित नहीं है। WhatsApp अपडेट के लिए अलग सहमति चाहिए।"),
-                    color=Color.White.copy(alpha=.73f),fontSize=10.sp,
+                    color=SecondaryInk,fontSize=10.sp,
                     lineHeight=15.sp,textAlign=TextAlign.Center)
             }
             }
