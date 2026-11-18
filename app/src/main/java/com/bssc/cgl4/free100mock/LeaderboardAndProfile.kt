@@ -42,21 +42,23 @@ import androidx.compose.ui.unit.sp
     LazyColumn(modifier.fillMaxSize().background(Ink), contentPadding=PaddingValues(20.dp),
         verticalArrangement=Arrangement.spacedBy(18.dp)) {
         item(key="leaderboard-hero") {
-            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(23.dp))
-                .background(androidx.compose.ui.graphics.Brush.horizontalGradient(
-                    listOf(RoyalDeep,Royal,Color(0xFF7C2EBB))))
-                .padding(17.dp),verticalAlignment=Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text(t(hindi,"🏆 PRACTICE LEADERBOARD","🏆 अभ्यास रैंकिंग"),
-                        color=Gold,fontWeight=FontWeight.Black,fontSize=10.sp)
-                    Text(BrandCopy.screen("ranking","title",hindi,
-                        t(hindi,"Learn. Improve. Rise.","सीखें, सुधारें, आगे बढ़ें।")),
-                        color=Color.White,fontWeight=FontWeight.Black,fontSize=22.sp,lineHeight=27.sp)
-                    Text(t(hindi,"Compare with aspirants on the same mock.",
-                        "उसी मॉक के अभ्यर्थियों से तुलना करें।"),
-                        color=Color.White.copy(alpha=.91f),fontSize=11.sp)
+            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                Column(Modifier.weight(1f),
+                    verticalArrangement=Arrangement.spacedBy(4.dp)) {
+                    Text(t(hindi,"THE PRACTICE BOARD","अभ्यास रैंकिंग"),
+                        fontSize=10.sp,fontWeight=FontWeight.Bold,color=Violet,
+                        letterSpacing=1.sp)
+                    Text(t(hindi,"Leaderboard","रैंकिंग"),
+                        fontSize=26.sp,fontWeight=FontWeight.Bold,color=SoftWhite)
+                    Text(t(hindi,"Track your progress with fellow learners.",
+                        "अन्य छात्रों के साथ अपनी प्रगति देखें।"),
+                        fontSize=12.sp,color=Muted,lineHeight=17.sp)
                 }
-                Text("🥇",fontSize=40.sp)
+                Box(Modifier.size(58.dp).clip(RoundedCornerShape(19.dp))
+                    .background(Color(0xFFFFF4DA)),contentAlignment=Alignment.Center) {
+                    Icon(Icons.Rounded.EmojiEvents,contentDescription=null,
+                        tint=Amber,modifier=Modifier.size(28.dp))
+                }
             }
         }
         item {
@@ -147,28 +149,35 @@ import androidx.compose.ui.unit.sp
     val context= LocalContext.current
     Column(modifier.fillMaxSize().background(Ink).verticalScroll(rememberScrollState())
         .padding(20.dp),verticalArrangement=Arrangement.spacedBy(18.dp)) {
-        Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp))
-            .background(androidx.compose.ui.graphics.Brush.horizontalGradient(
-                listOf(RoyalDeep,Royal,Color(0xFF7432AD))))
-            .padding(16.dp),verticalAlignment=Alignment.CenterVertically) {
-            Text("👨‍🎓",fontSize=36.sp)
-            Spacer(Modifier.width(12.dp))
-            Column(Modifier.weight(1f)) {
-                Text("✨ "+t(hindi,"YOUR SPACE","आपकी प्रोफ़ाइल"),
-                    color=Gold,fontSize=10.sp,fontWeight=FontWeight.Black)
-                Text(BrandCopy.screen("profile","title",hindi,
-                    t(hindi,"My Preparation","मेरी तैयारी")),
-                    color=Color.White,fontWeight=FontWeight.Black,fontSize=22.sp)
-                Text("${attempts} "+t(hindi,"attempts saved","प्रयास सुरक्षित"),
-                    color=Color.White.copy(alpha=.92f),fontSize=11.sp)
+        Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+            Box(Modifier.size(64.dp).clip(CircleShape)
+                .background(SoftLavender),
+                contentAlignment=Alignment.Center) {
+                Text(name.trim().take(1).uppercase().ifBlank { "O" },
+                    color=Violet,fontWeight=FontWeight.Bold,fontSize=27.sp)
+            }
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f),
+                verticalArrangement=Arrangement.spacedBy(3.dp)) {
+                Text(t(hindi,"STUDENT PROFILE","छात्र प्रोफ़ाइल"),
+                    fontSize=10.sp,fontWeight=FontWeight.Bold,
+                    letterSpacing=1.sp,color=Violet)
+                Text(name,color=SoftWhite,fontWeight=FontWeight.Bold,
+                    fontSize=23.sp,maxLines=2)
+                Text(t(hindi,"$attempts completed attempts",
+                    "$attempts पूरे किए गए प्रयास"),
+                    color=Muted,fontSize=12.sp)
             }
         }
         Panel {
-            Text(t(hindi,"👤 " + name,"👤 " + name),
-                color=SoftWhite,fontWeight=FontWeight.Black,fontSize=17.sp)
+            Text(t(hindi,"ACCOUNT DETAILS","खाते का विवरण"),
+                color=Muted,fontWeight=FontWeight.Bold,fontSize=10.sp,
+                letterSpacing=1.sp)
+            Spacer(Modifier.height(9.dp))
+            Text(name,color=SoftWhite,fontWeight=FontWeight.SemiBold,fontSize=16.sp)
             Spacer(Modifier.height(8.dp))
-            Text(student?.email ?: t(hindi,"Review mode (not registered)","समीक्षा मोड (पंजीकृत नहीं)"),
-                color=Violet,fontSize=13.sp)
+            Text(student?.email ?: t(hindi,"Sign in to see your email","ईमेल देखने के लिए लॉगिन करें"),
+                color=Muted,fontSize=12.sp)
             Text(student?.phone ?: t(hindi,"No phone saved","मोबाइल नंबर नहीं सहेजा गया"),
                 color=SoftWhite,fontSize=13.sp)
             Text(t(hindi,"Phone is self-reported, not OTP-verified.",
@@ -212,16 +221,17 @@ import androidx.compose.ui.unit.sp
         }
         Panel {
             Row(verticalAlignment=Alignment.CenterVertically) {
-                Icon(Icons.Rounded.DashboardCustomize,null,tint=Amber)
+                Icon(Icons.Rounded.DashboardCustomize,null,tint=Violet)
                 Spacer(Modifier.width(12.dp))
                 Column {
-                    Text("Your activity",color=SoftWhite,fontWeight=FontWeight.Bold)
+                    Text(t(hindi,"My activity","मेरी गतिविधि"),color=SoftWhite,
+                        fontWeight=FontWeight.SemiBold)
                     Text("$attempts mock attempts saved on this device",color=Muted,fontSize=12.sp)
                 }
             }
         }
         Panel {
-            Text("🛡️ "+t(hindi,"ADS & PRIVACY","विज्ञापन और गोपनीयता"),
+            Text(t(hindi,"Ads and privacy","विज्ञापन और गोपनीयता"),
                 color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=14.sp)
             Spacer(Modifier.height(8.dp))
             Text("Rewarded ads are optional: mocks 3–50 need 1 completed ad, and mocks 51–100 need 2 completed ads. Each credit and unlock is saved on this device. Consent choices can be changed here where applicable.",
@@ -230,7 +240,7 @@ import androidx.compose.ui.unit.sp
             OutlinedButton(onClick=onPrivacy) { Text("Privacy / ad choices",color=Violet) }
         }
         Panel {
-            Text(t(hindi,"ℹ️ About the app","ℹ️ ऐप के बारे में"),
+            Text(t(hindi,"About OneShotGS","OneShotGS के बारे में"),
                 color=SoftWhite,fontWeight=FontWeight.Black,fontSize=17.sp)
             Spacer(Modifier.height(10.dp))
             Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(15.dp))
