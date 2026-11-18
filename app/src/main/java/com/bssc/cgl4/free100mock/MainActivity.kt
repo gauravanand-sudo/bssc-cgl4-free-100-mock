@@ -63,10 +63,17 @@ class MainActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.statusBarColor = android.graphics.Color.rgb(38,6,68)
-        window.navigationBarColor = android.graphics.Color.rgb(38,6,68)
-        // Purple system bars with light icons; content itself respects safe insets.
-        window.decorView.systemUiVisibility = 0
+        // Match light Compose screens rather than leaving a solid purple status bar.
+        // Older Android releases cannot render dark navigation icons; keep their
+        // navigation bar dark for contrast without affecting content insets.
+        window.statusBarColor = android.graphics.Color.rgb(248,248,252)
+        window.navigationBarColor = if(Build.VERSION.SDK_INT >= 26)
+            android.graphics.Color.rgb(248,248,252)
+            else android.graphics.Color.rgb(42,17,80)
+        androidx.core.view.WindowInsetsControllerCompat(window,window.decorView).apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = Build.VERSION.SDK_INT >= 26
+        }
         BrandCopy.initialize(this)
         val store = AppStore(this)
         val questions = QuestionRepository(this)
