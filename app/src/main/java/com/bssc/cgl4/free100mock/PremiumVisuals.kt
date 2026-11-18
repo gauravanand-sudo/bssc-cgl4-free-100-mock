@@ -95,36 +95,48 @@ fun TodayMissionCard(attempts:List<Attempt>,hindi:Boolean,onPractice:()->Unit) {
     val done=PrepMomentum.completedToday(attempts)
     val streak=PrepMomentum.currentStreak(attempts)
     val progress by animateFloatAsState(if(done) 1f else 0f,
-        animationSpec=tween(750),label="daily mission progress")
-    Column(Modifier.fillMaxWidth()
-        .shadow(6.dp,RoundedCornerShape(21.dp))
-        .clip(RoundedCornerShape(21.dp))
-        .background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF7B2AC1))))
-        .padding(16.dp),verticalArrangement=Arrangement.spacedBy(9.dp)) {
+        animationSpec=tween(650),label="daily goal")
+    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp))
+        .background(CardInk).border(1.dp,Hairline,RoundedCornerShape(22.dp))
+        .padding(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
         Row(verticalAlignment=Alignment.CenterVertically) {
-            Text(if(done)"✅" else "🚀",fontSize=29.sp)
-            Spacer(Modifier.width(11.dp))
-            Column(Modifier.weight(1f)) {
-                Text(t(hindi,"TODAY'S MISSION","आज का मिशन"),fontSize=10.sp,
-                    color=Gold,fontWeight=FontWeight.Black,letterSpacing=.8.sp)
-                Text(if(done)t(hindi,"Daily goal achieved!","आज का लक्ष्य पूरा हुआ!")
-                    else t(hindi,"Finish 1 mock today","आज 1 मॉक पूरा करें"),
-                    fontSize=17.sp,color=Color.White,fontWeight=FontWeight.Black)
+            Box(Modifier.size(46.dp).clip(RoundedCornerShape(14.dp))
+                .background(SoftLavender),contentAlignment=Alignment.Center) {
+                Icon(if(done) Icons.Rounded.CheckCircle else Icons.Rounded.Bolt,
+                    contentDescription=null,tint=Violet,modifier=Modifier.size(24.dp))
             }
-            Text("🔥 $streak",fontSize=14.sp,color=Gold,fontWeight=FontWeight.Bold)
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(t(hindi,"DAILY TARGET","आज का लक्ष्य"),
+                    fontSize=10.sp,color=Violet,fontWeight=FontWeight.Bold,
+                    letterSpacing=.9.sp)
+                Spacer(Modifier.height(4.dp))
+                Text(if(done)t(hindi,"Mission completed!","आज का लक्ष्य पूरा!")
+                    else t(hindi,"Complete one mock today","आज एक मॉक पूरा करें"),
+                    fontSize=16.sp,color=SoftWhite,fontWeight=FontWeight.SemiBold)
+            }
+            Surface(shape=RoundedCornerShape(12.dp),color=Color(0xFFFFF3DD)) {
+                Text("🔥 $streak",color=Amber,
+                    modifier=Modifier.padding(horizontal=9.dp,vertical=7.dp),
+                    fontSize=12.sp,fontWeight=FontWeight.SemiBold)
+            }
         }
         LinearProgressIndicator(progress={progress},modifier=Modifier.fillMaxWidth()
-            .height(7.dp).clip(RoundedCornerShape(9.dp)),color=Gold,
-            trackColor=Color.White.copy(alpha=.24f),gapSize=0.dp,drawStopIndicator={})
+            .height(6.dp).clip(RoundedCornerShape(9.dp)),color=Violet,
+            trackColor=SoftLavender,gapSize=0.dp,drawStopIndicator={})
         Row(verticalAlignment=Alignment.CenterVertically) {
-            Text(if(done)t(hindi,"Great consistency. Keep growing!",
-                "बढ़िया निरंतरता! ऐसे ही आगे बढ़ें!")
-                else t(hindi,"One focused test can change your day.",
-                    "एक अभ्यास टेस्ट आज का दिन बदल सकता है।"),
-                fontSize=11.sp,color=Color.White.copy(alpha=.9f),modifier=Modifier.weight(1f))
-            TextButton(onClick=onPractice,contentPadding=PaddingValues(horizontal=8.dp,vertical=4.dp)) {
-                Text(t(hindi,"Practice ↗","अभ्यास ↗"),color=Gold,
-                    fontWeight=FontWeight.Black,fontSize=12.sp)
+            Text(if(done)t(hindi,"Keep your streak going tomorrow.",
+                "कल भी अपनी तैयारी जारी रखें।")
+                else t(hindi,"A focused practice session builds confidence.",
+                    "नियमित अभ्यास से आत्मविश्वास बढ़ता है।"),
+                color=Muted,fontSize=11.sp,lineHeight=16.sp,
+                modifier=Modifier.weight(1f))
+            TextButton(onClick=onPractice,
+                contentPadding=PaddingValues(horizontal=7.dp,vertical=4.dp)) {
+                Text(t(hindi,"Practice","अभ्यास"),color=Violet,
+                    fontWeight=FontWeight.SemiBold,fontSize=12.sp)
+                Icon(Icons.Rounded.ArrowForward,contentDescription=null,tint=Violet,
+                    modifier=Modifier.size(16.dp))
             }
         }
     }
