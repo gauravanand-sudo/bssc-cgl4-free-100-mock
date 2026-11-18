@@ -56,49 +56,57 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
     val attempted=session.answers.count { it>=0 }
     Scaffold(containerColor=Ink,
         topBar={
-            Column(Modifier.background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Color(0xFF6C27B5))))
-                .padding(horizontal=15.dp,vertical=10.dp)) {
+            Column(Modifier.background(CardInk)
+                .padding(horizontal=14.dp,vertical=10.dp)) {
                 Row(verticalAlignment=Alignment.CenterVertically) {
                     IconButton(onClick=onExit,modifier=Modifier.size(40.dp)) {
                         Icon(Icons.Rounded.ArrowBack,
-                            t(hindi,"Leave exam","परीक्षा छोड़ें"),tint=Color.White)
+                            t(hindi,"Leave exam","परीक्षा छोड़ें"),tint=SoftWhite)
                     }
-                    Spacer(Modifier.width(9.dp))
+                    Spacer(Modifier.width(5.dp))
                     Column(Modifier.weight(1f)) {
-                        Text("📝 "+ExamConfig.title(session.testId),color=Color.White,fontSize=15.sp,
-                            fontWeight=FontWeight.Black)
-                        Text(t(hindi,"BSSC CGL 4 · FOCUS MODE","BSSC CGL 4 · एकाग्रता मोड"),color=Color.White.copy(alpha=.86f),fontSize=10.sp)
+                        Text(ExamConfig.title(session.testId),color=SoftWhite,
+                            fontSize=15.sp,fontWeight=FontWeight.Bold,maxLines=1)
+                        Text(t(hindi,"FOCUS MODE · NO ADS","एकाग्रता मोड · बिना विज्ञापन"),
+                            color=Muted,fontSize=10.sp)
                     }
-                    Surface(shape=RoundedCornerShape(12.dp),
-                        color=if(timeLeft<600) Color(0xFFFFECEA) else Color.White) {
-                        Row(Modifier.padding(horizontal=11.dp,vertical=8.dp),verticalAlignment=Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.Timer,null,tint=if(timeLeft<600) Red else Violet,modifier=Modifier.size(15.dp))
+                    Surface(shape=RoundedCornerShape(13.dp),
+                        color=if(timeLeft<600) Color(0xFFFFECEA) else SoftLavender) {
+                        Row(Modifier.padding(horizontal=10.dp,vertical=8.dp),
+                            verticalAlignment=Alignment.CenterVertically) {
+                            Icon(Icons.Rounded.Timer,contentDescription=null,
+                                tint=if(timeLeft<600) Red else Violet,
+                                modifier=Modifier.size(16.dp))
                             Spacer(Modifier.width(5.dp))
-                            Text(formatDuration(timeLeft),color=if(timeLeft<600) Red else Violet,
-                                fontSize=13.sp,fontWeight=FontWeight.Black)
+                            Text(formatDuration(timeLeft),
+                                color=if(timeLeft<600) Red else RoyalDeep,
+                                fontSize=13.sp,fontWeight=FontWeight.Bold)
                         }
                     }
                 }
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(9.dp))
                 Row(verticalAlignment=Alignment.CenterVertically) {
-                    Text("🎯 Q ${i+1} / ${questions.size}",color=Color.White,
-                        fontWeight=FontWeight.Black,fontSize=12.sp)
+                    Text(t(hindi,"Question "+(i+1)+" of "+questions.size,
+                        "प्रश्न "+(i+1)+" / "+questions.size),
+                        color=SoftWhite,fontWeight=FontWeight.SemiBold,fontSize=12.sp)
                     Spacer(Modifier.weight(1f))
-                    Text(t(hindi,"✅ $attempted answered","✅ $attempted हल किए"),
-                        color=Gold,fontWeight=FontWeight.Bold,fontSize=11.sp)
+                    Text(t(hindi,"$attempted answered","$attempted हल किए"),
+                        color=Muted,fontWeight=FontWeight.Medium,fontSize=11.sp)
                 }
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(7.dp))
                 LinearProgressIndicator(progress={attempted.toFloat()/questions.size},
-                    modifier=Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(6.dp)),
-                    color=Gold,trackColor=Color.White.copy(alpha=.23f),gapSize=0.dp,
+                    modifier=Modifier.fillMaxWidth().height(5.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    color=Violet,trackColor=SoftLavender,gapSize=0.dp,
                     drawStopIndicator={})
                 AnimatedVisibility(visible=timeLeft in 1..599) {
-                    Text(t(hindi,"⚠ Less than 10 minutes remaining",
-                        "⚠ 10 मिनट से कम समय बचा है"),
-                        color=Gold,fontSize=10.sp,fontWeight=FontWeight.Black,
+                    Text(t(hindi,"Less than 10 minutes remain",
+                        "10 मिनट से कम समय बचा है"),
+                        color=Red,fontSize=11.sp,fontWeight=FontWeight.SemiBold,
                         modifier=Modifier.padding(top=5.dp))
                 }
             }
+            HorizontalDivider(color=Hairline,thickness=1.dp)
         },
         bottomBar={
             Column(Modifier.background(CardInk)
@@ -136,10 +144,10 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
                 }
             }
             Spacer(Modifier.height(10.dp))
-            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(21.dp))
-                .background(Brush.linearGradient(listOf(Color.White,Color(0xFFF1E7FF))))
-                .border(1.dp,Violet.copy(alpha=.19f),RoundedCornerShape(21.dp))
-                .padding(17.dp)) {
+            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp))
+                .background(CardInk)
+                .border(1.dp,Hairline,RoundedCornerShape(20.dp))
+                .padding(18.dp)) {
                 Text(t(hindi,"QUESTION ${i+1}","प्रश्न ${i+1}"),
                     color=Violet,fontSize=10.sp,fontWeight=FontWeight.Black,letterSpacing=1.sp)
                 Spacer(Modifier.height(9.dp))
@@ -147,20 +155,20 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
                     transitionSpec={fadeIn(tween(180)) togetherWith fadeOut(tween(110))},
                     label="question change") { idx ->
                     Text(if(hindi)questions[idx].questionHi else questions[idx].questionEn,
-                        color=SoftWhite,fontSize=18.sp,lineHeight=27.sp,
-                        fontWeight=FontWeight.ExtraBold)
+                        color=SoftWhite,fontSize=18.sp,lineHeight=28.sp,
+                        fontWeight=FontWeight.SemiBold)
                 }
             }
             Spacer(Modifier.height(14.dp))
-            Text(t(hindi,"👇 Choose your answer","👇 अपना उत्तर चुनें"),
-                color=Violet,fontWeight=FontWeight.Bold,fontSize=12.sp)
+            Text(t(hindi,"Choose one answer","एक उत्तर चुनें"),
+                color=Muted,fontWeight=FontWeight.Medium,fontSize=12.sp)
             Spacer(Modifier.height(13.dp))
             val options=if(hindi) q.optionsHi else q.optionsEn
             options.forEachIndexed { index, opt ->
                 val selected=choice==index
-                val tile by animateColorAsState(if(selected) SoftMint else CardInk,
+                val tile by animateColorAsState(if(selected) SoftLavender else CardInk,
                     animationSpec=tween(170),label="answer background")
-                val outline by animateColorAsState(if(selected) Aqua else Color(0xFFDDCBEF),
+                val outline by animateColorAsState(if(selected) Violet else Hairline,
                     animationSpec=tween(170),label="answer outline")
                 Row(Modifier.fillMaxWidth().padding(bottom=10.dp)
                     .clip(RoundedCornerShape(18.dp))
@@ -171,7 +179,7 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
                         update(session.copy(answers=new))
                     }.padding(16.dp),verticalAlignment=Alignment.CenterVertically) {
                     Box(Modifier.size(37.dp).clip(CircleShape)
-                        .background(if(selected) Aqua else SoftLavender),
+                        .background(if(selected) Violet else Ink),
                         contentAlignment=Alignment.Center) {
                         if(selected) Icon(Icons.Rounded.Check,null,
                             tint=Color.White,modifier=Modifier.size(21.dp))
@@ -179,8 +187,9 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
                             color=Royal)
                     }
                     Spacer(Modifier.width(12.dp))
-                    Text(opt,color=if(selected) SoftWhite else SoftWhite,
-                        fontSize=15.sp,lineHeight=22.sp,fontWeight=if(selected) FontWeight.Black else FontWeight.Medium)
+                    Text(opt,color=SoftWhite,modifier=Modifier.weight(1f),
+                        fontSize=15.sp,lineHeight=23.sp,
+                        fontWeight=if(selected) FontWeight.SemiBold else FontWeight.Normal)
                 }
             }
             Spacer(Modifier.height(12.dp))
@@ -192,7 +201,7 @@ fun ExamScreen(initial: ExamSession, questions: List<Question>, hindi: Boolean,
                 Spacer(Modifier.weight(1f))
                 TextButton(onClick={confirmSubmit=true}) { Text(t(hindi,"Finish exam","टेस्ट खत्म करें"),color=Amber) }
             }
-            Spacer(Modifier.height(60.dp))
+            Spacer(Modifier.height(24.dp))
         }
     }
     if(showPalette) AlertDialog(onDismissRequest={showPalette=false},containerColor=CardInk,
