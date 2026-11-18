@@ -63,10 +63,17 @@ class MainActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.statusBarColor = android.graphics.Color.rgb(38,6,68)
-        window.navigationBarColor = android.graphics.Color.rgb(38,6,68)
-        // Purple system bars with light icons; content itself respects safe insets.
-        window.decorView.systemUiVisibility = 0
+        // Match light Compose screens rather than leaving a solid purple status bar.
+        // Older Android releases cannot render dark navigation icons; keep their
+        // navigation bar dark for contrast without affecting content insets.
+        window.statusBarColor = android.graphics.Color.rgb(248,248,252)
+        window.navigationBarColor = if(Build.VERSION.SDK_INT >= 26)
+            android.graphics.Color.rgb(248,248,252)
+            else android.graphics.Color.rgb(42,17,80)
+        androidx.core.view.WindowInsetsControllerCompat(window,window.decorView).apply {
+            isAppearanceLightStatusBars = true
+            isAppearanceLightNavigationBars = Build.VERSION.SDK_INT >= 26
+        }
         BrandCopy.initialize(this)
         val store = AppStore(this)
         val questions = QuestionRepository(this)
@@ -315,48 +322,44 @@ class MainActivity : ComponentActivity() {
                     }
                     Route.Tabs -> Scaffold(containerColor=Ink,
                         bottomBar={
-                            Column(Modifier.fillMaxWidth().background(Ink)) {
-                                // One permanent banner above nav, never during questions/login.
+                            Column(Modifier.fillMaxWidth().background(CardInk)) {
+                                // Persistent SDK ad stays distinct from the navigation actions.
                                 if(adAllowed && !splash && !editingContact &&
                                     (signupState is SignupState.Ready)) {
                                     SponsoredBanner(ads, Modifier.padding(horizontal=11.dp))
                                 }
-                                // Nav remains separate from the ad's clickable area.
-                            Row(Modifier.fillMaxWidth().height(56.dp)
-                                .background(Ink).padding(horizontal=9.dp,vertical=3.dp)
-                                .shadow(5.dp,RoundedCornerShape(19.dp))
-                                .clip(RoundedCornerShape(19.dp))
-                                .background(androidx.compose.ui.graphics.Brush.horizontalGradient(
-                                    listOf(RoyalDeep,Royal,Color(0xFF611998))))
-                                .padding(horizontal=6.dp,vertical=2.dp),
-                                horizontalArrangement=Arrangement.spacedBy(4.dp),
-                                verticalAlignment=Alignment.CenterVertically) {
+                                HorizontalDivider(color=Hairline,thickness=1.dp)
+                                // Five consistently labeled tabs improve scanning and accessibility.
+                            Row(Modifier.fillMaxWidth().height(58.dp)
+                                    .background(CardInk).padding(horizontal=6.dp),
+                                verticalAlignment=Alignment.CenterVertically,
+                                horizontalArrangement=Arrangement.spacedBy(2.dp)) {
                                 listOf(
                                     Triple(Tab.HOME,t(hindi,"Home","होम"),Icons.Rounded.Home),
-                                    Triple(Tab.TESTS,t(hindi,"Tests","टेस्ट"),Icons.Rounded.Assignment),
-                                    Triple(Tab.ANALYTICS,t(hindi,"Analysis","विश्लेषण"),Icons.Rounded.Insights),
-                                    Triple(Tab.RANKS,t(hindi,"Rank","रैंक"),Icons.Rounded.EmojiEvents),
-                                    Triple(Tab.PROFILE,t(hindi,"More","अन्य"),Icons.Rounded.MoreHoriz)
+                                    Triple(Tab.TESTS,t(hindi,"Mocks","मॉक"),Icons.Rounded.Assignment),
+                                    Triple(Tab.ANALYTICS,t(hindi,"Progress","प्रगति"),Icons.Rounded.Insights),
+                                    Triple(Tab.RANKS,t(hindi,"Ranks","रैंक"),Icons.Rounded.EmojiEvents),
+                                    Triple(Tab.PROFILE,t(hindi,"Profile","प्रोफ़ाइल"),Icons.Rounded.Person)
                                 ).forEach { (item,label,icon) ->
-                                    val selected=tab==item
-                                    val tileColor by animateColorAsState(
-                                        if(selected) Gold else Color.Transparent,
-                                        animationSpec=tween(190),label="compact nav tile")
+                                    val selected = item == tab
+                                    val navTint by animateColorAsState(
+                                        if(selected) Violet else Muted,
+                                        animationSpec=tween(160),label="navigation tint")
                                     Column(Modifier.weight(1f).fillMaxHeight()
-                                        .clip(RoundedCornerShape(14.dp))
-                                        .background(tileColor)
-                                        .clickable(role=Role.Tab,onClick={tab=item})
-                                        .padding(vertical=3.dp,horizontal=1.dp),
+                                            .clip(RoundedCornerShape(13.dp))
+                                            .clickable(role=Role.Tab,onClick={tab=item}),
                                         horizontalAlignment=Alignment.CenterHorizontally,
                                         verticalArrangement=Arrangement.Center) {
-                                        Icon(icon,contentDescription=label,
-                                            tint=if(selected) RoyalDeep else Color.White,
-                                            modifier=Modifier.size(20.dp))
-                                        if(selected) {
-                                            Spacer(Modifier.height(2.dp))
-                                            Text(label,color=RoyalDeep,fontWeight=FontWeight.Black,
-                                                fontSize=10.sp,maxLines=1,overflow=TextOverflow.Ellipsis)
-                                        }
+                                        Box(Modifier.height(3.dp).width(19.dp)
+                                            .clip(RoundedCornerShape(3.dp))
+                                            .background(if(selected) Violet else Color.Transparent))
+                                        Spacer(Modifier.height(4.dp))
+                                        Icon(icon,contentDescription=label,tint=navTint,
+                                            modifier=Modifier.size(21.dp))
+                                        Spacer(Modifier.height(2.dp))
+                                        Text(label,color=navTint,fontSize=10.sp,maxLines=1,
+                                            fontWeight=if(selected) FontWeight.Bold else FontWeight.Medium,
+                                            overflow=TextOverflow.Ellipsis)
                                     }
                                 }
                             }

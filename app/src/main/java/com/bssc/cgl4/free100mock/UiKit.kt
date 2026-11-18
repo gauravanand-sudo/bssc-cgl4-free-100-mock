@@ -19,35 +19,47 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// V5: visual language matched to the reference mockups — royal purple, gold and ivory.
-val Ink = Color(0xFFF4F0FC)
+// OneShotGS modern Compose design tokens — neutral canvas, restrained accents.
+val Ink = Color(0xFFF8F8FC)
 val CardInk = Color(0xFFFFFFFF)
-val CardInkLight = Color(0xFFEEE3FF)
-val Violet = Color(0xFF6424C8)
+val CardInkLight = Color(0xFFF1EDFA)
+val Violet = Color(0xFF6846CE)
 val Blue = Color(0xFF2266D8)
 val Aqua = Color(0xFF007C58)
 val Amber = Color(0xFFA85A00)
-val SoftWhite = Color(0xFF23103D)
-val Muted = Color(0xFF5D506F)
+val SoftWhite = Color(0xFF211A30)
+val Muted = Color(0xFF716A7D)
 val Red = Color(0xFFC92349)
 val SoftMint = Color(0xFFDAF7EA)
-val SoftLavender = Color(0xFFE8D8FF)
-val Royal = Color(0xFF46107A)
-val RoyalDeep = Color(0xFF260642)
-val Gold = Color(0xFFFFD45D)
+val SoftLavender = Color(0xFFF0EAFE)
+val Royal = Color(0xFF51218F)
+val RoyalDeep = Color(0xFF2A1150)
+val Gold = Color(0xFFFFD66B)
+val Hairline = Color(0xFFEAE6F0)
 
 @Composable fun RankTheme(content: @Composable () -> Unit) {
-    MaterialTheme(colorScheme = lightColorScheme(
-        primary = Violet, secondary = Aqua, surface = CardInk, background = Ink,
-        onPrimary = Color.White, onSurface = SoftWhite, onBackground = SoftWhite,
-        error = Red
-    ), typography = Typography(), content = content)
+    MaterialTheme(
+        colorScheme = lightColorScheme(
+            primary = Violet, onPrimary = Color.White,
+            primaryContainer = SoftLavender, onPrimaryContainer = RoyalDeep,
+            secondary = Aqua, surface = CardInk, background = Ink,
+            onSurface = SoftWhite, onBackground = SoftWhite,
+            surfaceVariant = CardInkLight, outlineVariant = Hairline, error = Red
+        ),
+        shapes = Shapes(
+            small = RoundedCornerShape(12.dp),
+            medium = RoundedCornerShape(16.dp),
+            large = RoundedCornerShape(22.dp),
+            extraLarge = RoundedCornerShape(28.dp)
+        ),
+        typography = Typography(), content = content
+    )
 }
 
 @Composable fun Panel(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
-    Column(modifier = modifier.fillMaxWidth().clip(RoundedCornerShape(19.dp))
-        .background(CardInk).border(1.dp, Color(0xFFD9C7EC), RoundedCornerShape(19.dp))
-        .padding(18.dp), content = content)
+    Column(modifier = modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp))
+        .background(CardInk).border(1.dp, Hairline, RoundedCornerShape(22.dp))
+        .padding(16.dp), content = content)
 }
 
 @Composable fun CapsLabel(value: String, color: Color = Muted) {
@@ -56,7 +68,7 @@ val Gold = Color(0xFFFFD45D)
 }
 
 @Composable fun Headline(value: String, modifier: Modifier=Modifier) =
-    Text(value, modifier=modifier, color=SoftWhite, fontWeight=FontWeight.ExtraBold, fontSize=25.sp, lineHeight=30.sp)
+    Text(value, modifier=modifier, color=SoftWhite, fontWeight=FontWeight.Bold, fontSize=25.sp, lineHeight=30.sp)
 
 @Composable fun PrimaryAction(text: String, modifier: Modifier = Modifier, enabled: Boolean = true, onClick: () -> Unit) {
     Button(onClick = onClick, enabled = enabled, modifier = modifier.height(54.dp),
@@ -80,12 +92,12 @@ val Gold = Color(0xFFFFD45D)
     }
 }
 
-@Composable fun DividerLine() = HorizontalDivider(color=Color(0xFFE9EDF4), thickness=1.dp)
+@Composable fun DividerLine() = HorizontalDivider(color=Hairline, thickness=1.dp)
 
 @Composable fun SectionTitle(title: String, subtitle: String? = null, action: (@Composable () -> Unit)? = null) {
     Row(Modifier.fillMaxWidth(), verticalAlignment=Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
-            Text(title, color=SoftWhite, fontWeight=FontWeight.ExtraBold, fontSize=19.sp)
+            Text(title, color=SoftWhite, fontWeight=FontWeight.Bold, fontSize=19.sp)
             if (subtitle != null) Text(subtitle, color=Muted, fontSize=12.sp)
         }
         action?.invoke()

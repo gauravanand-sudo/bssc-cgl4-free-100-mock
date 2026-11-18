@@ -46,22 +46,33 @@ fun DashboardScreen(
     val progress by animateFloatAsState(if(available.isEmpty()) 0f else
         (completed.toFloat()/available.size).coerceIn(0f,1f),label="mock progress")
     LazyColumn(modifier.fillMaxSize().background(Ink),
-        contentPadding=PaddingValues(start=14.dp,end=14.dp,top=12.dp,bottom=18.dp),
-        verticalArrangement=Arrangement.spacedBy(12.dp)) {
-        item {
-            Column {
-                Text(t(hindi,
-                    "Ready to rise, " + studentName.take(28) + "? ✨",
-                    "तैयार हैं, " + studentName.take(28) + "? ✨"),
-                    color=SoftWhite,fontSize=18.sp,fontWeight=FontWeight.Black)
-                Text(BrandCopy.tagline(hindi),color=Violet,fontSize=14.sp,fontWeight=FontWeight.ExtraBold)
-                Spacer(Modifier.height(8.dp))
-                Surface(onClick=onToggleLanguage,shape=RoundedCornerShape(13.dp),
-                    color=SoftLavender) {
-                    Text(t(hindi,"🌐 Switch language · English ⇄ हिंदी",
-                        "🌐 भाषा बदलें · हिंदी ⇄ English"),
-                        modifier=Modifier.padding(horizontal=12.dp,vertical=8.dp),
-                        color=RoyalDeep,fontWeight=FontWeight.Black,fontSize=11.sp)
+        contentPadding=PaddingValues(start=16.dp,end=16.dp,top=14.dp,bottom=20.dp),
+        verticalArrangement=Arrangement.spacedBy(15.dp)) {
+        item(key="modern-home-header") {
+            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                Column(Modifier.weight(1f),
+                    verticalArrangement=Arrangement.spacedBy(3.dp)) {
+                    Text(t(hindi,"YOUR PREPARATION SPACE","आपकी तैयारी"),
+                        color=Violet,fontSize=10.sp,fontWeight=FontWeight.Bold,
+                        letterSpacing=1.1.sp)
+                    Text(t(hindi,"Hey, " + studentName.take(28) + " 👋",
+                        "नमस्ते, " + studentName.take(28) + " 👋"),
+                        color=SoftWhite,fontSize=24.sp,lineHeight=30.sp,
+                        fontWeight=FontWeight.Bold,maxLines=2)
+                    Text(t(hindi,"Make today count.","आज की मेहनत मायने रखती है।"),
+                        color=Muted,fontSize=12.sp)
+                }
+                Surface(onClick=onToggleLanguage,
+                    shape=RoundedCornerShape(14.dp),color=CardInk,
+                    border=BorderStroke(1.dp,Hairline)) {
+                    Row(Modifier.padding(horizontal=12.dp,vertical=11.dp),
+                        verticalAlignment=Alignment.CenterVertically) {
+                        Icon(Icons.Rounded.Language,contentDescription=null,
+                            tint=Violet,modifier=Modifier.size(16.dp))
+                        Spacer(Modifier.width(5.dp))
+                        Text(if(hindi)"हिंदी" else "EN",color=SoftWhite,
+                            fontSize=12.sp,fontWeight=FontWeight.Bold)
+                    }
                 }
             }
         }
@@ -91,16 +102,11 @@ fun DashboardScreen(
                 if(destination=="mock_list")onOpenTests() else onBannerAction(destination)
             }
         }
-        item {
-            Column(verticalArrangement=Arrangement.spacedBy(9.dp)) {
-                Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
-                    ReferenceShortcut("📝",t(hindi,"Mock Tests","मॉक टेस्ट"),Color(0xFFDDC4FF),Modifier.weight(1f),onOpenTests)
-                    ReferenceShortcut("📊",t(hindi,"My Results","मेरे परिणाम"),Color(0xFFCDE8FF),Modifier.weight(1f),onOpenAnalytics)
-                }
-                Row(horizontalArrangement=Arrangement.spacedBy(9.dp)) {
-                    ReferenceShortcut("🏆",t(hindi,"Ranking","रैंकिंग"),Color(0xFFFFE2A9),Modifier.weight(1f),onOpenRanks)
-                    ReferenceShortcut("🎯",t(hindi,"Weak Areas","कमज़ोर विषय"),Color(0xFFFFCDE9),Modifier.weight(1f),onOpenAnalytics)
-                }
+        item(key="home-shortcuts") {
+            Row(horizontalArrangement=Arrangement.spacedBy(10.dp)) {
+                ReferenceShortcut("📝",t(hindi,"Practice","अभ्यास"),SoftLavender,Modifier.weight(1f),onOpenTests)
+                ReferenceShortcut("📊",t(hindi,"Insights","विश्लेषण"),SoftMint,Modifier.weight(1f),onOpenAnalytics)
+                ReferenceShortcut("🏆",t(hindi,"Ranks","रैंक"),Color(0xFFFFF4DC),Modifier.weight(1f),onOpenRanks)
             }
         }
         // Sponsored content is intentionally separated from interactive shortcuts.
@@ -173,14 +179,18 @@ fun DashboardScreen(
 
 @Composable
 private fun ReferenceShortcut(emoji:String,title:String,color:Color,modifier:Modifier=Modifier,onClick:()->Unit) {
-    Column(modifier.height(76.dp).clip(RoundedCornerShape(16.dp)).background(color)
-        .border(1.dp,Royal.copy(alpha=.16f),RoundedCornerShape(16.dp))
-        .clickable(onClick=onClick)
-        .padding(horizontal=5.dp,vertical=10.dp),horizontalAlignment=Alignment.CenterHorizontally,
+    Column(modifier.height(82.dp).clip(RoundedCornerShape(19.dp))
+        .background(CardInk).border(1.dp,Hairline,RoundedCornerShape(19.dp))
+        .clickable(onClick=onClick).padding(horizontal=5.dp,vertical=9.dp),
+        horizontalAlignment=Alignment.CenterHorizontally,
         verticalArrangement=Arrangement.Center) {
-        Text(emoji,fontSize=23.sp)
+        Box(Modifier.size(36.dp).clip(RoundedCornerShape(12.dp))
+            .background(color),contentAlignment=Alignment.Center) {
+            Text(emoji,fontSize=19.sp)
+        }
         Spacer(Modifier.height(6.dp))
-        Text(title,color=RoyalDeep,fontSize=11.sp,lineHeight=13.sp,fontWeight=FontWeight.Black,maxLines=2,
+        Text(title,color=SoftWhite,fontSize=11.sp,lineHeight=13.sp,
+            fontWeight=FontWeight.SemiBold,maxLines=1,
             textAlign=androidx.compose.ui.text.style.TextAlign.Center)
     }
 }
@@ -203,20 +213,24 @@ fun TestCatalogueScreen(tests:List<MockTest>,attempts:List<Attempt>,unlocked:Set
     LazyColumn(Modifier.fillMaxSize().background(Ink),
         contentPadding=PaddingValues(horizontal=14.dp,vertical=15.dp),
         verticalArrangement=Arrangement.spacedBy(12.dp)) {
-        item {
-            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp))
-                .background(Brush.horizontalGradient(listOf(RoyalDeep,Royal,Violet)))
-                .padding(17.dp),verticalAlignment=Alignment.CenterVertically) {
+        item(key="catalogue-header") {
+            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text(t(hindi,"📚 YOUR PRACTICE ARENA","📚 आपका अभ्यास क्षेत्र"),
-                        color=Gold,fontWeight=FontWeight.Black,fontSize=11.sp)
-                    Text(t(hindi,"Mock Tests","मॉक टेस्ट")+"  (${tests.size})",
-                        fontWeight=FontWeight.Black,fontSize=23.sp,color=Color.White)
+                    Text(t(hindi,"PRACTICE LIBRARY","अभ्यास लाइब्रेरी"),
+                        color=Violet,fontWeight=FontWeight.Bold,
+                        fontSize=10.sp,letterSpacing=1.sp)
+                    Spacer(Modifier.height(4.dp))
+                    Text(t(hindi,"Mock Tests","मॉक टेस्ट")+"  ("+tests.size+")",
+                        fontWeight=FontWeight.Bold,fontSize=25.sp,color=SoftWhite)
                     Text(t(hindi,"150 questions · 600 marks · 135 mins",
                         "150 प्रश्न · 600 अंक · 135 मिनट"),
-                        color=Color.White.copy(alpha=.91f),fontSize=11.sp)
+                        color=Muted,fontSize=12.sp)
                 }
-                Text("🏆",fontSize=37.sp)
+                Box(Modifier.size(52.dp).clip(RoundedCornerShape(17.dp))
+                    .background(SoftLavender),contentAlignment=Alignment.Center) {
+                    Icon(Icons.Rounded.Assignment,
+                        contentDescription=null,tint=Violet,modifier=Modifier.size(25.dp))
+                }
             }
         }
         item {
