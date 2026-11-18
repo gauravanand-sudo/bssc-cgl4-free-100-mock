@@ -173,21 +173,23 @@ class StudentRegistrationRepository(private val context: Context) {
         }
         // Public configuration can be enabled in Firebase after APK distribution.
         // No secret or downloaded credentials are stored in this document.
-        val firestore = db ?: run {
-            complete("Firestore unavailable. Check Firebase setup.")
-            return
-        }
-        firestore.collection("auth_public").document("google").get()
-            .addOnSuccessListener { snapshot ->
-                val remoteId = snapshot.getString("webClientId").orEmpty().trim()
-                if (snapshot.getBoolean("enabled") == true &&
-                    remoteId.endsWith(".apps.googleusercontent.com")) {
-                    launchGoogleFlow(activity, firebaseAuth, remoteId, complete)
-                } else complete("Enable Google login and set auth_public/google webClientId in Firebase Console.")
-            }
-            .addOnFailureListener {
-                complete("Google login needs the Firestore auth_public/google config and deployed security rules.")
-            }
+        // Logout clears currentUser. Restore the anonymous identity before reading
+        // the protected login config, just as the catalogue does on cold start.
+        CloudBackend.withIdentity(context, ready = { firestore ->
+            firestore.collection("auth_public").document("google").get()
+                .addOnSuccessListener { snapshot ->
+                    val remoteId = snapshot.getString("webClientId").orEmpty().trim()
+                    if (snapshot.getBoolean("enabled") == true &&
+                        remoteId.endsWith(".apps.googleusercontent.com")) {
+                        launchGoogleFlow(activity, firebaseAuth, remoteId, complete)
+                    } else complete("Enable Google login and set auth_public/google webClientId in Firebase Console.")
+                }
+                .addOnFailureListener {
+                    complete("Google login needs the Firestore auth_public/google config and deployed security rules.")
+                }
+        }, failed = {
+            complete("Could not prepare Google login. Check your internet connection and that Anonymous authentication is enabled in Firebase.")
+        })
     }
 
     private fun launchGoogleFlow(
