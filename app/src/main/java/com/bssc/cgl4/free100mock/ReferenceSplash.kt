@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -12,50 +13,56 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 
-/**
- * The single approved BSSC CGL 4 / OneShotGS badge appears as supplied,
- * without a second goal caption, an overlay, or an old competing app icon.
- */
-@Composable fun ReferenceSplash(hindi:Boolean) {
-    val pulse=rememberInfiniteTransition(label="aspirant loading")
-    val scale by pulse.animateFloat(1f,1.025f,infiniteRepeatable(tween(2100),RepeatMode.Reverse),label="approved logo pulse")
-    var quote by remember { mutableIntStateOf(0) }
-    LaunchedEffect(Unit) { while(true) { delay(2100);quote=(quote+1)%5 } }
-    Column(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(RoyalDeep,Royal,Color(0xFF4A147A))))
-        .padding(horizontal=22.dp,vertical=28.dp),
-        horizontalAlignment=Alignment.CenterHorizontally,
-        verticalArrangement=Arrangement.spacedBy(16.dp)) {
-        Text("OneShotGS Learning Apps",color=Gold,
-            fontSize=16.sp,fontWeight=FontWeight.Black)
-        Box(Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(23.dp))
-            .background(Color.White).padding(5.dp),contentAlignment=Alignment.Center) {
-            Image(painterResource(R.drawable.bssc_bilingual_logo),
-                "OneShotGS BSSC CGL 4 Free Mock approved bilingual logo",
-                Modifier.fillMaxSize().scale(scale),contentScale=ContentScale.Fit)
+/** Clean, centered, native loading screen without full-height empty logo panels. */
+@Composable
+fun ReferenceSplash(hindi:Boolean) {
+    val pulse=rememberInfiniteTransition(label="welcome")
+    val scale by pulse.animateFloat(0.985f,1.015f,
+        infiniteRepeatable(tween(1600),RepeatMode.Reverse),
+        label="gentle brand pulse")
+    var quote by remember {mutableIntStateOf(0)}
+    LaunchedEffect(Unit) {
+        while(true) {
+            delay(2800L)
+            quote=(quote+1)%5
         }
-        Column(horizontalAlignment=Alignment.CenterHorizontally) {
-            Text(t(hindi,"Preparing your officer journey…","अधिकारी बनने का सफर तैयार हो रहा है…"),
-                color=Color.White,fontSize=13.sp,fontWeight=FontWeight.Bold)
-            Spacer(Modifier.height(12.dp))
-            LinearProgressIndicator(modifier=Modifier.fillMaxWidth().height(6.dp)
-                .clip(RoundedCornerShape(16.dp)),color=Gold,trackColor=Color.White.copy(alpha=.20f))
-            Spacer(Modifier.height(13.dp))
-            AnimatedContent(targetState=quote,label="motivational splash text") {idx->
-                Text(BrandCopy.loading(idx,hindi),color=Color.White.copy(alpha=.9f),
-                    fontSize=12.sp,lineHeight=18.sp)
+    }
+    Box(Modifier.fillMaxSize().background(Ink).padding(horizontal=28.dp),
+        contentAlignment=Alignment.Center) {
+        Column(horizontalAlignment=Alignment.CenterHorizontally,
+            verticalArrangement=Arrangement.spacedBy(16.dp)) {
+            Surface(shape=RoundedCornerShape(28.dp),color=Color.White,
+                shadowElevation=3.dp,
+                border=androidx.compose.foundation.BorderStroke(1.dp,Hairline)) {
+                Image(painterResource(R.drawable.bssc_bilingual_logo),
+                    contentDescription="OneShotGS BSSC CGL 4 identity",
+                    modifier=Modifier.size(182.dp).padding(12.dp).scale(scale),
+                    contentScale=ContentScale.Fit)
+            }
+            Text("OneShotGS",color=SoftWhite,fontWeight=FontWeight.Bold,fontSize=27.sp)
+            Text(t(hindi,"BSSC CGL 4 · Free Mock Practice",
+                "बीएसएससी सीजीएल 4 · निःशुल्क अभ्यास"),
+                color=Violet,fontWeight=FontWeight.SemiBold,fontSize=13.sp,
+                textAlign=TextAlign.Center)
+            Spacer(Modifier.height(8.dp))
+            LinearProgressIndicator(modifier=Modifier.width(128.dp)
+                .height(5.dp).clip(RoundedCornerShape(5.dp)),
+                color=Violet,trackColor=SoftLavender)
+            Text(t(hindi,"Preparing your practice space…","आपका अभ्यास तैयार हो रहा है…"),
+                color=Muted,fontSize=12.sp,textAlign=TextAlign.Center)
+            AnimatedContent(targetState=quote,label="welcome message"){idx->
+                Text(BrandCopy.loading(idx,hindi),color=Muted,
+                    fontSize=11.sp,lineHeight=17.sp,textAlign=TextAlign.Center)
             }
         }
-        Text(t(hindi,"Part of OneShotGS Learning Apps",
-            "OneShotGS लर्निंग ऐप्स का हिस्सा"),
-            color=Gold,fontSize=12.sp,fontWeight=FontWeight.Black)
     }
 }
