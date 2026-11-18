@@ -23,6 +23,12 @@ ONE-TIME SECURE UPLOAD KEY SETUP
 5. In Actions, run "Build Google Play signed AAB (manual only)"; download the private artifact containing app-release.aab and the PUBLIC upload certificate.
 6. Enroll in Google Play App Signing when creating the Play release. Google generates the actual app-signing certificate, which is DIFFERENT from the upload key. Register the Google Play APP-SIGNING SHA-1/SHA-256 fingerprints in Firebase for release-installed Google Sign-In.
 
+14-DAY CLOSED TEST PREPARATION
+- Follow play-store/CLOSED_TEST_14_DAY_PLAN.md, with play-store/CLOSED_TEST_FEEDBACK_TEMPLATE.md for feedback.
+- Minimum 12 continuously opted-in testers for 14 days applies to newer personal developer accounts; eligibility depends on Play Console account.
+- This duration begins from real tester opt-ins to the live CLOSED test, not an APK download, GitHub build or unlaunched test track.
+- Production access requires a separate owner application and Google approval.
+
 GOOGLE CONSOLE AND POLICY PREREQUISITES
 - Enable Google and anonymous Firebase Authentication; deploy exact Firestore rules.
 - Verify live name -> Google -> phone -> Firestore save -> Home, returning login, logout, deletion.
